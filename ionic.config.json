@@ -1,0 +1,7 @@
+{
+  "name": "InforApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
