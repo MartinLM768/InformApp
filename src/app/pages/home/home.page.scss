@@ -1,0 +1,40 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.politico-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .politico-foto {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  h2 {
+    margin: 12px 0 4px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .cargo {
+    color: var(--ion-color-primary);
+    font-weight: 500;
+    margin: 4px 0;
+  }
+
+  .partido {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+  }
+}

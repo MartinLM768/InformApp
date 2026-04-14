@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Panel de Administración</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="abrirFormulario()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-list *ngIf="!loading">
+    <ion-list-header>
+      <ion-label>Políticos Registrados</ion-label>
+    </ion-list-header>
+
+    <ion-item-sliding *ngFor="let politico of politicos">
+      <ion-item>
+        <ion-avatar slot="start">
+          <img [src]="politico.foto || 'assets/placeholder.png'">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ politico.nombre }} {{ politico.apellido }}</h2>
+          <p>{{ politico.cargo }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="abrirFormulario(politico)">
+          <ion-icon name="pencil"></ion-icon>
+          Editar
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="eliminarPolitico(politico.id)">
+          <ion-icon name="trash"></ion-icon>
+          Eliminar
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-spinner *ngIf="loading" class="ion-text-center" style="display: block; margin-top: 50px;"></ion-spinner>
+</ion-content>

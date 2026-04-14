@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Panel Administrador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <h1>Acceso Administrador</h1>
+
+    <ion-item>
+      <ion-label position="stacked">Usuario</ion-label>
+      <ion-input 
+        [(ngModel)]="username" 
+        placeholder="Ingresa tu usuario"
+        type="text">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Contraseña</ion-label>
+      <ion-input 
+        [(ngModel)]="password" 
+        placeholder="Ingresa tu contraseña"
+        type="password">
+      </ion-input>
+    </ion-item>
+
+    <ion-button 
+      expand="block" 
+      (click)="login()"
+      [disabled]="loading">
+      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+      <span *ngIf="!loading">Entrar</span>
+    </ion-button>
+
+    <ion-text>
+      <p class="ion-text-center ion-margin-top">
+        <small>Credentials por defecto: admin / admin123</small>
+      </p>
+    </ion-text>
+  </div>
+</ion-content>

@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>InformApp - Colombia</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/login">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-segment [(ngModel)]="cargosSeleccionado" (ionChange)="aplicarFiltro()">
+    <ion-segment-button value="">Todos</ion-segment-button>
+    <ion-segment-button value="Presidente">Presidente</ion-segment-button>
+    <ion-segment-button value="Vicepresidente">Vicepresidente</ion-segment-button>
+    <ion-segment-button value="Senador">Senado</ion-segment-button>
+    <ion-segment-button value="Representante">Cámara</ion-segment-button>
+  </ion-segment>
+
+  <div class="grid">
+    <ion-card 
+      *ngFor="let politico of politicosFiltered" 
+      (click)="abrirDetalle(politico)"
+      class="politico-card">
+      <ion-card-header>
+        <img [src]="politico.foto || 'assets/placeholder.png'" 
+             alt="Foto de {{ politico.nombre }}"
+             class="politico-foto">
+      </ion-card-header>
+      <ion-card-content>
+        <h2>{{ politico.nombre }} {{ politico.apellido }}</h2>
+        <p class="cargo">{{ politico.cargo }}</p>
+        <p class="partido">{{ politico.partido }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-text *ngIf="politicosFiltered.length === 0" class="ion-text-center">
+    <p>No hay políticos registrados en esta categoría</p>
+  </ion-text>
+</ion-content>
