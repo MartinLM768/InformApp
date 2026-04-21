@@ -1,7 +1,9 @@
-@import '../../../theme/variables.scss';
+// Después
+@use '../../../theme/variables.scss' as *;
+@use 'sass:color';
 
 .filters-section {
-  background: linear-gradient(135deg, $primary 0%, $primary-light 100%);
+  background: linear-gradient(135deg, color.adjust($primary, $lightness: 5%), $primary);
   color: white;
   border-radius: 0 0 16px 16px;
   box-shadow: $shadow-md;
