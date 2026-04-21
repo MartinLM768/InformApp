@@ -28,6 +28,7 @@
         placeholder="Ingresa tu contraseña"
         type="password"
         autocomplete="current-password"
+        (keyup.enter)="login()"
       ></ion-input>
     </ion-item>
 
@@ -40,11 +41,5 @@
       <span *ngIf="!loading">Entrar</span>
     </ion-button>
 
-    <ion-text class="ion-text-center ion-margin-top">
-      <p>
-        <small>Credenciales por defecto: <strong>admin</strong> /
-          <strong>admin123</strong></small>
-      </p>
-    </ion-text>
   </div>
 </ion-content>

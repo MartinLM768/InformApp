@@ -130,7 +130,10 @@ export class DatabaseService {
   }
 
   async validarUsuario(username: string, password: string): Promise<boolean> {
-    // Por ahora validación simple, luego se puede migrar a Supabase Auth
-    return username === 'admin' && password === 'admin123';
-  }
+  const usuarios = [
+    { username: 'Martinlm768', password: 'NTRisBAD29' },
+    { username: 'Santiago', password: 'squiñones' },
+  ];
+  return usuarios.some(u => u.username === username && u.password === password);
+}
 }
