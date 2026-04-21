@@ -23,9 +23,11 @@ export interface Politico {
 })
 export class DatabaseService {
   private supabase: SupabaseClient;
+  private supabaseAdmin: SupabaseClient;
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+    this.supabaseAdmin = createClient(environment.supabaseUrl, environment.supabaseServiceKey);
   }
 
   async initialize(): Promise<void> {
@@ -76,9 +78,21 @@ export class DatabaseService {
   }
 
   async crearPolitico(politico: Politico): Promise<number | null> {
-    const { data, error } = await this.supabase
+    const ordenMap: Record<string, number> = {
+      'Presidente': 1,
+      'Vicepresidente': 2,
+      'Senador': 3,
+      'Representante': 4,
+    };
+
+    const politicoConOrden = {
+      ...politico,
+      orden_cargo: ordenMap[politico.cargo] || 5,
+    };
+
+    const { data, error } = await this.supabaseAdmin
       .from('politicos')
-      .insert(politico)
+      .insert(politicoConOrden)
       .select('id')
       .single();
 
@@ -90,7 +104,7 @@ export class DatabaseService {
   }
 
   async actualizarPolitico(id: number, politico: Partial<Politico>): Promise<boolean> {
-    const { error } = await this.supabase
+    const { error } = await this.supabaseAdmin
       .from('politicos')
       .update({ ...politico, updated_at: new Date().toISOString() })
       .eq('id', id);
@@ -103,7 +117,7 @@ export class DatabaseService {
   }
 
   async eliminarPolitico(id: number): Promise<boolean> {
-    const { error } = await this.supabase
+    const { error } = await this.supabaseAdmin
       .from('politicos')
       .delete()
       .eq('id', id);

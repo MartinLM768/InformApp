@@ -12,25 +12,20 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Nombre *</ion-label>
-    <ion-input
-      [(ngModel)]="form.nombre"
-      placeholder="Nombre del político"
-    ></ion-input>
+    <ion-input [(ngModel)]="form.nombre" placeholder="Nombre del político"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Apellido *</ion-label>
-    <ion-input
-      [(ngModel)]="form.apellido"
-      placeholder="Apellido del político"
-    ></ion-input>
+    <ion-input [(ngModel)]="form.apellido" placeholder="Apellido del político"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Cargo *</ion-label>
-    <ion-select [(ngModel)]="form.cargo">
+    <ion-select [(ngModel)]="form.cargo" placeholder="Selecciona un cargo">
       <ion-select-option *ngFor="let cargo of cargos" [value]="cargo">
         {{ cargo }}
       </ion-select-option>
@@ -38,20 +33,14 @@
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom">
-    <ion-label position="stacked">Partido</ion-label>
-    <ion-input
-      [(ngModel)]="form.partido"
-      placeholder="Partido político"
-    ></ion-input>
+    <ion-label position="stacked">Partido *</ion-label>
+    <ion-input [(ngModel)]="form.partido" placeholder="Partido político"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Departamento</ion-label>
-    <ion-select [(ngModel)]="form.departamento">
-      <ion-select-option
-        *ngFor="let dept of departamentos"
-        [value]="dept"
-      >
+    <ion-select [(ngModel)]="form.departamento" placeholder="Selecciona un departamento">
+      <ion-select-option *ngFor="let dept of departamentos" [value]="dept">
         {{ dept }}
       </ion-select-option>
     </ion-select>
@@ -59,52 +48,41 @@
 
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Email</ion-label>
-    <ion-input
-      [(ngModel)]="form.email"
-      placeholder="email@example.com"
-      type="email"
-    ></ion-input>
+    <ion-input [(ngModel)]="form.email" placeholder="email@example.com" type="email"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Teléfono</ion-label>
-    <ion-input
-      [(ngModel)]="form.telefono"
-      placeholder="+57 300 000 0000"
-      type="tel"
-    ></ion-input>
+    <ion-input [(ngModel)]="form.telefono" placeholder="+57 300 000 0000" type="tel"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Foto (URL)</ion-label>
-    <ion-input
-      [(ngModel)]="form.foto"
-      placeholder="https://example.com/foto.jpg"
-    ></ion-input>
+    <ion-input [(ngModel)]="form.foto_url" placeholder="https://example.com/foto.jpg"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Inicio de mandato</ion-label>
-    <ion-input
-      [(ngModel)]="form.fechaInicio"
-      placeholder="YYYY-MM-DD"
-      type="date"
-    ></ion-input>
+    <ion-input [(ngModel)]="form.fecha_inicio" placeholder="YYYY-MM-DD" type="date"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom">
     <ion-label position="stacked">Biografía</ion-label>
-    <ion-textarea
-      [(ngModel)]="form.bio"
-      placeholder="Biografía del político"
-      rows="4"
-    ></ion-textarea>
+    <ion-textarea [(ngModel)]="form.bio" placeholder="Biografía del político" rows="4"></ion-textarea>
   </ion-item>
 
   <ion-button expand="block" color="primary" (click)="guardar()">
     {{ politico ? 'Actualizar' : 'Crear' }}
   </ion-button>
+
+  <!-- Botón eliminar solo aparece al editar -->
+  <ion-button *ngIf="politico" expand="block" color="danger" (click)="confirmarEliminar()">
+    <ion-icon name="trash-outline" slot="start"></ion-icon>
+    Eliminar político
+  </ion-button>
+
   <ion-button expand="block" color="medium" (click)="cerrar()">
     Cancelar
   </ion-button>
+
 </ion-content>

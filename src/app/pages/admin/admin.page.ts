@@ -29,6 +29,7 @@ import { AuthService } from '../../services/auth.service';
 import { FormPoliticoComponent } from '../../components/form-politico/form-politico.component';
 import { addIcons } from 'ionicons';
 import { logOutOutline, add, pencil, trash } from 'ionicons/icons';
+import { Router } from '@angular/router';
 
 addIcons({
   'log-out-outline': logOutOutline,
@@ -74,7 +75,8 @@ export class AdminPage implements OnInit {
     private authService: AuthService,
     private modalController: ModalController,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private router: Router,
   ) {}
 
   async ngOnInit() {
@@ -90,9 +92,7 @@ export class AdminPage implements OnInit {
   async abrirFormulario(politico?: Politico) {
     const modal = await this.modalController.create({
       component: FormPoliticoComponent,
-      componentProps: {
-        politico: politico || null,
-      },
+      componentProps: { politico: politico || null },
       breakpoints: [0, 0.5, 1],
       initialBreakpoint: 1,
     });
@@ -100,23 +100,22 @@ export class AdminPage implements OnInit {
     await modal.present();
     const { data } = await modal.onDidDismiss();
 
-    if (data) {
+    if (!data) return;
+
+    if (data.action === 'eliminar') {
+      const success = await this.dbService.eliminarPolitico(data.data.id!);
+      if (success) await this.mostrarToast('Político eliminado correctamente', 'success');
+    } else if (data.action === 'guardar') {
       if (politico) {
-        const success = await this.dbService.actualizarPolitico(
-          politico.id!,
-          data
-        );
-        if (success) {
-          await this.mostrarToast('Político actualizado correctamente', 'success');
-        }
+        const success = await this.dbService.actualizarPolitico(politico.id!, data.data);
+        if (success) await this.mostrarToast('Político actualizado correctamente', 'success');
       } else {
-        const id = await this.dbService.crearPolitico(data);
-        if (id) {
-          await this.mostrarToast('Político creado correctamente', 'success');
-        }
+        const id = await this.dbService.crearPolitico(data.data);
+        if (id) await this.mostrarToast('Político creado correctamente', 'success');
       }
-      await this.cargarPoliticos();
     }
+
+    await this.cargarPoliticos();
   }
 
   async eliminarPolitico(id: number) {
@@ -145,8 +144,26 @@ export class AdminPage implements OnInit {
     await alert.present();
   }
 
-  logout() {
-    this.authService.logout();
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Salir',
+          role: 'destructive',
+          handler: () => {
+            this.authService.logout();
+            this.router.navigate(['/home']);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   private async mostrarToast(

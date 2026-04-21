@@ -21,38 +21,22 @@
       <ion-label>{{ politicos.length }} Políticos Registrados</ion-label>
     </ion-list-header>
 
-    <ion-item-sliding *ngFor="let politico of politicos">
-      <ion-item class="politico-item">
-        <ion-avatar slot="start">
-          <img
-            [src]="politico.foto || 'assets/placeholder.png'"
-            [alt]="politico.nombre"
-          />
-        </ion-avatar>
-        <ion-label>
-          <h2>{{ politico.nombre }} {{ politico.apellido }}</h2>
-          <p>{{ politico.cargo }}</p>
-          <p class="text-light">{{ politico.partido }}</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item-options side="end">
-        <ion-item-option
-          color="primary"
-          (click)="abrirFormulario(politico)"
-        >
-          <ion-icon name="pencil"></ion-icon>
-          Editar
-        </ion-item-option>
-        <ion-item-option
-          color="danger"
-          (click)="eliminarPolitico(politico.id!)"
-        >
-          <ion-icon name="trash"></ion-icon>
-          Eliminar
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
+    <ion-item *ngFor="let politico of politicos" class="politico-item">
+      <ion-avatar slot="start">
+        <img
+          [src]="politico.foto_url || 'assets/placeholder.png'"
+          [alt]="politico.nombre"
+        />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ politico.nombre }} {{ politico.apellido }}</h2>
+        <p>{{ politico.cargo }}</p>
+        <p class="text-light">{{ politico.partido }}</p>
+      </ion-label>
+      <ion-button slot="end" fill="clear" color="primary" (click)="abrirFormulario(politico)">
+        <ion-icon name="pencil" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
   </ion-list>
 
   <div *ngIf="loading" class="ion-text-center ion-padding">
