@@ -51,6 +51,7 @@ addIcons({
     IonAvatar,
     IonSpinner,
     IonButtons,
+    IonLabel,
   ],
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],

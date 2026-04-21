@@ -30,6 +30,7 @@
     "@capacitor/status-bar": "8.0.2",
     "@ionic/angular": "^8.0.0",
     "@ionic/storage-angular": "^4.0.0",
+    "@supabase/supabase-js": "^2.104.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "ionicons": "^7.0.0",
