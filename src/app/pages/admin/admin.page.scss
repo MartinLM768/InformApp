@@ -1,0 +1,57 @@
+@import '../../../theme/variables.scss';
+
+.politico-item {
+  --padding-start: $spacing-md;
+  --padding-end: $spacing-md;
+  border-bottom: 1px solid $border-light;
+
+  ion-avatar {
+    width: 50px;
+    height: 50px;
+    margin-right: $spacing-md;
+
+    img {
+      object-fit: cover;
+    }
+  }
+
+  ion-label {
+    h2 {
+      font-weight: 600;
+      color: $primary;
+      margin-bottom: $spacing-xs;
+    }
+
+    p {
+      font-size: 13px;
+      margin: $spacing-xs 0;
+
+      &:first-of-type {
+        color: $secondary;
+        font-weight: 500;
+      }
+
+      &.text-light {
+        color: $text-light;
+      }
+    }
+  }
+}
+
+.empty-state {
+  margin-top: 60px;
+
+  ion-icon {
+    font-size: 64px;
+    color: #ccc;
+  }
+
+  p {
+    color: $text-light;
+    margin: $spacing-sm 0;
+
+    &.text-light {
+      font-size: 13px;
+    }
+  }
+}

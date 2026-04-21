@@ -1,56 +1,126 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton,
+  IonButtons,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonSelect,
+  IonSelectOption,
+  IonTextarea,
+  ModalController,
+} from '@ionic/angular/standalone';
+import { Politico } from '../../services/database.service';
+import { addIcons } from 'ionicons';
+import { closeOutline } from 'ionicons/icons';
+
+addIcons({
+  'close-outline': closeOutline,
+});
 
 @Component({
   selector: 'app-form-politico',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButton,
+    IonButtons,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonSelect,
+    IonSelectOption,
+    IonTextarea,
+  ],
   templateUrl: './form-politico.component.html',
-  styleUrls: ['./form-politico.component.scss']
+  styleUrls: ['./form-politico.component.scss'],
 })
 export class FormPoliticoComponent implements OnInit {
-  @Input() politico: any;
-  form!: FormGroup;
+  @Input() politico: Politico | null = null;
+
+  form: Politico = {
+    nombre: '',
+    apellido: '',
+    cargo: '',
+    partido: '',
+    departamento: '',
+    foto: '',
+    bio: '',
+    email: '',
+    telefono: '',
+    fechaInicio: '',
+  };
 
   cargos = ['Presidente', 'Vicepresidente', 'Senador', 'Representante'];
   departamentos = [
-    'Amazonas', 'Antioquia', 'Arauca', 'Atlántico', 'Bolívar', 'Boyacá',
-    'Caldas', 'Caquetá', 'Casanare', 'Cauca', 'Cesar', 'Chocó', 'Córdoba',
-    'Cundinamarca', 'Guainía', 'Guaviare', 'Huila', 'La Guajira', 'Magdalena',
-    'Meta', 'Nariño', 'Norte de Santander', 'Putumayo', 'Quindío', 'Risaralda',
-    'Santander', 'Sucre', 'Tolima', 'Valle del Cauca', 'Vaupés', 'Vichada'
+    'Amazonas',
+    'Antioquia',
+    'Arauca',
+    'Atlántico',
+    'Bolívar',
+    'Boyacá',
+    'Caldas',
+    'Caquetá',
+    'Casanare',
+    'Cauca',
+    'Cesar',
+    'Chocó',
+    'Córdoba',
+    'Cundinamarca',
+    'Guainía',
+    'Guaviare',
+    'Huila',
+    'La Guajira',
+    'Magdalena',
+    'Meta',
+    'Nariño',
+    'Norte de Santander',
+    'Putumayo',
+    'Quindío',
+    'Risaralda',
+    'Santander',
+    'Sucre',
+    'Tolima',
+    'Valle del Cauca',
+    'Vaupés',
+    'Vichada',
   ];
 
-  constructor(
-    private modalController: ModalController,
-    private fb: FormBuilder
-  ) {}
+  constructor(private modalController: ModalController) {}
 
   ngOnInit() {
-    this.inicializarFormulario();
-  }
-
-  private inicializarFormulario() {
-    this.form = this.fb.group({
-      nombre: [this.politico?.nombre || '', Validators.required],
-      apellido: [this.politico?.apellido || '', Validators.required],
-      cargo: [this.politico?.cargo || '', Validators.required],
-      partido: [this.politico?.partido || '', Validators.required],
-      departamento: [this.politico?.departamento || ''],
-      foto: [this.politico?.foto || ''],
-      email: [this.politico?.email || '', Validators.email],
-      telefono: [this.politico?.telefono || ''],
-      bio: [this.politico?.bio || ''],
-      fechaInicio: [this.politico?.fechaInicio || '']
-    });
-  }
-
-  guardar() {
-    if (this.form.valid) {
-      this.modalController.dismiss(this.form.value);
+    if (this.politico) {
+      this.form = { ...this.politico };
     }
   }
 
-  cancelar() {
-    this.modalController.dismiss();
+  async guardar() {
+    if (this.validarFormulario()) {
+      await this.modalController.dismiss(this.form);
+    }
+  }
+
+  async cerrar() {
+    await this.modalController.dismiss();
+  }
+
+  private validarFormulario(): boolean {
+    if (!this.form.nombre || !this.form.apellido || !this.form.cargo) {
+      alert('Por favor completa los campos requeridos');
+      return false;
+    }
+    return true;
   }
 }

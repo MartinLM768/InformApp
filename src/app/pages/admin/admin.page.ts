@@ -1,16 +1,72 @@
 import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from '../../services/database.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton,
+  IonIcon,
+  IonList,
+  IonListHeader,
+  IonLabel,
+  IonItem,
+  IonItemSliding,
+  IonItemOptions,
+  IonItemOption,
+  IonSpinner,
+  IonAvatar,
+  IonFab,
+  IonFabButton,
+  IonButtons,
+  ModalController,
+  ToastController,
+  AlertController,
+} from '@ionic/angular/standalone';
+import { DatabaseService, Politico } from '../../services/database.service';
 import { AuthService } from '../../services/auth.service';
-import { ModalController, ToastController, AlertController } from '@ionic/angular';
 import { FormPoliticoComponent } from '../../components/form-politico/form-politico.component';
+import { addIcons } from 'ionicons';
+import { logOutOutline, add, pencil, trash } from 'ionicons/icons';
+
+addIcons({
+  'log-out-outline': logOutOutline,
+  'add': add,
+  'pencil': pencil,
+  'trash': trash,
+});
 
 @Component({
   selector: 'app-admin',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonList,
+    IonListHeader,
+    IonLabel,
+    IonItem,
+    IonItemSliding,
+    IonItemOptions,
+    IonItemOption,
+    IonSpinner,
+    IonAvatar,
+    IonFab,
+    IonFabButton,
+    IonButtons,
+  ],
   templateUrl: './admin.page.html',
-  styleUrls: ['./admin.page.scss']
+  styleUrls: ['./admin.page.scss'],
 })
 export class AdminPage implements OnInit {
-  politicos: any[] = [];
+  politicos: Politico[] = [];
   loading = false;
 
   constructor(
@@ -31,12 +87,14 @@ export class AdminPage implements OnInit {
     this.loading = false;
   }
 
-  async abrirFormulario(politico?: any) {
+  async abrirFormulario(politico?: Politico) {
     const modal = await this.modalController.create({
       component: FormPoliticoComponent,
       componentProps: {
-        politico: politico || null
-      }
+        politico: politico || null,
+      },
+      breakpoints: [0, 0.5, 1],
+      initialBreakpoint: 1,
     });
 
     await modal.present();
@@ -44,11 +102,18 @@ export class AdminPage implements OnInit {
 
     if (data) {
       if (politico) {
-        await this.dbService.actualizarPolitico(politico.id, data);
-        this.mostrarToast('Político actualizado correctamente');
+        const success = await this.dbService.actualizarPolitico(
+          politico.id!,
+          data
+        );
+        if (success) {
+          await this.mostrarToast('Político actualizado correctamente', 'success');
+        }
       } else {
-        await this.dbService.crearPolitico(data);
-        this.mostrarToast('Político creado correctamente');
+        const id = await this.dbService.crearPolitico(data);
+        if (id) {
+          await this.mostrarToast('Político creado correctamente', 'success');
+        }
       }
       await this.cargarPoliticos();
     }
@@ -56,22 +121,25 @@ export class AdminPage implements OnInit {
 
   async eliminarPolitico(id: number) {
     const alert = await this.alertController.create({
-      header: 'Confirmar',
+      header: 'Confirmar eliminación',
       message: '¿Deseas eliminar este político?',
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'Eliminar',
+          role: 'destructive',
           handler: async () => {
-            await this.dbService.eliminarPolitico(id);
-            this.mostrarToast('Político eliminado correctamente');
-            await this.cargarPoliticos();
-          }
-        }
-      ]
+            const success = await this.dbService.eliminarPolitico(id);
+            if (success) {
+              await this.mostrarToast('Político eliminado correctamente', 'success');
+              await this.cargarPoliticos();
+            }
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -81,12 +149,16 @@ export class AdminPage implements OnInit {
     this.authService.logout();
   }
 
-  private async mostrarToast(mensaje: string) {
+  private async mostrarToast(
+    mensaje: string,
+    color: 'success' | 'warning' | 'danger' = 'danger'
+  ) {
     const toast = await this.toastController.create({
       message: mensaje,
       duration: 2000,
-      position: 'bottom'
+      position: 'bottom',
+      color: color,
     });
-    toast.present();
+    await toast.present();
   }
 }

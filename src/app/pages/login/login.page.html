@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
@@ -11,35 +11,39 @@
   <div class="login-container">
     <h1>Acceso Administrador</h1>
 
-    <ion-item>
+    <ion-item fill="outline" class="ion-margin-bottom">
       <ion-label position="stacked">Usuario</ion-label>
-      <ion-input 
-        [(ngModel)]="username" 
+      <ion-input
+        [(ngModel)]="username"
         placeholder="Ingresa tu usuario"
-        type="text">
-      </ion-input>
+        type="text"
+        autocomplete="username"
+      ></ion-input>
     </ion-item>
 
-    <ion-item>
+    <ion-item fill="outline" class="ion-margin-bottom">
       <ion-label position="stacked">Contraseña</ion-label>
-      <ion-input 
-        [(ngModel)]="password" 
+      <ion-input
+        [(ngModel)]="password"
         placeholder="Ingresa tu contraseña"
-        type="password">
-      </ion-input>
+        type="password"
+        autocomplete="current-password"
+      ></ion-input>
     </ion-item>
 
-    <ion-button 
-      expand="block" 
-      (click)="login()"
-      [disabled]="loading">
-      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+    <ion-button expand="block" color="primary" (click)="login()" [disabled]="loading">
+      <ion-spinner
+        *ngIf="loading"
+        name="crescent"
+        color="light"
+      ></ion-spinner>
       <span *ngIf="!loading">Entrar</span>
     </ion-button>
 
-    <ion-text>
-      <p class="ion-text-center ion-margin-top">
-        <small>Credentials por defecto: admin / admin123</small>
+    <ion-text class="ion-text-center ion-margin-top">
+      <p>
+        <small>Credenciales por defecto: <strong>admin</strong> /
+          <strong>admin123</strong></small>
       </p>
     </ion-text>
   </div>

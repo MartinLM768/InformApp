@@ -1,0 +1,29 @@
+@import '../../../theme/variables.scss';
+
+ion-item {
+  --border-color: $border-color;
+  --border-radius: #{$radius-lg};
+
+  &:focus-within {
+    --border-color: $info;
+  }
+
+  ion-label {
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  ion-input,
+  ion-textarea,
+  ion-select {
+    --placeholder-color: $text-light;
+    --padding-top: $spacing-sm;
+    --padding-bottom: $spacing-sm;
+  }
+}
+
+ion-button {
+  margin-top: $spacing-md;
+  font-weight: 600;
+}
