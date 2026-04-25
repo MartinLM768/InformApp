@@ -30,8 +30,8 @@
       </ion-avatar>
       <ion-label>
         <h2>{{ politico.nombre }} {{ politico.apellido }}</h2>
-        <p>{{ politico.cargo }}</p>
-        <p class="text-light">{{ politico.partido }}</p>
+        <p>{{ politico.cargo_nombre }}</p>
+        <p class="text-light">{{ politico.partido_nombre }}</p>
       </ion-label>
       <ion-button slot="end" fill="clear" color="primary" (click)="abrirFormulario(politico)">
         <ion-icon name="pencil" slot="icon-only"></ion-icon>
@@ -43,10 +43,7 @@
     <ion-spinner color="primary"></ion-spinner>
   </div>
 
-  <div
-    *ngIf="!loading && politicos.length === 0"
-    class="empty-state ion-text-center ion-padding"
-  >
+  <div *ngIf="!loading && politicos.length === 0" class="empty-state ion-text-center ion-padding">
     <ion-icon name="briefcase-outline"></ion-icon>
     <p>No hay políticos registrados</p>
     <p class="text-light">Haz clic en el + para crear uno</p>

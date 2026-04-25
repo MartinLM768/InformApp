@@ -1,11 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      {{ politico ? 'Editar Político' : 'Nuevo Político' }}
-    </ion-title>
-
+    <ion-title>{{ politico ? 'Editar Político' : 'Nuevo Político' }}</ion-title>
     <ion-buttons slot="end">
-      <!-- sin color="light" -->
       <ion-button fill="clear" (click)="cerrar()">
         <ion-icon name="close-outline" slot="icon-only"></ion-icon>
       </ion-button>
@@ -26,46 +22,56 @@
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom form-item">
-    <ion-label position="stacked">Cargo *</ion-label>
-    <ion-select [(ngModel)]="form.cargo" placeholder="Selecciona un cargo">
-      <ion-select-option *ngFor="let cargo of cargos" [value]="cargo">
-        {{ cargo }}
+    <ion-label position="stacked">Cargo</ion-label>
+    <ion-select [(ngModel)]="form.cargo_id" placeholder="Selecciona un cargo">
+      <ion-select-option *ngFor="let cargo of cargos" [value]="cargo.id">
+        {{ cargo.nombre }} — {{ cargo.rama }}
       </ion-select-option>
     </ion-select>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom form-item">
-    <ion-label position="stacked">Partido *</ion-label>
-    <ion-input [(ngModel)]="form.partido" placeholder="Partido político"></ion-input>
-  </ion-item>
-
-  <ion-item fill="outline" class="ion-margin-bottom form-item">
-    <ion-label position="stacked">Departamento</ion-label>
-    <ion-select [(ngModel)]="form.departamento" placeholder="Selecciona un departamento">
-      <ion-select-option *ngFor="let dept of departamentos" [value]="dept">
-        {{ dept }}
+    <ion-label position="stacked">Partido</ion-label>
+    <ion-select [(ngModel)]="form.partido_id" placeholder="Selecciona un partido">
+      <ion-select-option *ngFor="let partido of partidos" [value]="partido.id">
+        {{ partido.nombre }}
       </ion-select-option>
     </ion-select>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom form-item">
-    <ion-label position="stacked">Email</ion-label>
-    <ion-input [(ngModel)]="form.email" type="email" placeholder="email@example.com"></ion-input>
+    <ion-label position="stacked">Inicio de cargo</ion-label>
+    <ion-input [(ngModel)]="form.fecha_inicio_cargo" type="date"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom form-item">
-    <ion-label position="stacked">Teléfono</ion-label>
-    <ion-input [(ngModel)]="form.telefono" type="tel" placeholder="+57 300 000 0000"></ion-input>
+    <ion-label position="stacked">Lugar de nacimiento</ion-label>
+    <ion-input [(ngModel)]="form.lugar_nacimiento" placeholder="Ciudad, Departamento"></ion-input>
+  </ion-item>
+
+  <ion-item fill="outline" class="ion-margin-bottom form-item">
+    <ion-label position="stacked">Fecha de nacimiento</ion-label>
+    <ion-input [(ngModel)]="form.fecha_nacimiento" type="date"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom form-item">
     <ion-label position="stacked">Foto (URL)</ion-label>
-    <ion-input [(ngModel)]="form.foto_url" placeholder="https://example.com/foto.jpg"></ion-input>
+    <ion-input [(ngModel)]="form.foto_url" placeholder="https://..."></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom form-item">
-    <ion-label position="stacked">Inicio de mandato</ion-label>
-    <ion-input [(ngModel)]="form.fecha_inicio" type="date"></ion-input>
+    <ion-label position="stacked">Twitter / X</ion-label>
+    <ion-input [(ngModel)]="form.twitter_url" placeholder="https://twitter.com/..."></ion-input>
+  </ion-item>
+
+  <ion-item fill="outline" class="ion-margin-bottom form-item">
+    <ion-label position="stacked">Instagram</ion-label>
+    <ion-input [(ngModel)]="form.instagram_url" placeholder="https://instagram.com/..."></ion-input>
+  </ion-item>
+
+  <ion-item fill="outline" class="ion-margin-bottom form-item">
+    <ion-label position="stacked">Sitio web</ion-label>
+    <ion-input [(ngModel)]="form.sitio_web" placeholder="https://..."></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom form-item">
@@ -73,18 +79,15 @@
     <ion-textarea [(ngModel)]="form.bio" rows="4" placeholder="Biografía del político"></ion-textarea>
   </ion-item>
 
-  <!-- Acción principal -->
   <ion-button expand="block" color="medium" fill="outline" (click)="guardar()">
     {{ politico ? 'Actualizar' : 'Crear' }}
   </ion-button>
 
-  <!-- Acción destructiva -->
   <ion-button *ngIf="politico" expand="block" color="danger" (click)="confirmarEliminar()">
     <ion-icon name="trash-outline" slot="start"></ion-icon>
     Eliminar político
   </ion-button>
 
-  <!-- Acción secundaria -->
   <ion-button expand="block" fill="outline" (click)="cerrar()">
     Cancelar
   </ion-button>

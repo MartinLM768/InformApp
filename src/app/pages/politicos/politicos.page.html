@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Políticos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/login" color="light">
+        <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Barra de filtro inteligente -->
+  <div class="filter-bar ion-padding">
+    <ion-button
+      expand="block"
+      fill="outline"
+      color="primary"
+      class="filter-btn"
+      (click)="abrirFiltro()"
+    >
+      <ion-icon name="filter-outline" slot="start"></ion-icon>
+      {{ cargoSeleccionado ? cargoSeleccionado.nombre : 'Filtrar por cargo' }}
+    </ion-button>
+
+    <ion-chip
+      *ngIf="cargoSeleccionado"
+      color="primary"
+      class="active-filter"
+      (click)="limpiarFiltro()"
+    >
+      {{ cargoSeleccionado.nombre }}
+      <ion-icon name="close-circle-outline"></ion-icon>
+    </ion-chip>
+  </div>
+
+  <!-- Contador -->
+  <div class="result-count ion-padding-horizontal" *ngIf="!loading">
+    <span>{{ politicosFiltrados.length }} resultado{{ politicosFiltrados.length !== 1 ? 's' : '' }}</span>
+  </div>
+
+  <!-- Grid de Políticos -->
+  <div class="politicos-grid ion-padding">
+    <ion-card
+      *ngFor="let politico of politicosFiltrados"
+      (click)="abrirDetalle(politico)"
+      class="politico-card"
+    >
+      <ion-card-header>
+        <ion-avatar>
+          <img
+            [src]="politico.foto_url || 'assets/placeholder.png'"
+            [alt]="politico.nombre"
+          />
+        </ion-avatar>
+      </ion-card-header>
+
+      <ion-card-content>
+        <h3>{{ politico.nombre }} {{ politico.apellido }}</h3>
+        <p class="cargo">{{ politico.cargo_nombre }}</p>
+        <p class="partido" *ngIf="politico.partido_nombre">{{ politico.partido_nombre }}</p>
+        <p class="entidad" *ngIf="politico.entidad_nombre">{{ politico.entidad_nombre }}</p>
+
+        <ion-button
+          expand="block"
+          color="primary"
+          (click)="abrirDetalle(politico); $event.stopPropagation()"
+        >
+          <ion-icon name="eye-outline" slot="start"></ion-icon>
+          Ver Perfil
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!loading && politicosFiltrados.length === 0"
+    class="empty-state ion-text-center ion-padding"
+  >
+    <ion-icon name="person-outline"></ion-icon>
+    <p>No hay políticos en esta categoría</p>
+  </div>
+
+  <!-- Navegación rápida -->
+  <div class="bottom-nav">
+    <ion-button fill="outline" shape="round" color="secondary" routerLink="/partidos">
+      Partidos
+    </ion-button>
+    <ion-button fill="outline" shape="round" color="tertiary" routerLink="/home">
+      Nosotros
+    </ion-button>
+  </div>
+
+</ion-content>

@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <!-- Header con foto -->
+  <!-- Foto -->
   <div class="header-image">
     <img
       [src]="politico.foto_url || 'assets/placeholder.png'"
@@ -19,47 +19,18 @@
   </div>
 
   <div class="ion-padding">
-    <!-- Información básica -->
+    <!-- Info básica -->
     <ion-card>
       <ion-card-content>
         <h1 class="name">{{ politico.nombre }} {{ politico.apellido }}</h1>
-        <p class="cargo">{{ politico.cargo }}</p>
-        <p class="partido" *ngIf="politico.partido">
-          {{ politico.partido }}
-        </p>
+        <p class="cargo" *ngIf="politico.cargo_nombre">{{ politico.cargo_nombre }}</p>
+        <p class="partido" *ngIf="politico.partido_nombre">{{ politico.partido_nombre }}</p>
 
-        <!-- Chips de información -->
         <div class="chips-container">
-          <ion-chip *ngIf="politico.departamento">
+          <ion-chip *ngIf="politico.entidad_nombre">
             <ion-icon name="location-outline"></ion-icon>
-            <ion-label>{{ politico.departamento }}</ion-label>
+            <ion-label>{{ politico.entidad_nombre }}</ion-label>
           </ion-chip>
-          <ion-chip *ngIf="politico.fecha_inicio">
-            <ion-label>{{ politico.fecha_inicio }}</ion-label>
-          </ion-chip>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Contacto -->
-    <ion-card *ngIf="politico.email || politico.telefono">
-      <ion-card-header>
-        <ion-card-title>Contacto</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="contact-item" *ngIf="politico.email">
-          <ion-icon name="mail-outline"></ion-icon>
-          <div>
-            <p class="label">Email</p>
-            <p class="value">{{ politico.email }}</p>
-          </div>
-        </div>
-        <div class="contact-item" *ngIf="politico.telefono">
-          <ion-icon name="call-outline"></ion-icon>
-          <div>
-            <p class="label">Teléfono</p>
-            <p class="value">{{ politico.telefono }}</p>
-          </div>
         </div>
       </ion-card-content>
     </ion-card>
