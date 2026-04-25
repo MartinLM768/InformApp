@@ -28,7 +28,7 @@ import { DatabaseService, Politico } from '../../services/database.service';
 import { AuthService } from '../../services/auth.service';
 import { FormPoliticoComponent } from '../../components/form-politico/form-politico.component';
 import { addIcons } from 'ionicons';
-import { logOutOutline, add, pencil, trash } from 'ionicons/icons';
+import { logOutOutline, add, pencil, trash, briefcaseOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
 
 addIcons({
@@ -77,7 +77,8 @@ export class AdminPage implements OnInit {
     private toastController: ToastController,
     private alertController: AlertController,
     private router: Router,
-  ) {}
+  ) {
+      addIcons({logOutOutline,add,pencil,briefcaseOutline});}
 
   async ngOnInit() {
     await this.cargarPoliticos();

@@ -20,4 +20,9 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/admin/admin.page').then((m) => m.AdminPage),
     canActivate: [AdminGuard],
   },
+  {
+    path: 'identidad',
+    loadComponent: () => import('./pages/identidad/identidad.page').then( m => m.IdentidadPage)
+  },
+
 ];

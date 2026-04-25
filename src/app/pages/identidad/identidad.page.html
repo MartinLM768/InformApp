@@ -1,0 +1,462 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="toolbar-title">
+      <span class="wordmark">Inform<span class="wordmark-app">App</span></span>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Tabs de navegación -->
+  <ion-toolbar color="primary" class="tabs-toolbar">
+    <div class="custom-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'marca'"
+        (click)="activeTab = 'marca'">
+        Marca
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'mision'"
+        (click)="activeTab = 'mision'">
+        Misión
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'colores'"
+        (click)="activeTab = 'colores'">
+        Colores
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'tipografia'"
+        (click)="activeTab = 'tipografia'">
+        Tipo
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'pilares'"
+        (click)="activeTab = 'pilares'">
+        Pilares
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="identidad-content">
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- TAB 1 — MARCA / WORDMARK              -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="tab-panel" *ngIf="activeTab === 'marca'">
+
+    <!-- Hero -->
+    <div class="hero-section">
+      <div class="hero-grid-overlay"></div>
+      <div class="hero-accent-bar"></div>
+      <div class="hero-accent-bar-gold"></div>
+
+      <div class="hero-body">
+        <p class="hero-eyebrow">— Identidad Corporativa</p>
+        <h1 class="hero-wordmark">
+          Inform<span class="hero-wordmark-red">App</span>
+        </h1>
+        <p class="hero-eslogan">Centralizatio</p>
+        <p class="hero-desc">
+          Toda la información pública sobre candidatos colombianos,
+          centralizada, verificada y al alcance de todos.
+        </p>
+      </div>
+
+      <div class="hero-chips">
+        <span class="chip">Colombia</span>
+        <span class="chip">Transparencia</span>
+        <span class="chip">CivTech</span>
+      </div>
+    </div>
+
+    <!-- Wordmark variants -->
+    <div class="section-block">
+      <p class="section-label">— Sistema de Wordmark</p>
+      <h2 class="section-title">Variaciones</h2>
+
+      <div class="variant-card bg-light">
+        <span class="wm-light">Inform<span class="wm-red">App</span></span>
+        <p class="wm-eslogan-light">Centralizatio</p>
+        <span class="variant-tag">Fondo claro</span>
+      </div>
+
+      <div class="variant-card bg-dark">
+        <span class="wm-dark">Inform<span class="wm-red">App</span></span>
+        <p class="wm-eslogan-dark">Centralizatio</p>
+        <span class="variant-tag tag-dark">Fondo oscuro</span>
+      </div>
+
+      <div class="variant-card bg-carbon">
+        <span class="wm-dark">Inform<span class="wm-red">App</span></span>
+        <p class="wm-eslogan-dark">Centralizatio</p>
+        <span class="variant-tag tag-dark">Fondo negro</span>
+      </div>
+    </div>
+
+    <!-- Eslogan -->
+    <div class="section-block">
+      <p class="section-label">— Eslogan</p>
+      <div class="eslogan-block">
+        <div class="eslogan-bar"></div>
+        <div>
+          <p class="eslogan-main">Centralizatio</p>
+          <p class="eslogan-sub">
+            Término latino que evoca rigor, historia y universalidad.
+            Diferencia a InformApp de las apps de consumo masivo.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- TAB 2 — MISIÓN / VISIÓN / PROPÓSITO   -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="tab-panel" *ngIf="activeTab === 'mision'">
+
+    <div class="mvv-hero">
+      <p class="section-label light">— Fundamentos Estratégicos</p>
+      <h2 class="section-title light">Misión, Visión<br>& Propósito</h2>
+    </div>
+
+    <div class="mvv-card-wrapper">
+
+      <div class="mvv-card">
+        <div class="mvv-card-top" style="background: var(--color-rojo)"></div>
+        <span class="mvv-tag" style="color: var(--color-rojo)">MISIÓN</span>
+        <h3 class="mvv-card-title">¿Por qué existimos?</h3>
+        <p class="mvv-card-body">
+          Centralizar y poner al alcance de cada colombiano la información
+          pública y quasi-privada sobre quienes aspiran a representarlos —
+          desde concejales hasta presidentes — para que el voto sea un acto
+          consciente y no un acto de fe.
+        </p>
+      </div>
+
+      <div class="mvv-card">
+        <div class="mvv-card-top" style="background: #1C6E8A"></div>
+        <span class="mvv-tag" style="color: #1C6E8A">VISIÓN</span>
+        <h3 class="mvv-card-title">¿Hacia dónde vamos?</h3>
+        <p class="mvv-card-body">
+          Ser la herramienta cívica más consultada de Colombia en cada
+          temporada electoral: el lugar donde el ciudadano de Tumaco,
+          de Leticia o de Bogotá llega antes de marcar la tarjeta y sale
+          con información clara, verificada y libre de sesgos.
+        </p>
+      </div>
+
+      <div class="mvv-card">
+        <div class="mvv-card-top" style="background: var(--color-oro)"></div>
+        <span class="mvv-tag" style="color: #BF6900">PROPÓSITO</span>
+        <h3 class="mvv-card-title">¿Qué transformamos?</h3>
+        <p class="mvv-card-body">
+          En Colombia la desinformación es el mejor aliado de la politiquería.
+          InformApp convierte registros de la Registraduría, la DIAN,
+          la Contraloría, el Congreso y la Procuraduría en perfiles
+          comprensibles para cualquier ciudadano, sin importar su nivel
+          educativo o acceso a internet.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- TAB 3 — PALETA DE COLORES             -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="tab-panel" *ngIf="activeTab === 'colores'">
+
+    <div class="section-block">
+      <p class="section-label">— Sistema de Color</p>
+      <h2 class="section-title">Paleta de Marca</h2>
+    </div>
+
+    <div class="color-grid">
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: #0A2342"></div>
+        <div class="color-info">
+          <p class="color-name">Azul Patria</p>
+          <p class="color-role">Primary · Fondos oscuros · Texto principal</p>
+          <p class="color-hex">#0A2342</p>
+          <p class="color-var">--color-azul</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: #C8102E"></div>
+        <div class="color-info">
+          <p class="color-name">Rojo Cívico</p>
+          <p class="color-role">Secondary · Acentos · Alertas · CTAs</p>
+          <p class="color-hex">#C8102E</p>
+          <p class="color-var">--color-rojo</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: #F4C542"></div>
+        <div class="color-info">
+          <p class="color-name">Oro Transparencia</p>
+          <p class="color-role">Tertiary · Highlights · Warning · Eslogan</p>
+          <p class="color-hex">#F4C542</p>
+          <p class="color-var">--color-oro</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch swatch-border" style="background: #F8F5EE"></div>
+        <div class="color-info">
+          <p class="color-name">Blanco Pergamino</p>
+          <p class="color-role">Light · Fondo principal · Superficies</p>
+          <p class="color-hex">#F8F5EE</p>
+          <p class="color-var">--color-blanco</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: #00B4D8"></div>
+        <div class="color-info">
+          <p class="color-name">Acento Digital</p>
+          <p class="color-role">Info · Links · Estados interactivos</p>
+          <p class="color-hex">#00B4D8</p>
+          <p class="color-var">--color-acento</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: #D1CCC0"></div>
+        <div class="color-info">
+          <p class="color-name">Gris Neutro</p>
+          <p class="color-role">Medium · Bordes · Texto secundario</p>
+          <p class="color-hex">#D1CCC0</p>
+          <p class="color-var">--color-gris</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: #1A1A1A"></div>
+        <div class="color-info">
+          <p class="color-name">Carbon</p>
+          <p class="color-role">Dark · Fondos noche · Contraste máximo</p>
+          <p class="color-hex">#1A1A1A</p>
+          <p class="color-var">--color-carbon</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: #1C3A5E"></div>
+        <div class="color-info">
+          <p class="color-name">Azul Medio</p>
+          <p class="color-role">Tint primary · Tarjetas oscuras</p>
+          <p class="color-hex">#1C3A5E</p>
+          <p class="color-var">--color-medio</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Combinaciones recomendadas -->
+    <div class="section-block">
+      <p class="section-label">— Combinaciones aprobadas</p>
+      <div class="combo-row combo-1">
+        <span>Azul + Blanco</span>
+      </div>
+      <div class="combo-row combo-2">
+        <span>Azul + Oro</span>
+      </div>
+      <div class="combo-row combo-3">
+        <span>Carbon + Rojo</span>
+      </div>
+      <div class="combo-row combo-4">
+        <span>Blanco + Rojo</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- TAB 4 — TIPOGRAFÍA                    -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="tab-panel" *ngIf="activeTab === 'tipografia'">
+
+    <div class="section-block">
+      <p class="section-label">— Sistema Tipográfico</p>
+      <h2 class="section-title">Tipografía</h2>
+    </div>
+
+    <div class="tipo-card">
+      <div class="tipo-label-row">
+        <span class="tipo-tag" style="background: var(--color-rojo)">DISPLAY</span>
+        <span class="tipo-font-name">Bebas Neue</span>
+      </div>
+      <p class="tipo-sample tipo-display">INFORMAPP</p>
+      <div class="tipo-meta">
+        <span>Títulos grandes · Wordmark · Secciones hero</span>
+      </div>
+      <div class="tipo-usage">
+        <p class="usage-item">H1 — 48px · tracking 0.08em</p>
+        <p class="usage-item">H2 — 32px · tracking 0.06em</p>
+        <p class="usage-item">Display — 64px+</p>
+      </div>
+    </div>
+
+    <div class="tipo-card">
+      <div class="tipo-label-row">
+        <span class="tipo-tag" style="background: var(--color-azul)">CUERPO</span>
+        <span class="tipo-font-name">Georgia / Serif</span>
+      </div>
+      <p class="tipo-sample tipo-body">
+        Centralizatio — información para todos
+      </p>
+      <div class="tipo-meta">
+        <span>Párrafos · Descripciones · Eslogan</span>
+      </div>
+      <div class="tipo-usage">
+        <p class="usage-item">Body — 16px · line-height 1.7</p>
+        <p class="usage-item">Eslogan — 18px · italic</p>
+        <p class="usage-item">Lead — 20px · weight 300</p>
+      </div>
+    </div>
+
+    <div class="tipo-card">
+      <div class="tipo-label-row">
+        <span class="tipo-tag" style="background: #1C6E8A">DATOS</span>
+        <span class="tipo-font-name">DM Mono</span>
+      </div>
+      <p class="tipo-sample tipo-mono">
+        FUENTE: REGISTRADURÍA · 2024-03-15
+      </p>
+      <div class="tipo-meta">
+        <span>Etiquetas · Fechas · Fuentes · Código</span>
+      </div>
+      <div class="tipo-usage">
+        <p class="usage-item">Label — 11px · tracking 0.25em · caps</p>
+        <p class="usage-item">Tag — 10px · tracking 0.15em</p>
+        <p class="usage-item">Data — 13px · regular</p>
+      </div>
+    </div>
+
+    <!-- Jerarquía visual -->
+    <div class="section-block">
+      <p class="section-label">— Jerarquía en pantalla</p>
+      <div class="hierarchy-demo">
+        <p class="hier-display">INFORMAPP</p>
+        <p class="hier-h1">Candidatos de Colombia</p>
+        <p class="hier-h2">Información verificada</p>
+        <p class="hier-body">
+          Toda la información pública sobre candidatos, centralizada
+          y al alcance de todos los ciudadanos colombianos.
+        </p>
+        <p class="hier-mono">FUENTE: REGISTRADURÍA NACIONAL · 2024</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- TAB 5 — PILARES                       -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="tab-panel" *ngIf="activeTab === 'pilares'">
+
+    <div class="mvv-hero">
+      <p class="section-label light">— Lo que nos define</p>
+      <h2 class="section-title light">Pilares<br>Corporativos</h2>
+    </div>
+
+    <div class="pilares-list">
+
+      <div class="pilar-item">
+        <div class="pilar-num">01</div>
+        <div class="pilar-body">
+          <h3 class="pilar-title">Transparencia radical</h3>
+          <p class="pilar-desc">
+            InformApp no oculta sus fuentes ni sus métodos. Toda información
+            publicada incluye origen, fecha de consulta y nivel de verificación.
+            El ciudadano sabe exactamente qué está leyendo y de dónde viene.
+          </p>
+        </div>
+      </div>
+
+      <div class="pilar-divider"></div>
+
+      <div class="pilar-item">
+        <div class="pilar-num">02</div>
+        <div class="pilar-body">
+          <h3 class="pilar-title">Centralización inteligente</h3>
+          <p class="pilar-desc">
+            Agregamos fuentes heterogéneas — registros electorales, declaraciones
+            de bienes, votaciones en congreso, investigaciones abiertas — en un
+            perfil único y comprensible.
+          </p>
+        </div>
+      </div>
+
+      <div class="pilar-divider"></div>
+
+      <div class="pilar-item">
+        <div class="pilar-num">03</div>
+        <div class="pilar-body">
+          <h3 class="pilar-title">Neutralidad política</h3>
+          <p class="pilar-desc">
+            InformApp no tiene línea editorial ni afiliación partidista.
+            Presentamos hechos, no opiniones. El análisis y la conclusión
+            son siempre responsabilidad del ciudadano.
+          </p>
+        </div>
+      </div>
+
+      <div class="pilar-divider"></div>
+
+      <div class="pilar-item">
+        <div class="pilar-num">04</div>
+        <div class="pilar-body">
+          <h3 class="pilar-title">Acceso universal</h3>
+          <p class="pilar-desc">
+            La plataforma es gratuita, disponible en dispositivos de bajo
+            costo y diseñada para ser accesible en regiones con conectividad
+            limitada. La democracia no puede tener barreras de entrada.
+          </p>
+        </div>
+      </div>
+
+      <div class="pilar-divider"></div>
+
+      <div class="pilar-item">
+        <div class="pilar-num">05</div>
+        <div class="pilar-body">
+          <h3 class="pilar-title">Co-construcción ciudadana</h3>
+          <p class="pilar-desc">
+            La comunidad puede reportar inconsistencias, aportar evidencias
+            verificables y calificar la calidad de la información. InformApp
+            es un bien común digital, construido por y para la ciudadanía.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Colombia tag final -->
+    <div class="footer-tag">
+      <span>🇨🇴</span>
+      <span>Hecho por y para la ciudadanía colombiana</span>
+    </div>
+
+  </div>
+
+  <ion-button slot="fixed" fill="outline" shape="round" color="tertiary" routerLink="/home">
+    Volver
+  </ion-button>
+
+</ion-content>

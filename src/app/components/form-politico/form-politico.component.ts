@@ -54,7 +54,8 @@ export class FormPoliticoComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private alertController: AlertController,
-  ) {}
+  ) {
+      addIcons({closeOutline,trashOutline});}
 
   ngOnInit() {
     if (this.politico) {

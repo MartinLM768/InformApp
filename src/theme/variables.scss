@@ -1,58 +1,70 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
 // ========================================
 // COLOR PALETTE - InformApp Colombia
 // ========================================
 
 // Primary Brand Colors
-$primary: #0A2342;      // Azul oscuro
-$secondary: #C8102E;    // Rojo
-$tertiary: #F4C542;     // Amarillo/Oro
-$light-bg: #F8F5EE;     // Blanco cremoso
-$info: #00B4D8;         // Azul claro
+$primary:        #0A2342;   // Azul Patria
+$secondary:      #C8102E;   // Rojo Cívico
+$tertiary:       #F4C542;   // Oro Transparencia
+$light-bg:       #F8F5EE;   // Blanco Pergamino
+$info:           #00B4D8;   // Acento Digital
+$carbon:         #1A1A1A;   // Negro Editorial
+$gris:           #D1CCC0;   // Gris Neutro
 
 // Shades
-$primary-dark: #081d2e;
-$primary-light: #234a5a;
+$primary-dark:   #081d2e;
+$primary-mid:    #1C3A5E;
+$primary-light:  #234a5a;
 $secondary-dark: #8b0720;
-$secondary-light: #e63946;
+$secondary-light:#e63946;
 
 // Text Colors
-$text-primary: #0A2342;
+$text-primary:   #0A2342;
 $text-secondary: #666666;
-$text-light: #999999;
-$text-white: #ffffff;
+$text-light:     #999999;
+$text-muted:     #D1CCC0;
+$text-white:     #ffffff;
 
 // Background & Border
-$bg-light: #F8F5EE;
-$bg-white: #ffffff;
-$border-color: #e0e0e0;
-$border-light: #f0f0f0;
+$bg-light:       #F8F5EE;
+$bg-white:       #ffffff;
+$bg-dark:        #0A2342;
+$bg-carbon:      #1A1A1A;
+$border-color:   #e0e0e0;
+$border-light:   #f0f0f0;
 
 // Status Colors
-$success: #2dd36f;
-$warning: #F4C542;
-$danger: #C8102E;
-$info-color: #00B4D8;
+$success:        #2dd36f;
+$warning:        #F4C542;
+$danger:         #C8102E;
+$info-color:     #00B4D8;
 
-// Shadows
-$shadow-sm: 0 2px 4px rgba(10, 35, 66, 0.1);
-$shadow-md: 0 4px 8px rgba(10, 35, 66, 0.12);
-$shadow-lg: 0 8px 16px rgba(10, 35, 66, 0.15);
-$shadow-xl: 0 12px 24px rgba(10, 35, 66, 0.2);
+// Shadows (usando azul marca en lugar de negro genérico)
+$shadow-sm:      0 2px 4px  rgba(10, 35, 66, 0.10);
+$shadow-md:      0 4px 8px  rgba(10, 35, 66, 0.12);
+$shadow-lg:      0 8px 16px rgba(10, 35, 66, 0.15);
+$shadow-xl:      0 12px 24px rgba(10, 35, 66, 0.20);
 
 // Spacing
-$spacing-xs: 4px;
-$spacing-sm: 8px;
-$spacing-md: 16px;
-$spacing-lg: 24px;
-$spacing-xl: 32px;
+$spacing-xs:  4px;
+$spacing-sm:  8px;
+$spacing-md:  16px;
+$spacing-lg:  24px;
+$spacing-xl:  32px;
+$spacing-2xl: 48px;
 
 // Border Radius
-$radius-sm: 4px;
-$radius-md: 8px;
-$radius-lg: 12px;
-$radius-xl: 16px;
+$radius-sm:   4px;
+$radius-md:   8px;
+$radius-lg:   12px;
+$radius-xl:   16px;
+$radius-full: 9999px;
+
+// Typography
+$font-display:  'Bebas Neue', sans-serif;   // Títulos grandes
+$font-body:     'Georgia', serif;           // Cuerpo editorial
+$font-mono:     'DM Mono', monospace;       // Datos y etiquetas
+$font-ui:       var(--ion-font-family);     // UI general (Ionic default)
 
 // Breakpoints
 $breakpoint-xs: 0px;
@@ -60,3 +72,229 @@ $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
+
+
+// ========================================
+// IONIC THEME MAPPING
+// ========================================
+:root {
+
+  // ── PRIMARY (Azul Patria) ─────────────
+  --ion-color-primary:              #0A2342;
+  --ion-color-primary-rgb:          10, 35, 66;
+  --ion-color-primary-contrast:     #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade:        #081d2e;
+  --ion-color-primary-tint:         #1C3A5E;
+
+  // ── SECONDARY (Rojo Cívico) ───────────
+  --ion-color-secondary:              #C8102E;
+  --ion-color-secondary-rgb:          200, 16, 46;
+  --ion-color-secondary-contrast:     #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade:        #8b0720;
+  --ion-color-secondary-tint:         #e63946;
+
+  // ── TERTIARY (Oro Transparencia) ──────
+  --ion-color-tertiary:              #F4C542;
+  --ion-color-tertiary-rgb:          244, 197, 66;
+  --ion-color-tertiary-contrast:     #0A2342;
+  --ion-color-tertiary-contrast-rgb: 10, 35, 66;
+  --ion-color-tertiary-shade:        #d7ad3a;
+  --ion-color-tertiary-tint:         #f5cb5a;
+
+  // ── SUCCESS ───────────────────────────
+  --ion-color-success:              #2dd36f;
+  --ion-color-success-rgb:          45, 211, 111;
+  --ion-color-success-contrast:     #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade:        #28ba62;
+  --ion-color-success-tint:         #42d77d;
+
+  // ── WARNING (usa el oro de marca) ─────
+  --ion-color-warning:              #F4C542;
+  --ion-color-warning-rgb:          244, 197, 66;
+  --ion-color-warning-contrast:     #0A2342;
+  --ion-color-warning-contrast-rgb: 10, 35, 66;
+  --ion-color-warning-shade:        #d7ad3a;
+  --ion-color-warning-tint:         #f5cb5a;
+
+  // ── DANGER (usa el rojo de marca) ─────
+  --ion-color-danger:              #C8102E;
+  --ion-color-danger-rgb:          200, 16, 46;
+  --ion-color-danger-contrast:     #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade:        #8b0720;
+  --ion-color-danger-tint:         #e63946;
+
+  // ── MEDIUM (Gris neutro) ──────────────
+  --ion-color-medium:              #D1CCC0;
+  --ion-color-medium-rgb:          209, 204, 192;
+  --ion-color-medium-contrast:     #0A2342;
+  --ion-color-medium-contrast-rgb: 10, 35, 66;
+  --ion-color-medium-shade:        #b8b4a9;
+  --ion-color-medium-tint:         #d6d1cb;
+
+  // ── LIGHT (Blanco Pergamino) ──────────
+  --ion-color-light:              #F8F5EE;
+  --ion-color-light-rgb:          248, 245, 238;
+  --ion-color-light-contrast:     #0A2342;
+  --ion-color-light-contrast-rgb: 10, 35, 66;
+  --ion-color-light-shade:        #dad8d2;
+  --ion-color-light-tint:         #f9f6f0;
+
+  // ── DARK (Carbon) ─────────────────────
+  --ion-color-dark:              #1A1A1A;
+  --ion-color-dark-rgb:          26, 26, 26;
+  --ion-color-dark-contrast:     #F8F5EE;
+  --ion-color-dark-contrast-rgb: 248, 245, 238;
+  --ion-color-dark-shade:        #111111;
+  --ion-color-dark-tint:         #313131;
+
+  // ── BACKGROUNDS & TEXTO ───────────────
+  --ion-background-color:         #F8F5EE;
+  --ion-background-color-rgb:     248, 245, 238;
+  --ion-text-color:               #0A2342;
+  --ion-text-color-rgb:           10, 35, 66;
+
+  // ── TOOLBAR ───────────────────────────
+  --ion-toolbar-background:       #0A2342;
+  --ion-toolbar-color:            #ffffff;
+  --ion-toolbar-border-color:     #C8102E;
+
+  // ── TAB BAR ───────────────────────────
+  --ion-tab-bar-background:       #0A2342;
+  --ion-tab-bar-border-color:     #C8102E;
+  --ion-tab-bar-color:            #D1CCC0;
+  --ion-tab-bar-color-selected:   #F4C542;
+
+  // ── CARD ──────────────────────────────
+  --ion-card-background:          #ffffff;
+
+  // ── ITEM ──────────────────────────────
+  --ion-item-background:          #ffffff;
+  --ion-item-border-color:        #e0e0e0;
+
+  // ── ACENTO DIGITAL (custom) ───────────
+  --ion-color-info:              #00B4D8;
+  --ion-color-info-rgb:          0, 180, 216;
+  --ion-color-info-contrast:     #ffffff;
+  --ion-color-info-contrast-rgb: 255, 255, 255;
+  --ion-color-info-shade:        #009ab8;
+  --ion-color-info-tint:         #1abcdc;
+
+  // ── CUSTOM CSS VARS (para usar en componentes) ──
+  --color-azul:         #0A2342;
+  --color-rojo:         #C8102E;
+  --color-oro:          #F4C542;
+  --color-blanco:       #F8F5EE;
+  --color-gris:         #D1CCC0;
+  --color-carbon:       #1A1A1A;
+  --color-acento:       #00B4D8;
+  --color-medio:        #1C3A5E;
+
+  --shadow-sm:  #{$shadow-sm};
+  --shadow-md:  #{$shadow-md};
+  --shadow-lg:  #{$shadow-lg};
+  --shadow-xl:  #{$shadow-xl};
+
+  --radius-sm:  #{$radius-sm};
+  --radius-md:  #{$radius-md};
+  --radius-lg:  #{$radius-lg};
+  --radius-xl:  #{$radius-xl};
+}
+
+
+// ========================================
+// DARK MODE
+// ========================================
+@media (prefers-color-scheme: dark) {
+  body {
+    --ion-background-color:     #0A2342;
+    --ion-background-color-rgb: 10, 35, 66;
+    --ion-text-color:           #F8F5EE;
+    --ion-text-color-rgb:       248, 245, 238;
+
+    --ion-toolbar-background:   #081d2e;
+    --ion-toolbar-color:        #F8F5EE;
+
+    --ion-tab-bar-background:   #081d2e;
+    --ion-tab-bar-color:        #D1CCC0;
+    --ion-tab-bar-color-selected: #F4C542;
+
+    --ion-card-background:      #1C3A5E;
+    --ion-item-background:      #1C3A5E;
+    --ion-item-border-color:    #234a5a;
+  }
+}
+
+
+// ========================================
+// CUSTOM COLOR CLASS: .ion-color-info
+// (para usar color="info" en componentes Ionic)
+// ========================================
+.ion-color-info {
+  --ion-color-base:         var(--ion-color-info);
+  --ion-color-base-rgb:     var(--ion-color-info-rgb);
+  --ion-color-contrast:     var(--ion-color-info-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-info-contrast-rgb);
+  --ion-color-shade:        var(--ion-color-info-shade);
+  --ion-color-tint:         var(--ion-color-info-tint);
+}
+
+
+// ========================================
+// UTILITY CLASSES GLOBALES
+// ========================================
+
+// Fondos de marca
+.bg-azul    { background: var(--color-azul)   !important; }
+.bg-rojo    { background: var(--color-rojo)    !important; }
+.bg-oro     { background: var(--color-oro)     !important; }
+.bg-carbon  { background: var(--color-carbon)  !important; }
+.bg-blanco  { background: var(--color-blanco)  !important; }
+
+// Textos de marca
+.text-azul  { color: var(--color-azul)   !important; }
+.text-rojo  { color: var(--color-rojo)   !important; }
+.text-oro   { color: var(--color-oro)    !important; }
+.text-gris  { color: var(--color-gris)   !important; }
+.text-white { color: #ffffff              !important; }
+
+// Borde acento izquierdo (estilo identidad corporativa)
+.border-left-rojo {
+  border-left: 4px solid var(--color-rojo);
+  padding-left: 12px;
+}
+.border-left-oro {
+  border-left: 4px solid var(--color-oro);
+  padding-left: 12px;
+}
+
+// Sombras
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+//LABEL BOTONES ALERT
+
+/* ALERT GLOBAL FIX */
+ion-alert {
+
+  --background: var(--ion-background-color);
+  --color: var(--ion-text-color);
+
+}
+
+ion-alert .alert-button {
+  color: var(--ion-color-medium) !important;
+  font-weight: 600;
+}
+
+ion-alert .alert-button-role-cancel {
+  color: var(--ion-color-medium) !important;
+}
+
+ion-alert .alert-button-role-destructive {
+  color: var(--ion-color-danger) !important;
+}

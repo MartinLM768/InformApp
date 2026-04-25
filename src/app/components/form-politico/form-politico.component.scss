@@ -1,29 +1,46 @@
 @import '../../../theme/variables.scss';
 
 ion-item {
-  --border-color: $border-color;
+  --border-color: var(--ion-item-border-color);
   --border-radius: #{$radius-lg};
+  --background: var(--ion-item-background);
+  --color: var(--ion-text-color);
 
   &:focus-within {
-    --border-color: $info;
-  }
-
-  ion-label {
-    font-weight: 600;
-    color: $text-primary;
-    margin-bottom: $spacing-sm;
-  }
-
-  ion-input,
-  ion-textarea,
-  ion-select {
-    --placeholder-color: $text-light;
-    --padding-top: $spacing-sm;
-    --padding-bottom: $spacing-sm;
+    --border-color: var(--ion-color-primary);
   }
 }
 
+/* Labels */
+ion-label {
+  font-weight: 600;
+  color: var(--ion-text-color);
+  margin-bottom: $spacing-sm;
+}
+
+/* Inputs */
+ion-input,
+ion-textarea,
+ion-select {
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-color-medium);
+  --padding-top: $spacing-sm;
+  --padding-bottom: $spacing-sm;
+}
+
+/* Outline visible en ambos modos */
+ion-item[fill="outline"] {
+  --border-color: var(--ion-color-medium);
+}
+
+/* Botones */
 ion-button {
   margin-top: $spacing-md;
   font-weight: 600;
+}
+
+/* Botón outline correcto */
+ion-button[fill="outline"] {
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-color-medium);
 }

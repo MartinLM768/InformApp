@@ -23,7 +23,7 @@ import { RouterModule } from '@angular/router';
 import { DatabaseService, Politico } from '../../services/database.service';
 import { DetallePoliticoComponent } from '../../components/detalle-politico/detalle-politico.component';
 import { addIcons } from 'ionicons';
-import { eyeOutline, settingsOutline } from 'ionicons/icons';
+import { eyeOutline, settingsOutline, briefcaseOutline } from 'ionicons/icons';
 
 addIcons({
   'settings-outline': settingsOutline,
@@ -73,7 +73,8 @@ export class HomePage implements OnInit {
   constructor(
     private dbService: DatabaseService,
     private modalController: ModalController
-  ) {}
+  ) {
+      addIcons({settingsOutline,eyeOutline,briefcaseOutline});}
 
   async ngOnInit() {
     await this.dbService.initialize();

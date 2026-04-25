@@ -130,3 +130,8 @@
     margin-top: $spacing-md;
   }
 }
+
+ion-button[slot='fixed'] {
+  top: 90%;
+  right: 20px;
+}
