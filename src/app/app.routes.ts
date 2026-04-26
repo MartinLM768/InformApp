@@ -31,4 +31,8 @@ export const routes: Routes = [
     path: 'partidos',
     loadComponent: () => import('./pages/partidos/partidos.page').then((m) => m.PartidosPage),
   },
+  {
+    path: 'candidatos',
+    loadComponent: () => import('./pages/candidatos/candidatos.page').then((m) => m.CandidatosPage),
+  },
 ];

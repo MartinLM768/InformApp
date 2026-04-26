@@ -126,7 +126,7 @@ export class DatabaseService {
       return [];
     }
 
-    return (data || []).map((p: any) => {
+    const politicos = (data || []).map((p: any) => {
       const cargoActual = (p.politicos_cargos || [])
         .filter((pc: any) => pc.es_actual)
         .sort((a: any, b: any) => (a.cargos?.orden ?? 99) - (b.cargos?.orden ?? 99))[0];
@@ -141,9 +141,16 @@ export class DatabaseService {
         partido_color: p.partidos?.color_hex,
         cargo_nombre: cargoActual?.cargos?.nombre,
         cargo_rama: cargoActual?.cargos?.rama,
+        cargo_orden: cargoActual?.cargos?.orden ?? 999,
         entidad_nombre: cargoActual?.entidades?.nombre,
-      } as PoliticoConCargo;
+      };
     });
+
+    // Ordenar: primero por orden del cargo, luego alfabéticamente por apellido
+    return politicos.sort((a: any, b: any) => {
+      if (a.cargo_orden !== b.cargo_orden) return a.cargo_orden - b.cargo_orden;
+      return a.apellido.localeCompare(b.apellido, 'es');
+    }) as PoliticoConCargo[];
   }
 
   // ─────────────────────────────────────────────
