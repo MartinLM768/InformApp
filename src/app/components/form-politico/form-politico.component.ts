@@ -76,11 +76,16 @@ export class FormPoliticoComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // Cargar cargos y partidos desde Supabase
-    this.cargos = await this.dbService.obtenerCargos();
-    this.partidos = await this.dbService.obtenerPartidosSimple();
+    // Cargar cargos y partidos desde Supabase en paralelo
+    [this.cargos, this.partidos] = await Promise.all([
+      this.dbService.obtenerCargos(),
+      this.dbService.obtenerPartidosSimple(),
+    ]);
 
     if (this.politico) {
+      // Cargar cargo actual en paralelo con el resto
+      const cargoActual = await this.dbService.obtenerCargoActualDePolitico(this.politico.id);
+
       this.form = {
         nombre: this.politico.nombre,
         apellido: this.politico.apellido,
@@ -93,9 +98,10 @@ export class FormPoliticoComponent implements OnInit {
         instagram_url: this.politico.instagram_url || '',
         sitio_web: this.politico.sitio_web || '',
         activo: this.politico.activo,
-        cargo_id: '',
-        entidad_id: '',
-        fecha_inicio_cargo: '',
+        // Poblar cargo actual si existe
+        cargo_id: cargoActual?.cargo_id || '',
+        entidad_id: cargoActual?.entidad_id || '',
+        fecha_inicio_cargo: cargoActual?.fecha_inicio || '',
       };
     }
   }

@@ -76,7 +76,10 @@ export class DatabaseService {
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-    this.supabaseAdmin = createClient(environment.supabaseUrl, environment.supabaseServiceKey);
+    this.supabaseAdmin = createClient(environment.supabaseUrl, environment.supabaseServiceKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+      global: { headers: { Authorization: `Bearer ${environment.supabaseServiceKey}` } },
+    });
   }
 
   async initialize(): Promise<void> {
@@ -97,7 +100,7 @@ export class DatabaseService {
         foto_url,
         bio,
         activo,
-        partidos (
+        partidos!politicos_partido_id_fkey (
           nombre,
           color_hex
         ),
@@ -176,7 +179,7 @@ export class DatabaseService {
         ideologia,
         sitio_web,
         activo,
-        politicos (id)
+        politicos!politicos_partido_id_fkey (id)
       `)
       .order('nombre', { ascending: true });
 
@@ -217,15 +220,33 @@ export class DatabaseService {
   }
 
   async actualizarPolitico(id: string, politico: Partial<Politico>): Promise<boolean> {
-    const { error } = await this.supabaseAdmin
+    // Eliminar campos de sistema
+    const { id: _id, created_at, updated_at, ...campos } = politico as any;
+
+    // Convertir strings vacíos a null (Supabase no acepta "" en campos date o uuid)
+    const camposLimpios: any = {};
+    for (const [key, value] of Object.entries(campos)) {
+      if (value === '' || value === undefined) {
+        camposLimpios[key] = null;
+      } else {
+        camposLimpios[key] = value;
+      }
+    }
+
+    console.log('[DB] Actualizando político', id, camposLimpios);
+
+    const { data, error } = await this.supabaseAdmin
       .from('politicos')
-      .update({ ...politico, updated_at: new Date().toISOString() })
-      .eq('id', id);
+      .update(camposLimpios)
+      .eq('id', id)
+      .select();
 
     if (error) {
-      console.error('Error actualizando político:', error);
+      console.error('[DB] Error actualizando político:', JSON.stringify(error));
       return false;
     }
+
+    console.log('[DB] Político actualizado:', data);
     return true;
   }
 
@@ -249,6 +270,26 @@ export class DatabaseService {
 
     if (error) {
       console.error('Error asignando cargo:', error);
+      return false;
+    }
+    return true;
+  }
+
+  async actualizarOAsignarCargo(politicoCargo: Omit<PoliticoCargo, 'id'>): Promise<boolean> {
+    // Marcar cargos anteriores como no actuales
+    await this.supabaseAdmin
+      .from('politicos_cargos')
+      .update({ es_actual: false })
+      .eq('politico_id', politicoCargo.politico_id)
+      .eq('es_actual', true);
+
+    // Insertar el nuevo cargo actual
+    const { error } = await this.supabaseAdmin
+      .from('politicos_cargos')
+      .insert({ ...politicoCargo, es_actual: true });
+
+    if (error) {
+      console.error('Error actualizando cargo:', JSON.stringify(error));
       return false;
     }
     return true;
@@ -299,6 +340,23 @@ export class DatabaseService {
 
     if (error) {
       console.error('Error obteniendo político por id:', error);
+      return null;
+    }
+    return data;
+  }
+
+  async obtenerCargoActualDePolitico(politico_id: string): Promise<{ cargo_id: string; entidad_id: string; fecha_inicio: string } | null> {
+    const { data, error } = await this.supabase
+      .from('politicos_cargos')
+      .select('cargo_id, entidad_id, fecha_inicio')
+      .eq('politico_id', politico_id)
+      .eq('es_actual', true)
+      .order('fecha_inicio', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error) {
+      // No hay cargo actual — no es un error crítico
       return null;
     }
     return data;

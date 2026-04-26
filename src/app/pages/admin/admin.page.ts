@@ -76,26 +76,25 @@ export class AdminPage implements OnInit {
       if (politico) {
         // Actualizar datos base
         await this.dbService.actualizarPolitico(politico.id, politicoData);
-        // Si cambió el cargo, registrar en politicos_cargos
-        if (cargo_id && fecha_inicio_cargo) {
-          await this.dbService.asignarCargo({
+        // Actualizar o asignar cargo si se especificó
+        if (cargo_id) {
+          await this.dbService.actualizarOAsignarCargo({
             politico_id: politico.id,
             cargo_id,
             entidad_id: entidad_id || undefined,
-            fecha_inicio: fecha_inicio_cargo,
+            fecha_inicio: fecha_inicio_cargo || new Date().toISOString().split('T')[0],
             es_actual: true,
           });
         }
         await this.mostrarToast('Político actualizado', 'success');
       } else {
         const id = await this.dbService.crearPolitico(politicoData);
-        // Si se especificó cargo, asignarlo en politicos_cargos
-        if (id && cargo_id && fecha_inicio_cargo) {
-          await this.dbService.asignarCargo({
+        if (id && cargo_id) {
+          await this.dbService.actualizarOAsignarCargo({
             politico_id: id,
             cargo_id,
             entidad_id: entidad_id || undefined,
-            fecha_inicio: fecha_inicio_cargo,
+            fecha_inicio: fecha_inicio_cargo || new Date().toISOString().split('T')[0],
             es_actual: true,
           });
         }
