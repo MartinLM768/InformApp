@@ -42,34 +42,70 @@
     </div>
   </div>
 
+  <!-- Loading -->
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+
   <!-- ── CANDIDATOS ─────────────────────────────────── -->
-  <div class="candidatos ion-padding">
+  <div class="candidatos ion-padding" *ngIf="!loading">
     <ion-card *ngFor="let c of candidatos" class="candidato-card">
 
-      <div class="card-top" [style.background]="c.partido_color">
-        <!-- Avatar con iniciales -->
-        <div class="avatar">
-          <img *ngIf="c.foto_url" [src]="c.foto_url" [alt]="c.nombre" />
-          <span *ngIf="!c.foto_url">{{ c.nombre.charAt(0) }}{{ c.apellido.charAt(0) }}</span>
+      <!-- Cabecera coloreada -->
+      <div class="card-top" [style.background]="c.partido_color || '#0A2342'">
+
+        <!-- Fórmula: presidente + vicepresidente -->
+        <div class="formula">
+
+          <!-- Candidato presidencial -->
+          <div class="formula-persona">
+            <div class="avatar grande">
+              <img *ngIf="c.foto_url" [src]="c.foto_url" [alt]="c.nombre" />
+              <span *ngIf="!c.foto_url">{{ iniciales(c.nombre, c.apellido) }}</span>
+            </div>
+            <div class="formula-info">
+              <span class="formula-rol">Presidente</span>
+              <span class="formula-nombre">{{ c.nombre }} {{ c.apellido }}</span>
+            </div>
+          </div>
+
+          <!-- Divider si hay vice -->
+          <div class="formula-divider" *ngIf="c.vicepresidente_nombre">
+            <span>+</span>
+          </div>
+
+          <!-- Vicepresidente -->
+          <div class="formula-persona" *ngIf="c.vicepresidente_nombre">
+            <div class="avatar chico">
+              <img *ngIf="c.foto_vicepresidente_url" [src]="c.foto_vicepresidente_url" [alt]="c.vicepresidente_nombre" />
+              <span *ngIf="!c.foto_vicepresidente_url">{{ iniciales(c.vicepresidente_nombre, c.vicepresidente_apellido) }}</span>
+            </div>
+            <div class="formula-info">
+              <span class="formula-rol">Vicepresidente/a</span>
+              <span class="formula-nombre">{{ c.vicepresidente_nombre }} {{ c.vicepresidente_apellido }}</span>
+            </div>
+          </div>
+
         </div>
-        <!-- Nombre sobre el color del partido -->
-        <div class="card-top-info">
-          <h2>{{ c.nombre }} {{ c.apellido }}</h2>
-          <ion-chip class="partido-chip">
-            <ion-label>{{ c.partido_siglas }} · {{ c.partido }}</ion-label>
-          </ion-chip>
-        </div>
+
+        <!-- Partido -->
+        <ion-chip class="partido-chip" *ngIf="c.partido_nombre">
+          <ion-label>{{ c.partido_siglas }} · {{ c.partido_nombre }}</ion-label>
+        </ion-chip>
+        <ion-chip class="partido-chip" *ngIf="!c.partido_nombre">
+          <ion-label>Independiente</ion-label>
+        </ion-chip>
+
       </div>
 
       <ion-card-content>
-        <p class="bio">{{ c.bio }}</p>
+        <p class="bio" *ngIf="c.bio">{{ c.bio }}</p>
 
-        <div class="propuesta">
+        <div class="propuesta" *ngIf="c.propuesta_clave">
           <span class="propuesta-label">Propuesta clave</span>
           <p class="propuesta-texto">{{ c.propuesta_clave }}</p>
         </div>
 
-        <!-- Links -->
         <div class="links" *ngIf="c.sitio_web || c.twitter_url || c.instagram_url">
           <ion-button fill="clear" size="small" *ngIf="c.sitio_web" (click)="abrirUrl(c.sitio_web)">
             <ion-icon name="globe-outline"></ion-icon>
@@ -84,8 +120,13 @@
       </ion-card-content>
 
     </ion-card>
+
+    <!-- Empty state -->
+    <div *ngIf="candidatos.length === 0" class="empty ion-text-center">
+      <p>No hay candidatos registrados aún.</p>
+    </div>
   </div>
 
-  <p class="nota ion-padding">* Lista de candidatos sujeta a actualización conforme se oficialicen inscripciones ante el CNE.</p>
+  <p class="nota ion-padding">* Lista sujeta a actualización conforme se oficialicen inscripciones ante el CNE.</p>
 
 </ion-content>

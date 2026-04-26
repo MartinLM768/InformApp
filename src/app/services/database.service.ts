@@ -67,6 +67,27 @@ export interface Partido {
   cantidad_politicos?: number;
 }
 
+export interface Candidato {
+  id: string;
+  nombre: string;
+  apellido: string;
+  foto_url?: string;
+  vicepresidente_nombre?: string;
+  vicepresidente_apellido?: string;
+  foto_vicepresidente_url?: string;
+  partido_id?: string;
+  bio?: string;
+  propuesta_clave?: string;
+  sitio_web?: string;
+  twitter_url?: string;
+  instagram_url?: string;
+  activo: boolean;
+  // Campos del join con partidos
+  partido_nombre?: string;
+  partido_siglas?: string;
+  partido_color?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -323,6 +344,73 @@ export class DatabaseService {
       { username: 'Santiago', password: 'squiñones' },
     ];
     return usuarios.some((u) => u.username === username && u.password === password);
+  }
+
+  // ─────────────────────────────────────────────
+  // CANDIDATOS
+  // ─────────────────────────────────────────────
+
+  async obtenerCandidatos(): Promise<Candidato[]> {
+    const { data, error } = await this.supabase
+      .from('candidatos')
+      .select(`
+        id, nombre, apellido, foto_url,
+        vicepresidente_nombre, vicepresidente_apellido, foto_vicepresidente_url,
+        partido_id, bio, propuesta_clave,
+        sitio_web, twitter_url, instagram_url, activo,
+        partidos!candidatos_partido_id_fkey (
+          nombre, siglas, color_hex
+        )
+      `)
+      .eq('activo', true)
+      .order('apellido', { ascending: true });
+
+    if (error) { console.error('Error obteniendo candidatos:', error); return []; }
+
+    return (data || []).map((c: any) => ({
+      id: c.id,
+      nombre: c.nombre,
+      apellido: c.apellido,
+      foto_url: c.foto_url,
+      vicepresidente_nombre: c.vicepresidente_nombre,
+      vicepresidente_apellido: c.vicepresidente_apellido,
+      foto_vicepresidente_url: c.foto_vicepresidente_url,
+      partido_id: c.partido_id,
+      bio: c.bio,
+      propuesta_clave: c.propuesta_clave,
+      sitio_web: c.sitio_web,
+      twitter_url: c.twitter_url,
+      instagram_url: c.instagram_url,
+      activo: c.activo,
+      partido_nombre: c.partidos?.nombre,
+      partido_siglas: c.partidos?.siglas,
+      partido_color: c.partidos?.color_hex,
+    } as Candidato));
+  }
+
+  async crearCandidato(candidato: Omit<Candidato, 'id' | 'partido_nombre' | 'partido_siglas' | 'partido_color'>): Promise<string | null> {
+    const { data, error } = await this.supabaseAdmin
+      .from('candidatos').insert(candidato).select('id').single();
+    if (error) { console.error('Error creando candidato:', error); return null; }
+    return data?.id || null;
+  }
+
+  async actualizarCandidato(id: string, candidato: Partial<Candidato>): Promise<boolean> {
+    const { partido_nombre, partido_siglas, partido_color, id: _id, ...campos } = candidato as any;
+    const camposLimpios: any = {};
+    for (const [k, v] of Object.entries(campos)) {
+      camposLimpios[k] = (v === '' || v === undefined) ? null : v;
+    }
+    const { error } = await this.supabaseAdmin
+      .from('candidatos').update(camposLimpios).eq('id', id);
+    if (error) { console.error('Error actualizando candidato:', JSON.stringify(error)); return false; }
+    return true;
+  }
+
+  async eliminarCandidato(id: string): Promise<boolean> {
+    const { error } = await this.supabaseAdmin.from('candidatos').delete().eq('id', id);
+    if (error) { console.error('Error eliminando candidato:', error); return false; }
+    return true;
   }
 
   // ─────────────────────────────────────────────
