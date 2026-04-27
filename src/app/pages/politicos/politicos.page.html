@@ -11,18 +11,26 @@
 
 <ion-content>
 
-  <!-- Barra de filtro inteligente -->
+  <!-- Barra de filtro + búsqueda -->
   <div class="filter-bar ion-padding">
-    <ion-button
-      expand="block"
-      fill="outline"
-      color="primary"
-      class="filter-btn"
-      (click)="abrirFiltro()"
-    >
-      <ion-icon name="filter-outline" slot="start"></ion-icon>
-      {{ cargoSeleccionado ? cargoSeleccionado.nombre : 'Filtrar por cargo' }}
-    </ion-button>
+    <div class="search-filter-row">
+      <ion-searchbar
+        [(ngModel)]="textoBusqueda"
+        (ionInput)="aplicarFiltros()"
+        placeholder="Buscar político..."
+        debounce="200"
+        class="searchbar-inline"
+      ></ion-searchbar>
+
+      <ion-button
+        fill="outline"
+        color="primary"
+        class="filter-btn-icon"
+        (click)="abrirFiltro()"
+      >
+        <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
 
     <ion-chip
       *ngIf="cargoSeleccionado"

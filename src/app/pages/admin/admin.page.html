@@ -9,7 +9,7 @@
   </ion-toolbar>
 
   <ion-toolbar color="primary">
-    <ion-segment [(ngModel)]="seccion" color="light">
+    <ion-segment [(ngModel)]="seccion" (ionChange)="onSeccionChange()" color="light">
       <ion-segment-button value="politicos">
         <ion-icon name="people-outline"></ion-icon>
         <ion-label>Políticos</ion-label>
@@ -23,6 +23,18 @@
         <ion-label>Candidatos</ion-label>
       </ion-segment-button>
     </ion-segment>
+  </ion-toolbar>
+
+  <!-- Barra de búsqueda en el header -->
+  <ion-toolbar color="primary">
+    <ion-searchbar
+      [(ngModel)]="textoBusqueda"
+      (ionInput)="filtrar()"
+      [placeholder]="'Buscar ' + seccion + '...'"
+      debounce="200"
+      color="light"
+      class="admin-searchbar"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -47,9 +59,20 @@
   <div *ngIf="!loading && seccion === 'politicos'">
     <ion-list class="ion-no-padding">
       <ion-list-header>
-        <ion-label>{{ politicos.length }} políticos registrados</ion-label>
+        <ion-label>{{ politicosFiltrados.length }} de {{ politicos.length }} políticos</ion-label>
+        <ion-button fill="outline" size="small" color="primary" (click)="abrirFiltroCargo()">
+          <ion-icon name="filter-outline" slot="start"></ion-icon>
+          {{ cargoSeleccionado ? cargoSeleccionado.nombre : 'Cargo' }}
+        </ion-button>
       </ion-list-header>
-      <ion-item *ngFor="let p of politicos">
+
+      <div class="ion-padding-horizontal" *ngIf="cargoSeleccionado">
+        <ion-chip color="primary" (click)="limpiarFiltroCargo()">
+          {{ cargoSeleccionado.nombre }}
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </ion-chip>
+      </div>
+      <ion-item *ngFor="let p of politicosFiltrados">
         <ion-avatar slot="start">
           <img [src]="p.foto_url || 'assets/placeholder.png'" [alt]="p.nombre" />
         </ion-avatar>
@@ -63,9 +86,9 @@
         </ion-button>
       </ion-item>
     </ion-list>
-    <div *ngIf="politicos.length === 0" class="empty-state ion-text-center ion-padding">
+    <div *ngIf="politicosFiltrados.length === 0" class="empty-state ion-text-center ion-padding">
       <ion-icon name="people-outline"></ion-icon>
-      <p>No hay políticos registrados</p>
+      <p>No hay coincidencias</p>
     </div>
   </div>
 
@@ -73,9 +96,9 @@
   <div *ngIf="!loading && seccion === 'partidos'">
     <ion-list class="ion-no-padding">
       <ion-list-header>
-        <ion-label>{{ partidos.length }} partidos registrados</ion-label>
+        <ion-label>{{ partidosFiltrados.length }} de {{ partidos.length }} partidos</ion-label>
       </ion-list-header>
-      <ion-item *ngFor="let p of partidos">
+      <ion-item *ngFor="let p of partidosFiltrados">
         <div class="partido-dot" slot="start" [style.background]="p.color_hex || '#ccc'"></div>
         <ion-label>
           <h2>{{ p.nombre }}</h2>
@@ -88,9 +111,9 @@
         </ion-button>
       </ion-item>
     </ion-list>
-    <div *ngIf="partidos.length === 0" class="empty-state ion-text-center ion-padding">
+    <div *ngIf="partidosFiltrados.length === 0" class="empty-state ion-text-center ion-padding">
       <ion-icon name="flag-outline"></ion-icon>
-      <p>No hay partidos registrados</p>
+      <p>No hay coincidencias</p>
     </div>
   </div>
 
@@ -98,9 +121,9 @@
   <div *ngIf="!loading && seccion === 'candidatos'">
     <ion-list class="ion-no-padding">
       <ion-list-header>
-        <ion-label>{{ candidatos.length }} candidatos registrados</ion-label>
+        <ion-label>{{ candidatosFiltrados.length }} de {{ candidatos.length }} candidatos</ion-label>
       </ion-list-header>
-      <ion-item *ngFor="let c of candidatos">
+      <ion-item *ngFor="let c of candidatosFiltrados">
         <div class="partido-dot" slot="start" [style.background]="c.partido_color || '#ccc'"></div>
         <ion-label>
           <h2>{{ c.nombre }} {{ c.apellido }}</h2>
@@ -115,9 +138,9 @@
         </ion-button>
       </ion-item>
     </ion-list>
-    <div *ngIf="candidatos.length === 0" class="empty-state ion-text-center ion-padding">
+    <div *ngIf="candidatosFiltrados.length === 0" class="empty-state ion-text-center ion-padding">
       <ion-icon name="person-outline"></ion-icon>
-      <p>No hay candidatos registrados</p>
+      <p>No hay coincidencias</p>
     </div>
   </div>
 

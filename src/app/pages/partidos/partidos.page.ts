@@ -16,6 +16,7 @@ import {
   IonButtons,
   IonBadge,
   IonChip,
+  IonSearchbar,
 } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
@@ -65,12 +66,15 @@ export interface Partido {
     IonButtons,
     IonBadge,
     IonChip,
+    IonSearchbar,
   ],
   templateUrl: './partidos.page.html',
   styleUrls: ['./partidos.page.scss'],
 })
 export class PartidosPage implements OnInit {
   partidos: Partido[] = [];
+  partidosFiltrados: Partido[] = [];
+  textoBusqueda: string = '';
   loading = false;
 
   constructor(private dbService: DatabaseService) {}
@@ -83,10 +87,24 @@ export class PartidosPage implements OnInit {
     this.loading = true;
     try {
       this.partidos = await this.dbService.obtenerPartidos();
+      this.partidosFiltrados = [...this.partidos];
     } catch (e) {
       console.error('Error cargando partidos:', e);
     }
     this.loading = false;
+  }
+
+  filtrarPartidos() {
+    const texto = (this.textoBusqueda || '').toLowerCase().trim();
+    if (!texto) {
+      this.partidosFiltrados = [...this.partidos];
+      return;
+    }
+    this.partidosFiltrados = this.partidos.filter(p =>
+      p.nombre.toLowerCase().includes(texto) ||
+      (p.siglas || '').toLowerCase().includes(texto) ||
+      (p.ideologia || '').toLowerCase().includes(texto)
+    );
   }
 
   abrirSitioWeb(url: string | undefined) {

@@ -5,7 +5,7 @@ import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardHeader, IonCardContent,
   IonButton, IonIcon, IonAvatar, IonSpinner,
-  IonButtons, IonChip,
+  IonButtons, IonChip, IonSearchbar,
   ActionSheetController, ModalController,
 } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
@@ -24,7 +24,7 @@ addIcons({ 'settings-outline': settingsOutline, 'eye-outline': eyeOutline, 'filt
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonCard, IonCardHeader, IonCardContent,
     IonButton, IonIcon, IonAvatar, IonSpinner,
-    IonButtons, IonChip,
+    IonButtons, IonChip, IonSearchbar,
   ],
   templateUrl: './politicos.page.html',
   styleUrls: ['./politicos.page.scss'],
@@ -34,6 +34,7 @@ export class PoliticosPage implements OnInit {
   politicosFiltrados: PoliticoConCargo[] = [];
   cargos: Cargo[] = [];
   cargoSeleccionado: Cargo | null = null;
+  textoBusqueda: string = '';
   loading = false;
 
   constructor(
@@ -58,20 +59,35 @@ export class PoliticosPage implements OnInit {
     this.loading = false;
   }
 
+  aplicarFiltros() {
+    const texto = (this.textoBusqueda || '').toLowerCase().trim();
+    let base = this.cargoSeleccionado
+      ? this.politicos.filter(p => p.cargo_nombre === this.cargoSeleccionado!.nombre)
+      : [...this.politicos];
+    if (texto) {
+      base = base.filter(p =>
+        `${p.nombre} ${p.apellido}`.toLowerCase().includes(texto) ||
+        (p.partido_nombre || '').toLowerCase().includes(texto) ||
+        (p.entidad_nombre || '').toLowerCase().includes(texto)
+      );
+    }
+    this.politicosFiltrados = base;
+  }
+
   async abrirFiltro() {
     const buttons = [
       {
         text: 'Todos los cargos',
         handler: () => {
           this.cargoSeleccionado = null;
-          this.politicosFiltrados = [...this.politicos];
+          this.aplicarFiltros();
         },
       },
       ...this.cargos.map((cargo) => ({
         text: cargo.nombre,
         handler: () => {
           this.cargoSeleccionado = cargo;
-          this.politicosFiltrados = this.politicos.filter((p) => p.cargo_nombre === cargo.nombre);
+          this.aplicarFiltros();
         },
       })),
       { text: 'Cancelar', role: 'cancel' },
@@ -86,7 +102,7 @@ export class PoliticosPage implements OnInit {
 
   limpiarFiltro() {
     this.cargoSeleccionado = null;
-    this.politicosFiltrados = [...this.politicos];
+    this.aplicarFiltros();
   }
 
   async abrirDetalle(politico: PoliticoConCargo) {

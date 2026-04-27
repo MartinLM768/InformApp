@@ -11,10 +11,25 @@
 
 <ion-content>
 
+  <!-- Barra de búsqueda -->
+  <div class="search-bar ion-padding">
+    <ion-searchbar
+      [(ngModel)]="textoBusqueda"
+      (ionInput)="filtrarPartidos()"
+      placeholder="Buscar partido..."
+      debounce="200"
+    ></ion-searchbar>
+  </div>
+
+  <!-- Contador -->
+  <div class="result-count ion-padding-horizontal" *ngIf="!loading">
+    <span>{{ partidosFiltrados.length }} resultado{{ partidosFiltrados.length !== 1 ? 's' : '' }}</span>
+  </div>
+
   <!-- Lista de partidos -->
   <div class="partidos-list ion-padding" *ngIf="!loading">
     <ion-card
-      *ngFor="let partido of partidos"
+      *ngFor="let partido of partidosFiltrados"
       class="partido-card"
       [style.--partido-color]="partido.color_hex || '#0A2342'"
     >
@@ -83,11 +98,11 @@
 
   <!-- Empty state -->
   <div
-    *ngIf="!loading && partidos.length === 0"
+    *ngIf="!loading && partidosFiltrados.length === 0"
     class="empty-state ion-text-center ion-padding"
   >
     <ion-icon name="people-outline"></ion-icon>
-    <p>No hay partidos registrados aún</p>
+    <p>No hay partidos que coincidan con la búsqueda</p>
   </div>
 
   <!-- Navegación rápida -->

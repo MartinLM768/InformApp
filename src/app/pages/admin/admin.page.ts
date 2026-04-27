@@ -6,10 +6,10 @@ import {
   IonButton, IonIcon, IonList, IonListHeader,
   IonLabel, IonItem, IonSpinner, IonAvatar,
   IonFab, IonFabButton, IonButtons, IonSegment,
-  IonSegmentButton, IonBadge,
-  ModalController, ToastController, AlertController,
+  IonSegmentButton, IonBadge, IonSearchbar, IonChip,
+  ModalController, ToastController, AlertController, ActionSheetController,
 } from '@ionic/angular/standalone';
-import { DatabaseService, PoliticoConCargo, Partido, Candidato } from '../../services/database.service';
+import { DatabaseService, PoliticoConCargo, Partido, Candidato, Cargo } from '../../services/database.service';
 import { AuthService } from '../../services/auth.service';
 import { FormPoliticoComponent } from '../../components/form-politico/form-politico.component';
 import { FormPartidoComponent } from '../../components/form-partido/form-partido.component';
@@ -17,14 +17,15 @@ import { FormCandidatoComponent } from '../../components/form-candidato/form-can
 import { addIcons } from 'ionicons';
 import {
   logOutOutline, add, pencil, peopleOutline,
-  flagOutline, personOutline,
+  flagOutline, personOutline, filterOutline, closeCircleOutline,
 } from 'ionicons/icons';
 import { Router } from '@angular/router';
 
 addIcons({
   'log-out-outline': logOutOutline, 'add': add, 'pencil': pencil,
   'people-outline': peopleOutline, 'flag-outline': flagOutline,
-  'person-outline': personOutline,
+  'person-outline': personOutline, 'filter-outline': filterOutline,
+  'close-circle-outline': closeCircleOutline,
 });
 
 @Component({
@@ -36,7 +37,7 @@ addIcons({
     IonButton, IonIcon, IonList, IonListHeader,
     IonLabel, IonItem, IonSpinner, IonAvatar,
     IonFab, IonFabButton, IonButtons, IonSegment,
-    IonSegmentButton, IonBadge,
+    IonSegmentButton, IonBadge, IonSearchbar, IonChip,
   ],
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
@@ -47,6 +48,12 @@ export class AdminPage implements OnInit {
   politicos: PoliticoConCargo[] = [];
   partidos: Partido[] = [];
   candidatos: Candidato[] = [];
+  cargos: Cargo[] = [];
+  politicosFiltrados: PoliticoConCargo[] = [];
+  partidosFiltrados: Partido[] = [];
+  candidatosFiltrados: Candidato[] = [];
+  textoBusqueda: string = '';
+  cargoSeleccionado: Cargo | null = null;
   loading = false;
 
   constructor(
@@ -55,6 +62,7 @@ export class AdminPage implements OnInit {
     private modalController: ModalController,
     private toastController: ToastController,
     private alertController: AlertController,
+    private actionSheetCtrl: ActionSheetController,
     private router: Router,
   ) {}
 
@@ -64,12 +72,78 @@ export class AdminPage implements OnInit {
 
   async cargarTodo() {
     this.loading = true;
-    [this.politicos, this.partidos, this.candidatos] = await Promise.all([
+    [this.politicos, this.partidos, this.candidatos, this.cargos] = await Promise.all([
       this.dbService.obtenerPoliticosConDetalle(),
       this.dbService.obtenerPartidos(),
       this.dbService.obtenerCandidatos(),
+      this.dbService.obtenerCargos(),
     ]);
+    this.politicosFiltrados = [...this.politicos];
+    this.partidosFiltrados = [...this.partidos];
+    this.candidatosFiltrados = [...this.candidatos];
     this.loading = false;
+  }
+
+  onSeccionChange() {
+    this.textoBusqueda = '';
+    this.cargoSeleccionado = null;
+    this.filtrar();
+  }
+
+  filtrar() {
+    const texto = (this.textoBusqueda || '').toLowerCase().trim();
+    if (this.seccion === 'politicos') {
+      let base = this.cargoSeleccionado
+        ? this.politicos.filter(p => p.cargo_nombre === this.cargoSeleccionado!.nombre)
+        : [...this.politicos];
+      this.politicosFiltrados = texto
+        ? base.filter(p =>
+            `${p.nombre} ${p.apellido}`.toLowerCase().includes(texto) ||
+            (p.cargo_nombre || '').toLowerCase().includes(texto) ||
+            (p.partido_nombre || '').toLowerCase().includes(texto)
+          )
+        : base;
+    } else if (this.seccion === 'partidos') {
+      this.partidosFiltrados = texto
+        ? this.partidos.filter(p =>
+            p.nombre.toLowerCase().includes(texto) ||
+            (p.siglas || '').toLowerCase().includes(texto) ||
+            (p.ideologia || '').toLowerCase().includes(texto)
+          )
+        : [...this.partidos];
+    } else {
+      this.candidatosFiltrados = texto
+        ? this.candidatos.filter(c =>
+            `${c.nombre} ${c.apellido}`.toLowerCase().includes(texto) ||
+            `${c.vicepresidente_nombre || ''} ${c.vicepresidente_apellido || ''}`.toLowerCase().includes(texto) ||
+            (c.partido_nombre || '').toLowerCase().includes(texto)
+          )
+        : [...this.candidatos];
+    }
+  }
+
+  async abrirFiltroCargo() {
+    const buttons = [
+      {
+        text: 'Todos los cargos',
+        handler: () => { this.cargoSeleccionado = null; this.filtrar(); },
+      },
+      ...this.cargos.map(cargo => ({
+        text: cargo.nombre,
+        handler: () => { this.cargoSeleccionado = cargo; this.filtrar(); },
+      })),
+      { text: 'Cancelar', role: 'cancel' },
+    ];
+    const sheet = await this.actionSheetCtrl.create({
+      header: 'Filtrar por cargo',
+      buttons,
+    });
+    await sheet.present();
+  }
+
+  limpiarFiltroCargo() {
+    this.cargoSeleccionado = null;
+    this.filtrar();
   }
 
   // ── POLÍTICOS ───────────────────────────────────────
@@ -116,6 +190,7 @@ export class AdminPage implements OnInit {
       }
     }
     this.politicos = await this.dbService.obtenerPoliticosConDetalle();
+    this.filtrar();
   }
 
   // ── PARTIDOS ────────────────────────────────────────
@@ -144,6 +219,7 @@ export class AdminPage implements OnInit {
       }
     }
     this.partidos = await this.dbService.obtenerPartidos();
+    this.filtrar();
   }
 
   // ── CANDIDATOS ──────────────────────────────────────
@@ -172,6 +248,7 @@ export class AdminPage implements OnInit {
       }
     }
     this.candidatos = await this.dbService.obtenerCandidatos();
+    this.filtrar();
   }
 
   // ── LOGOUT ──────────────────────────────────────────
