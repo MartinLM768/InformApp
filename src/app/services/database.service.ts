@@ -338,6 +338,27 @@ export class DatabaseService {
     return data || [];
   }
 
+  async crearPartido(partido: Omit<Partido, 'id' | 'cantidad_politicos'>): Promise<string | null> {
+    const { data, error } = await this.supabaseAdmin
+      .from('partidos').insert(partido).select('id').single();
+    if (error) { console.error('Error creando partido:', error); return null; }
+    return data?.id || null;
+  }
+
+  async actualizarPartido(id: string, partido: Partial<Omit<Partido, 'id' | 'cantidad_politicos'>>): Promise<boolean> {
+    const { error } = await this.supabaseAdmin
+      .from('partidos').update(partido).eq('id', id);
+    if (error) { console.error('Error actualizando partido:', JSON.stringify(error)); return false; }
+    return true;
+  }
+
+  async eliminarPartido(id: string): Promise<boolean> {
+    const { error } = await this.supabaseAdmin
+      .from('partidos').delete().eq('id', id);
+    if (error) { console.error('Error eliminando partido:', error); return false; }
+    return true;
+  }
+
   async validarUsuario(username: string, password: string): Promise<boolean> {
     const usuarios = [
       { username: 'Martinlm768', password: 'NTRisBAD29' },

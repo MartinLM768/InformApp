@@ -1,51 +1,124 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Panel de Administración</ion-title>
+    <ion-title>Administración</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()" color="light">
         <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+  <ion-toolbar color="primary">
+    <ion-segment [(ngModel)]="seccion" color="light">
+      <ion-segment-button value="politicos">
+        <ion-icon name="people-outline"></ion-icon>
+        <ion-label>Políticos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="partidos">
+        <ion-icon name="flag-outline"></ion-icon>
+        <ion-label>Partidos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="candidatos">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Candidatos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <!-- FAB contextual -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="secondary" (click)="abrirFormulario()">
+    <ion-fab-button color="secondary" (click)="
+      seccion === 'politicos' ? abrirFormPolitico() :
+      seccion === 'partidos'  ? abrirFormPartido()  :
+                                abrirFormCandidato()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <ion-list *ngIf="!loading" class="ion-no-padding">
-    <ion-list-header color="primary">
-      <ion-label>{{ politicos.length }} Políticos Registrados</ion-label>
-    </ion-list-header>
-
-    <ion-item *ngFor="let politico of politicos" class="politico-item">
-      <ion-avatar slot="start">
-        <img
-          [src]="politico.foto_url || 'assets/placeholder.png'"
-          [alt]="politico.nombre"
-        />
-      </ion-avatar>
-      <ion-label>
-        <h2>{{ politico.nombre }} {{ politico.apellido }}</h2>
-        <p>{{ politico.cargo_nombre }}</p>
-        <p class="text-light">{{ politico.partido_nombre }}</p>
-      </ion-label>
-      <ion-button slot="end" fill="clear" color="primary" (click)="abrirFormulario(politico)">
-        <ion-icon name="pencil" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
-
+  <!-- Loading -->
   <div *ngIf="loading" class="ion-text-center ion-padding">
     <ion-spinner color="primary"></ion-spinner>
   </div>
 
-  <div *ngIf="!loading && politicos.length === 0" class="empty-state ion-text-center ion-padding">
-    <ion-icon name="briefcase-outline"></ion-icon>
-    <p>No hay políticos registrados</p>
-    <p class="text-light">Haz clic en el + para crear uno</p>
+  <!-- ── POLÍTICOS ──────────────────────────────────── -->
+  <div *ngIf="!loading && seccion === 'politicos'">
+    <ion-list class="ion-no-padding">
+      <ion-list-header>
+        <ion-label>{{ politicos.length }} políticos registrados</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let p of politicos">
+        <ion-avatar slot="start">
+          <img [src]="p.foto_url || 'assets/placeholder.png'" [alt]="p.nombre" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ p.nombre }} {{ p.apellido }}</h2>
+          <p>{{ p.cargo_nombre }}</p>
+          <p class="text-light">{{ p.partido_nombre }}</p>
+        </ion-label>
+        <ion-button slot="end" fill="clear" color="primary" (click)="abrirFormPolitico(p)">
+          <ion-icon name="pencil" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+    <div *ngIf="politicos.length === 0" class="empty-state ion-text-center ion-padding">
+      <ion-icon name="people-outline"></ion-icon>
+      <p>No hay políticos registrados</p>
+    </div>
   </div>
+
+  <!-- ── PARTIDOS ───────────────────────────────────── -->
+  <div *ngIf="!loading && seccion === 'partidos'">
+    <ion-list class="ion-no-padding">
+      <ion-list-header>
+        <ion-label>{{ partidos.length }} partidos registrados</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let p of partidos">
+        <div class="partido-dot" slot="start" [style.background]="p.color_hex || '#ccc'"></div>
+        <ion-label>
+          <h2>{{ p.nombre }}</h2>
+          <p>{{ p.siglas }} · {{ p.ideologia || 'Sin ideología registrada' }}</p>
+          <p class="text-light">{{ p.cantidad_politicos }} político{{ p.cantidad_politicos !== 1 ? 's' : '' }}</p>
+        </ion-label>
+        <ion-badge *ngIf="!p.activo" color="medium" slot="end">Inactivo</ion-badge>
+        <ion-button slot="end" fill="clear" color="primary" (click)="abrirFormPartido(p)">
+          <ion-icon name="pencil" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+    <div *ngIf="partidos.length === 0" class="empty-state ion-text-center ion-padding">
+      <ion-icon name="flag-outline"></ion-icon>
+      <p>No hay partidos registrados</p>
+    </div>
+  </div>
+
+  <!-- ── CANDIDATOS ─────────────────────────────────── -->
+  <div *ngIf="!loading && seccion === 'candidatos'">
+    <ion-list class="ion-no-padding">
+      <ion-list-header>
+        <ion-label>{{ candidatos.length }} candidatos registrados</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let c of candidatos">
+        <div class="partido-dot" slot="start" [style.background]="c.partido_color || '#ccc'"></div>
+        <ion-label>
+          <h2>{{ c.nombre }} {{ c.apellido }}</h2>
+          <p *ngIf="c.vicepresidente_nombre">
+            Vice: {{ c.vicepresidente_nombre }} {{ c.vicepresidente_apellido }}
+          </p>
+          <p class="text-light">{{ c.partido_nombre || 'Independiente' }}</p>
+        </ion-label>
+        <ion-badge *ngIf="!c.activo" color="medium" slot="end">Inactivo</ion-badge>
+        <ion-button slot="end" fill="clear" color="primary" (click)="abrirFormCandidato(c)">
+          <ion-icon name="pencil" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+    <div *ngIf="candidatos.length === 0" class="empty-state ion-text-center ion-padding">
+      <ion-icon name="person-outline"></ion-icon>
+      <p>No hay candidatos registrados</p>
+    </div>
+  </div>
+
 </ion-content>
