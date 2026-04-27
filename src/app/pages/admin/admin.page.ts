@@ -2,72 +2,51 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButton,
-  IonIcon,
-  IonList,
-  IonListHeader,
-  IonLabel,
-  IonItem,
-  IonItemSliding,
-  IonItemOptions,
-  IonItemOption,
-  IonSpinner,
-  IonAvatar,
-  IonFab,
-  IonFabButton,
-  IonButtons,
-  ModalController,
-  ToastController,
-  AlertController,
+  IonHeader, IonToolbar, IonTitle, IonContent,
+  IonButton, IonIcon, IonList, IonListHeader,
+  IonLabel, IonItem, IonSpinner, IonAvatar,
+  IonFab, IonFabButton, IonButtons, IonSegment,
+  IonSegmentButton, IonBadge,
+  ModalController, ToastController, AlertController,
 } from '@ionic/angular/standalone';
-import { DatabaseService, Politico } from '../../services/database.service';
+import { DatabaseService, PoliticoConCargo, Partido, Candidato } from '../../services/database.service';
 import { AuthService } from '../../services/auth.service';
 import { FormPoliticoComponent } from '../../components/form-politico/form-politico.component';
+import { FormPartidoComponent } from '../../components/form-partido/form-partido.component';
+import { FormCandidatoComponent } from '../../components/form-candidato/form-candidato.component';
 import { addIcons } from 'ionicons';
-import { logOutOutline, add, pencil, trash } from 'ionicons/icons';
+import {
+  logOutOutline, add, pencil, peopleOutline,
+  flagOutline, personOutline,
+} from 'ionicons/icons';
 import { Router } from '@angular/router';
 
 addIcons({
-  'log-out-outline': logOutOutline,
-  'add': add,
-  'pencil': pencil,
-  'trash': trash,
+  'log-out-outline': logOutOutline, 'add': add, 'pencil': pencil,
+  'people-outline': peopleOutline, 'flag-outline': flagOutline,
+  'person-outline': personOutline,
 });
 
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonButton,
-    IonIcon,
-    IonList,
-    IonListHeader,
-    IonLabel,
-    IonItem,
-    IonItemSliding,
-    IonItemOptions,
-    IonItemOption,
-    IonSpinner,
-    IonAvatar,
-    IonFab,
-    IonFabButton,
-    IonButtons,
+    CommonModule, FormsModule,
+    IonHeader, IonToolbar, IonTitle, IonContent,
+    IonButton, IonIcon, IonList, IonListHeader,
+    IonLabel, IonItem, IonSpinner, IonAvatar,
+    IonFab, IonFabButton, IonButtons, IonSegment,
+    IonSegmentButton, IonBadge,
   ],
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
 })
 export class AdminPage implements OnInit {
-  politicos: Politico[] = [];
+  seccion: 'politicos' | 'partidos' | 'candidatos' = 'politicos';
+
+  politicos: PoliticoConCargo[] = [];
+  partidos: Partido[] = [];
+  candidatos: Candidato[] = [];
   loading = false;
 
   constructor(
@@ -80,101 +59,139 @@ export class AdminPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.cargarPoliticos();
+    await this.cargarTodo();
   }
 
-  async cargarPoliticos() {
+  async cargarTodo() {
     this.loading = true;
-    this.politicos = await this.dbService.obtenerTodosPoliticos();
+    [this.politicos, this.partidos, this.candidatos] = await Promise.all([
+      this.dbService.obtenerPoliticosConDetalle(),
+      this.dbService.obtenerPartidos(),
+      this.dbService.obtenerCandidatos(),
+    ]);
     this.loading = false;
   }
 
-  async abrirFormulario(politico?: Politico) {
+  // ── POLÍTICOS ───────────────────────────────────────
+
+  async abrirFormPolitico(politico?: PoliticoConCargo) {
+    const politicoBase = politico ? await this.dbService.obtenerPoliticoPorId(politico.id) : null;
     const modal = await this.modalController.create({
       component: FormPoliticoComponent,
-      componentProps: { politico: politico || null },
+      componentProps: { politico: politicoBase },
       breakpoints: [0, 0.5, 1],
       initialBreakpoint: 1,
     });
-
     await modal.present();
     const { data } = await modal.onDidDismiss();
-
     if (!data) return;
 
     if (data.action === 'eliminar') {
-      const success = await this.dbService.eliminarPolitico(data.data.id!);
-      if (success) await this.mostrarToast('Político eliminado correctamente', 'success');
+      await this.dbService.eliminarPolitico(politico!.id);
+      await this.mostrarToast('Político eliminado', 'success');
     } else if (data.action === 'guardar') {
+      const { cargo_id, entidad_id, fecha_inicio_cargo, ...politicoData } = data.data;
       if (politico) {
-        const success = await this.dbService.actualizarPolitico(politico.id!, data.data);
-        if (success) await this.mostrarToast('Político actualizado correctamente', 'success');
+        await this.dbService.actualizarPolitico(politico.id, politicoData);
+        if (cargo_id) {
+          await this.dbService.actualizarOAsignarCargo({
+            politico_id: politico.id, cargo_id,
+            entidad_id: entidad_id || undefined,
+            fecha_inicio: fecha_inicio_cargo || new Date().toISOString().split('T')[0],
+            es_actual: true,
+          });
+        }
+        await this.mostrarToast('Político actualizado', 'success');
       } else {
-        const id = await this.dbService.crearPolitico(data.data);
-        if (id) await this.mostrarToast('Político creado correctamente', 'success');
+        const id = await this.dbService.crearPolitico(politicoData);
+        if (id && cargo_id) {
+          await this.dbService.actualizarOAsignarCargo({
+            politico_id: id, cargo_id,
+            entidad_id: entidad_id || undefined,
+            fecha_inicio: fecha_inicio_cargo || new Date().toISOString().split('T')[0],
+            es_actual: true,
+          });
+        }
+        if (id) await this.mostrarToast('Político creado', 'success');
       }
     }
-
-    await this.cargarPoliticos();
+    this.politicos = await this.dbService.obtenerPoliticosConDetalle();
   }
 
-  async eliminarPolitico(id: number) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar eliminación',
-      message: '¿Deseas eliminar este político?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Eliminar',
-          role: 'destructive',
-          handler: async () => {
-            const success = await this.dbService.eliminarPolitico(id);
-            if (success) {
-              await this.mostrarToast('Político eliminado correctamente', 'success');
-              await this.cargarPoliticos();
-            }
-          },
-        },
-      ],
+  // ── PARTIDOS ────────────────────────────────────────
+
+  async abrirFormPartido(partido?: Partido) {
+    const modal = await this.modalController.create({
+      component: FormPartidoComponent,
+      componentProps: { partido: partido || null },
+      breakpoints: [0, 0.5, 1],
+      initialBreakpoint: 1,
     });
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (!data) return;
 
-    await alert.present();
+    if (data.action === 'eliminar') {
+      await this.dbService.eliminarPartido(partido!.id);
+      await this.mostrarToast('Partido eliminado', 'success');
+    } else if (data.action === 'guardar') {
+      if (partido) {
+        await this.dbService.actualizarPartido(partido.id, data.data);
+        await this.mostrarToast('Partido actualizado', 'success');
+      } else {
+        const id = await this.dbService.crearPartido(data.data);
+        if (id) await this.mostrarToast('Partido creado', 'success');
+      }
+    }
+    this.partidos = await this.dbService.obtenerPartidos();
   }
+
+  // ── CANDIDATOS ──────────────────────────────────────
+
+  async abrirFormCandidato(candidato?: Candidato) {
+    const modal = await this.modalController.create({
+      component: FormCandidatoComponent,
+      componentProps: { candidato: candidato || null },
+      breakpoints: [0, 0.5, 1],
+      initialBreakpoint: 1,
+    });
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (!data) return;
+
+    if (data.action === 'eliminar') {
+      await this.dbService.eliminarCandidato(candidato!.id);
+      await this.mostrarToast('Candidato eliminado', 'success');
+    } else if (data.action === 'guardar') {
+      if (candidato) {
+        await this.dbService.actualizarCandidato(candidato.id, data.data);
+        await this.mostrarToast('Candidato actualizado', 'success');
+      } else {
+        const id = await this.dbService.crearCandidato(data.data);
+        if (id) await this.mostrarToast('Candidato creado', 'success');
+      }
+    }
+    this.candidatos = await this.dbService.obtenerCandidatos();
+  }
+
+  // ── LOGOUT ──────────────────────────────────────────
 
   async logout() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',
       message: '¿Deseas cerrar sesión?',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Salir',
-          role: 'destructive',
-          handler: () => {
-            this.authService.logout();
-            this.router.navigate(['/home']);
-          },
-        },
+        { text: 'Cancelar', role: 'cancel' },
+        { text: 'Salir', role: 'destructive',
+          handler: () => { this.authService.logout(); this.router.navigate(['/home']); } },
       ],
     });
     await alert.present();
   }
 
-  private async mostrarToast(
-    mensaje: string,
-    color: 'success' | 'warning' | 'danger' = 'danger'
-  ) {
+  private async mostrarToast(mensaje: string, color: 'success' | 'warning' | 'danger' = 'danger') {
     const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000,
-      position: 'bottom',
-      color: color,
+      message: mensaje, duration: 2000, position: 'bottom', color,
     });
     await toast.present();
   }

@@ -1,0 +1,29 @@
+@use '../../../theme/variables.scss' as *;
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: $text-light;
+  margin: $spacing-lg 0 $spacing-sm;
+  padding-left: 4px;
+}
+
+.form-item {
+  margin-bottom: $spacing-md;
+  --border-radius: #{$radius-md};
+}
+
+.toggle-item {
+  --padding-start: 0;
+  margin-bottom: $spacing-md;
+}
+
+.buttons-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  margin-top: $spacing-lg;
+  padding-bottom: $spacing-xl;
+}

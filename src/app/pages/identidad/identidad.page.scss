@@ -1,0 +1,684 @@
+// ═══════════════════════════════════════════
+// IDENTIDAD CORPORATIVA — InformApp
+// ═══════════════════════════════════════════
+
+// ── Imports
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap');
+
+// ── Variables locales (usa las del theme global)
+$azul:   var(--color-azul);
+$rojo:   var(--color-rojo);
+$oro:    var(--color-oro);
+$blanco: var(--color-blanco);
+$gris:   var(--color-gris);
+
+
+// ══════════════════════════════════════════
+// TOOLBAR
+// ══════════════════════════════════════════
+.toolbar-title {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.1em;
+  font-size: 1.4rem;
+}
+
+.wordmark { color: #fff; }
+.wordmark-app { color: var(--color-rojo); }
+
+.tabs-toolbar {
+  --min-height: 44px;
+}
+
+.custom-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 8px;
+  gap: 4px;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.tab-btn {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.78rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &.active {
+    background: var(--color-rojo);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  &:not(.active):hover {
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+
+// ══════════════════════════════════════════
+// CONTENT BASE
+// ══════════════════════════════════════════
+.identidad-content {
+  --background: var(--color-blanco);
+}
+
+.tab-panel {
+  padding-bottom: 40px;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+// ══════════════════════════════════════════
+// SECCIÓN GENÉRICA
+// ══════════════════════════════════════════
+.section-block {
+  padding: 24px 20px 8px;
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-rojo);
+  margin: 0 0 6px;
+
+  &.light { color: rgba(255,255,255,0.6); }
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--color-azul);
+  margin: 0 0 16px;
+
+  &.light { color: #fff; }
+}
+
+
+// ══════════════════════════════════════════
+// TAB 1 — MARCA / HERO
+// ══════════════════════════════════════════
+.hero-section {
+  position: relative;
+  background: var(--color-azul);
+  min-height: 300px;
+  padding: 32px 20px 24px;
+  overflow: hidden;
+}
+
+.hero-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.04) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.04) 40px);
+  pointer-events: none;
+}
+
+.hero-accent-bar {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 6px;
+  background: var(--color-rojo);
+}
+
+.hero-accent-bar-gold {
+  position: absolute;
+  left: 6px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--color-oro);
+}
+
+.hero-body {
+  position: relative;
+  z-index: 1;
+  padding-left: 12px;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-oro);
+  margin: 0 0 8px;
+}
+
+.hero-wordmark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 18vw, 5rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: #fff;
+  margin: 0;
+}
+
+.hero-wordmark-red { color: var(--color-rojo); }
+
+.hero-eslogan {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-oro);
+  margin: 6px 0 12px;
+}
+
+.hero-desc {
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-gris);
+  max-width: 320px;
+  margin: 0;
+}
+
+.hero-chips {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  padding-left: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--color-gris);
+  border-radius: 2px;
+}
+
+// Wordmark variants
+.variant-card {
+  margin: 12px 20px;
+  padding: 28px 20px 20px;
+  border-radius: var(--radius-md);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+
+  &.bg-light { background: var(--color-blanco); border: 1px solid var(--border-color, #e0e0e0); }
+  &.bg-dark   { background: var(--color-azul); }
+  &.bg-carbon { background: var(--color-carbon); }
+}
+
+.wm-light {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  color: var(--color-azul);
+}
+
+.wm-dark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+}
+
+.wm-red { color: var(--color-rojo); }
+
+.wm-eslogan-light {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0;
+}
+
+.wm-eslogan-dark {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  margin: 0;
+}
+
+.variant-tag {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #aaa;
+
+  &.tag-dark { color: rgba(255,255,255,0.3); }
+}
+
+// Eslogan block
+.eslogan-block {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--color-azul);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-top: 8px;
+}
+
+.eslogan-bar {
+  flex-shrink: 0;
+  width: 4px;
+  background: var(--color-rojo);
+  border-radius: 2px;
+  align-self: stretch;
+}
+
+.eslogan-main {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--color-oro);
+  margin: 0 0 8px;
+}
+
+.eslogan-sub {
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--color-gris);
+  margin: 0;
+}
+
+
+// ══════════════════════════════════════════
+// TAB 2 — MISIÓN / VISIÓN / PROPÓSITO
+// ══════════════════════════════════════════
+.mvv-hero {
+  background: var(--color-azul);
+  padding: 32px 20px 24px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--color-rojo);
+  }
+}
+
+.mvv-card-wrapper {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mvv-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.mvv-card-top {
+  height: 4px;
+  width: 100%;
+}
+
+.mvv-tag {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 14px 16px 4px;
+}
+
+.mvv-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  color: var(--color-azul);
+  margin: 0;
+  padding: 0 16px 8px;
+}
+
+.mvv-card-body {
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #555;
+  padding: 0 16px 20px;
+  margin: 0;
+}
+
+
+// ══════════════════════════════════════════
+// TAB 3 — COLORES
+// ══════════════════════════════════════════
+.color-grid {
+  padding: 0 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.color-card {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.color-swatch {
+  width: 72px;
+  flex-shrink: 0;
+
+  &.swatch-border {
+    border-right: 1px solid var(--border-color, #e0e0e0);
+  }
+}
+
+.color-info {
+  padding: 12px 14px;
+  flex: 1;
+}
+
+.color-name {
+  font-family: Georgia, serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: var(--color-azul);
+  margin: 0 0 2px;
+}
+
+.color-role {
+  font-size: 0.72rem;
+  color: #888;
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.color-hex {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--color-carbon);
+  margin: 0;
+  font-weight: 500;
+}
+
+.color-var {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--color-rojo);
+  margin: 2px 0 0;
+}
+
+// Combinaciones
+.combo-row {
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  margin-top: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  box-shadow: var(--shadow-sm);
+
+  &.combo-1 {
+    background: var(--color-azul);
+    color: var(--color-blanco);
+  }
+  &.combo-2 {
+    background: var(--color-azul);
+    color: var(--color-oro);
+  }
+  &.combo-3 {
+    background: var(--color-carbon);
+    color: var(--color-rojo);
+  }
+  &.combo-4 {
+    background: var(--color-blanco);
+    color: var(--color-rojo);
+    border: 1px solid var(--border-color, #e0e0e0);
+  }
+}
+
+
+// ══════════════════════════════════════════
+// TAB 4 — TIPOGRAFÍA
+// ══════════════════════════════════════════
+.tipo-card {
+  margin: 0 16px 16px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+}
+
+.tipo-label-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.tipo-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.tipo-font-name {
+  font-size: 0.8rem;
+  color: #888;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+.tipo-sample {
+  margin: 0 0 12px;
+  line-height: 1.1;
+}
+
+.tipo-display {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8rem;
+  letter-spacing: 0.1em;
+  color: var(--color-azul);
+}
+
+.tipo-body {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--color-gris);
+}
+
+.tipo-mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-oro);
+}
+
+.tipo-meta {
+  font-size: 0.75rem;
+  color: #999;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-light, #f0f0f0);
+}
+
+.tipo-usage {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.usage-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--color-azul);
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+// Jerarquía demo
+.hierarchy-demo {
+  background: var(--color-azul);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hier-display {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.08em;
+  color: #fff;
+  margin: 0;
+  line-height: 1;
+}
+
+.hier-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  color: var(--color-oro);
+  margin: 0;
+}
+
+.hier-h2 {
+  font-family: Georgia, serif;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #fff;
+  margin: 0;
+}
+
+.hier-body {
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--color-gris);
+  margin: 4px 0;
+}
+
+.hier-mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-oro);
+  opacity: 0.7;
+  margin: 0;
+}
+
+
+// ══════════════════════════════════════════
+// TAB 5 — PILARES
+// ══════════════════════════════════════════
+.pilares-list {
+  padding: 20px 20px 0;
+}
+
+.pilar-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 8px 0;
+  transition: padding-left 0.2s ease;
+
+  &:active { padding-left: 4px; }
+}
+
+.pilar-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8rem;
+  color: var(--color-rojo);
+  opacity: 0.3;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 48px;
+  text-align: center;
+}
+
+.pilar-body {
+  flex: 1;
+  padding-top: 4px;
+}
+
+.pilar-title {
+  font-family: Georgia, serif;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--color-azul);
+  margin: 0 0 6px;
+}
+
+.pilar-desc {
+  font-family: Georgia, serif;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: #666;
+  margin: 0;
+}
+
+.pilar-divider {
+  height: 1px;
+  background: var(--border-light, #f0f0f0);
+  margin: 16px 0 16px 64px;
+}
+
+// Footer tag
+.footer-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 32px 20px 8px;
+  padding: 16px;
+  background: var(--color-azul);
+  border-radius: var(--radius-md);
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--color-oro);
+}
+
+ion-button[slot='fixed'] {
+  top: 90%;
+  right: 20px;
+}

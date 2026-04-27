@@ -1,0 +1,210 @@
+@use '../../../theme/variables.scss' as *;
+
+// ── RELOJ ─────────────────────────────────────────────
+.countdown-wrapper {
+  background: linear-gradient(160deg, $primary-dark, $primary-mid);
+  padding: $spacing-xl $spacing-md;
+  text-align: center;
+  border-radius: 0 0 32px 32px;
+  box-shadow: $shadow-lg;
+}
+
+.countdown-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: $tertiary;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 4px;
+
+  ion-icon { font-size: 15px; }
+}
+
+.countdown-fecha {
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  margin: 0 0 $spacing-lg;
+}
+
+.clock {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.clock-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 72px;
+}
+
+.clock-num {
+  font-size: 56px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+
+  &.seg { color: $tertiary; }
+}
+
+.clock-tag {
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.clock-sep {
+  font-size: 44px;
+  color: rgba(255,255,255,0.25);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 18px;
+  padding: 0 2px;
+}
+
+// ── CANDIDATOS ────────────────────────────────────────
+.candidatos {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  padding-top: $spacing-lg;
+}
+
+.candidato-card {
+  border-radius: $radius-xl;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  margin: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+// Cabecera coloreada con el color del partido
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+    pointer-events: none;
+  }
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  border: 3px solid rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.card-top-info {
+  flex: 1;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 8px;
+    line-height: 1.2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+}
+
+.partido-chip {
+  --background: rgba(255,255,255,0.2);
+  --color: white;
+  font-size: 11px;
+  height: 24px;
+  margin: 0;
+}
+
+// Contenido de la card
+ion-card-content {
+  padding: $spacing-lg !important;
+}
+
+.bio {
+  font-size: 14px;
+  color: $text-secondary;
+  line-height: 1.6;
+  margin: 0 0 $spacing-md;
+}
+
+.propuesta {
+  background: rgba(10, 35, 66, 0.04);
+  border-left: 4px solid $tertiary;
+  border-radius: 0 $radius-sm $radius-sm 0;
+  padding: $spacing-sm $spacing-md;
+  margin-bottom: $spacing-sm;
+
+  .propuesta-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: $text-light;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .propuesta-texto {
+    font-size: 13px;
+    color: $text-primary;
+    margin: 0;
+    line-height: 1.4;
+    font-style: italic;
+  }
+}
+
+.links {
+  display: flex;
+  gap: 4px;
+  margin-top: $spacing-sm;
+  ion-button { --color: #{$primary}; }
+}
+
+// ── NOTA ──────────────────────────────────────────────
+.nota {
+  font-size: 11px;
+  color: $text-light;
+  font-style: italic;
+  text-align: center;
+  padding-bottom: $spacing-xl;
+}

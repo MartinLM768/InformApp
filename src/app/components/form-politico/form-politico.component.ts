@@ -7,11 +7,30 @@ import {
   IonInput, IonSelect, IonSelectOption, IonTextarea, IonIcon,
   ModalController, AlertController,
 } from '@ionic/angular/standalone';
-import { Politico } from '../../services/database.service';
+import { DatabaseService, Politico, Cargo } from '../../services/database.service';
 import { addIcons } from 'ionicons';
 import { closeOutline, trashOutline } from 'ionicons/icons';
 
 addIcons({ 'close-outline': closeOutline, 'trash-outline': trashOutline });
+
+// Formulario plano para crear/editar — campos que realmente existen en la tabla politicos
+interface FormPolitico {
+  nombre: string;
+  apellido: string;
+  foto_url: string;
+  bio: string;
+  fecha_nacimiento: string;
+  lugar_nacimiento: string;
+  partido_id: string;
+  twitter_url: string;
+  instagram_url: string;
+  sitio_web: string;
+  activo: boolean;
+  // cargo se guarda en politicos_cargos, aquí lo usamos solo en el form
+  cargo_id: string;
+  entidad_id: string;
+  fecha_inicio_cargo: string;
+}
 
 @Component({
   selector: 'app-form-politico',
@@ -28,44 +47,71 @@ addIcons({ 'close-outline': closeOutline, 'trash-outline': trashOutline });
 export class FormPoliticoComponent implements OnInit {
   @Input() politico: Politico | null = null;
 
-  form: Politico = {
+  form: FormPolitico = {
     nombre: '',
     apellido: '',
-    cargo: '',
-    partido: '',
-    departamento: '',
     foto_url: '',
     bio: '',
-    email: '',
-    telefono: '',
-    fecha_inicio: '',
+    fecha_nacimiento: '',
+    lugar_nacimiento: '',
+    partido_id: '',
+    twitter_url: '',
+    instagram_url: '',
+    sitio_web: '',
+    activo: true,
+    cargo_id: '',
+    entidad_id: '',
+    fecha_inicio_cargo: '',
   };
 
-  cargos = ['Presidente', 'Vicepresidente', 'Senador', 'Representante'];
-  departamentos = [
-    'Amazonas', 'Antioquia', 'Arauca', 'Atlántico', 'Bolívar', 'Boyacá',
-    'Caldas', 'Caquetá', 'Casanare', 'Cauca', 'Cesar', 'Chocó', 'Córdoba',
-    'Cundinamarca', 'Guainía', 'Guaviare', 'Huila', 'La Guajira', 'Magdalena',
-    'Meta', 'Nariño', 'Norte de Santander', 'Putumayo', 'Quindío', 'Risaralda',
-    'Santander', 'Sucre', 'Tolima', 'Valle del Cauca', 'Vaupés', 'Vichada',
-    'Bogotá D.C.',
-  ];
+  cargos: Cargo[] = [];
+  partidos: { id: string; nombre: string }[] = [];
 
   constructor(
+    private dbService: DatabaseService,
     private modalController: ModalController,
     private alertController: AlertController,
-  ) {}
+  ) {
+    addIcons({ closeOutline, trashOutline });
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
+    // Cargar cargos y partidos desde Supabase en paralelo
+    [this.cargos, this.partidos] = await Promise.all([
+      this.dbService.obtenerCargos(),
+      this.dbService.obtenerPartidosSimple(),
+    ]);
+
     if (this.politico) {
-      this.form = { ...this.politico };
+      // Cargar cargo actual en paralelo con el resto
+      const cargoActual = await this.dbService.obtenerCargoActualDePolitico(this.politico.id);
+
+      this.form = {
+        nombre: this.politico.nombre,
+        apellido: this.politico.apellido,
+        foto_url: this.politico.foto_url || '',
+        bio: this.politico.bio || '',
+        fecha_nacimiento: this.politico.fecha_nacimiento || '',
+        lugar_nacimiento: this.politico.lugar_nacimiento || '',
+        partido_id: this.politico.partido_id || '',
+        twitter_url: this.politico.twitter_url || '',
+        instagram_url: this.politico.instagram_url || '',
+        sitio_web: this.politico.sitio_web || '',
+        activo: this.politico.activo,
+        // Poblar cargo actual si existe
+        cargo_id: cargoActual?.cargo_id || '',
+        entidad_id: cargoActual?.entidad_id || '',
+        fecha_inicio_cargo: cargoActual?.fecha_inicio || '',
+      };
     }
   }
 
   async guardar() {
-    if (this.validarFormulario()) {
-      await this.modalController.dismiss({ action: 'guardar', data: this.form });
+    if (!this.form.nombre || !this.form.apellido) {
+      alert('Nombre y apellido son obligatorios');
+      return;
     }
+    await this.modalController.dismiss({ action: 'guardar', data: this.form });
   }
 
   async cerrar() {
@@ -88,13 +134,5 @@ export class FormPoliticoComponent implements OnInit {
       ],
     });
     await alert.present();
-  }
-
-  private validarFormulario(): boolean {
-    if (!this.form.nombre || !this.form.apellido || !this.form.cargo || !this.form.partido) {
-      alert('Por favor completa nombre, apellido, cargo y partido');
-      return false;
-    }
-    return true;
   }
 }

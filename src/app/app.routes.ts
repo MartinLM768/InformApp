@@ -8,8 +8,9 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    // home ahora muestra la identidad corporativa
     path: 'home',
-    loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
+    loadComponent: () => import('./pages/identidad/identidad.page').then((m) => m.IdentidadPage),
   },
   {
     path: 'login',
@@ -19,5 +20,19 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () => import('./pages/admin/admin.page').then((m) => m.AdminPage),
     canActivate: [AdminGuard],
+  },
+  {
+    // políticos: lista con filtro inteligente (antes era home)
+    path: 'politicos',
+    loadComponent: () => import('./pages/politicos/politicos.page').then((m) => m.PoliticosPage),
+  },
+  {
+    // partidos: nueva pestaña
+    path: 'partidos',
+    loadComponent: () => import('./pages/partidos/partidos.page').then((m) => m.PartidosPage),
+  },
+  {
+    path: 'candidatos',
+    loadComponent: () => import('./pages/candidatos/candidatos.page').then((m) => m.CandidatosPage),
   },
 ];

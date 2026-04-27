@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Candidatos 2026</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/login" color="light">
+        <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- ── RELOJ ──────────────────────────────────────── -->
+  <div class="countdown-wrapper">
+    <p class="countdown-label">
+      <ion-icon name="time-outline"></ion-icon>
+      {{ eleccionesIniciadas ? '¡Las elecciones han comenzado!' : 'Tiempo restante para las elecciones' }}
+    </p>
+    <p class="countdown-fecha">31 de mayo de 2026 · 8:00 AM</p>
+
+    <div class="clock" *ngIf="!eleccionesIniciadas">
+      <div class="clock-cell">
+        <span class="clock-num">{{ pad(dias) }}</span>
+        <span class="clock-tag">días</span>
+      </div>
+      <span class="clock-sep">:</span>
+      <div class="clock-cell">
+        <span class="clock-num">{{ pad(horas) }}</span>
+        <span class="clock-tag">horas</span>
+      </div>
+      <span class="clock-sep">:</span>
+      <div class="clock-cell">
+        <span class="clock-num">{{ pad(minutos) }}</span>
+        <span class="clock-tag">min</span>
+      </div>
+      <span class="clock-sep">:</span>
+      <div class="clock-cell">
+        <span class="clock-num seg">{{ pad(segundos) }}</span>
+        <span class="clock-tag">seg</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+
+  <!-- ── CANDIDATOS ─────────────────────────────────── -->
+  <div class="candidatos ion-padding" *ngIf="!loading">
+    <ion-card *ngFor="let c of candidatos" class="candidato-card">
+
+      <!-- Cabecera coloreada -->
+      <div class="card-top" [style.background]="c.partido_color || '#0A2342'">
+
+        <!-- Fórmula: presidente + vicepresidente -->
+        <div class="formula">
+
+          <!-- Candidato presidencial -->
+          <div class="formula-persona">
+            <div class="avatar grande">
+              <img *ngIf="c.foto_url" [src]="c.foto_url" [alt]="c.nombre" />
+              <span *ngIf="!c.foto_url">{{ iniciales(c.nombre, c.apellido) }}</span>
+            </div>
+            <div class="formula-info">
+              <span class="formula-rol">Presidente</span>
+              <span class="formula-nombre">{{ c.nombre }} {{ c.apellido }}</span>
+            </div>
+          </div>
+
+          <!-- Divider si hay vice -->
+          <div class="formula-divider" *ngIf="c.vicepresidente_nombre">
+            <span>+</span>
+          </div>
+
+          <!-- Vicepresidente -->
+          <div class="formula-persona" *ngIf="c.vicepresidente_nombre">
+            <div class="avatar chico">
+              <img *ngIf="c.foto_vicepresidente_url" [src]="c.foto_vicepresidente_url" [alt]="c.vicepresidente_nombre" />
+              <span *ngIf="!c.foto_vicepresidente_url">{{ iniciales(c.vicepresidente_nombre, c.vicepresidente_apellido) }}</span>
+            </div>
+            <div class="formula-info">
+              <span class="formula-rol">Vicepresidente/a</span>
+              <span class="formula-nombre">{{ c.vicepresidente_nombre }} {{ c.vicepresidente_apellido }}</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Partido -->
+        <ion-chip class="partido-chip" *ngIf="c.partido_nombre">
+          <ion-label>{{ c.partido_siglas }} · {{ c.partido_nombre }}</ion-label>
+        </ion-chip>
+        <ion-chip class="partido-chip" *ngIf="!c.partido_nombre">
+          <ion-label>Independiente</ion-label>
+        </ion-chip>
+
+      </div>
+
+      <ion-card-content>
+        <p class="bio" *ngIf="c.bio">{{ c.bio }}</p>
+
+        <div class="propuesta" *ngIf="c.propuesta_clave">
+          <span class="propuesta-label">Propuesta clave</span>
+          <p class="propuesta-texto">{{ c.propuesta_clave }}</p>
+        </div>
+
+        <div class="links" *ngIf="c.sitio_web || c.twitter_url || c.instagram_url">
+          <ion-button fill="clear" size="small" *ngIf="c.sitio_web" (click)="abrirUrl(c.sitio_web)">
+            <ion-icon name="globe-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" *ngIf="c.twitter_url" (click)="abrirUrl(c.twitter_url)">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" *ngIf="c.instagram_url" (click)="abrirUrl(c.instagram_url)">
+            <ion-icon name="logo-instagram"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+
+    <!-- Empty state -->
+    <div *ngIf="candidatos.length === 0" class="empty ion-text-center">
+      <p>No hay candidatos registrados aún.</p>
+    </div>
+  </div>
+
+  <p class="nota ion-padding">* Lista sujeta a actualización conforme se oficialicen inscripciones ante el CNE.</p>
+
+</ion-content>
