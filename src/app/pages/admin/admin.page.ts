@@ -187,7 +187,12 @@ export class AdminPage implements OnInit {
             es_actual: true,
           });
         }
-        if (id) await this.mostrarToast('Político creado', 'success');
+        if (id) {
+          await this.mostrarToast('Político creado', 'success');
+        } else {
+          await this.mostrarToast('Error al crear el político', 'danger');
+          return;
+        }
       }
     }
     this.politicos = await this.dbService.obtenerPoliticosConDetalle();

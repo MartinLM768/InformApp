@@ -252,9 +252,21 @@ export class DatabaseService {
   // ─────────────────────────────────────────────
 
   async crearPolitico(politico: Omit<Politico, 'id' | 'created_at' | 'updated_at'>): Promise<string | null> {
+    // Convertir strings vacíos a null (igual que actualizarPolitico)
+    const camposLimpios: any = {};
+    for (const [key, value] of Object.entries(politico)) {
+      if (value === '' || value === undefined) {
+        camposLimpios[key] = null;
+      } else {
+        camposLimpios[key] = value;
+      }
+    }
+
+    console.log('[DB] Creando político', camposLimpios);
+
     const { data, error } = await this.supabaseAdmin
       .from('politicos')
-      .insert(politico)
+      .insert(camposLimpios)
       .select('id')
       .single();
 
