@@ -8,6 +8,7 @@ import {
   IonFab, IonFabButton, IonButtons, IonSegment,
   IonSegmentButton, IonBadge, IonSearchbar, IonChip,
   ModalController, ToastController, AlertController, ActionSheetController,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
 import { DatabaseService, PoliticoConCargo, Partido, Candidato, Cargo } from '../../services/database.service';
 import { AuthService } from '../../services/auth.service';
@@ -37,7 +38,7 @@ addIcons({
     IonButton, IonIcon, IonList, IonListHeader,
     IonLabel, IonItem, IonSpinner, IonAvatar,
     IonFab, IonFabButton, IonButtons, IonSegment,
-    IonSegmentButton, IonBadge, IonSearchbar, IonChip,
+    IonSegmentButton, IonBadge, IonSearchbar, IonChip, IonMenuButton,
   ],
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],

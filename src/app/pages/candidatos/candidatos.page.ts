@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardContent, IonIcon, IonChip, IonLabel,
-  IonButtons, IonButton, IonSpinner, IonSearchbar,
+  IonButtons, IonButton, IonSpinner, IonSearchbar, IonMenuButton,
 } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -20,7 +20,7 @@ addIcons({ 'time-outline': timeOutline, 'globe-outline': globeOutline, 'logo-twi
     CommonModule, FormsModule, RouterModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonCard, IonCardContent, IonIcon, IonChip, IonLabel,
-    IonButtons, IonButton, IonSpinner, IonSearchbar,
+    IonButtons, IonButton, IonSpinner, IonSearchbar, IonMenuButton,
   ],
   templateUrl: './candidatos.page.html',
   styleUrls: ['./candidatos.page.scss'],

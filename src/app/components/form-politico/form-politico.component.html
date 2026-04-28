@@ -33,6 +33,7 @@
   <ion-item fill="outline" class="ion-margin-bottom form-item">
     <ion-label position="stacked">Partido</ion-label>
     <ion-select [(ngModel)]="form.partido_id" placeholder="Selecciona un partido">
+      <ion-select-option [value]="null">— Sin partido —</ion-select-option>
       <ion-select-option *ngFor="let partido of partidos" [value]="partido.id">
         {{ partido.nombre }}
       </ion-select-option>

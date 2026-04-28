@@ -17,6 +17,7 @@ import {
   IonBadge,
   IonChip,
   IonSearchbar,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
@@ -67,6 +68,7 @@ export interface Partido {
     IonBadge,
     IonChip,
     IonSearchbar,
+    IonMenuButton,
   ],
   templateUrl: './partidos.page.html',
   styleUrls: ['./partidos.page.scss'],

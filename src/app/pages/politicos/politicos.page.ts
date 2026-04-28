@@ -5,7 +5,7 @@ import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardHeader, IonCardContent,
   IonButton, IonIcon, IonAvatar, IonSpinner,
-  IonButtons, IonChip, IonSearchbar,
+  IonButtons, IonChip, IonSearchbar, IonMenuButton,
   ActionSheetController, ModalController,
 } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
@@ -24,7 +24,7 @@ addIcons({ 'settings-outline': settingsOutline, 'eye-outline': eyeOutline, 'filt
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonCard, IonCardHeader, IonCardContent,
     IonButton, IonIcon, IonAvatar, IonSpinner,
-    IonButtons, IonChip, IonSearchbar,
+    IonButtons, IonChip, IonSearchbar, IonMenuButton,
   ],
   templateUrl: './politicos.page.html',
   styleUrls: ['./politicos.page.scss'],
@@ -109,8 +109,8 @@ export class PoliticosPage implements OnInit {
     const modal = await this.modalController.create({
       component: DetallePoliticoComponent,
       componentProps: { politico },
-      breakpoints: [0, 0.5, 1],
-      initialBreakpoint: 0.9,
+      breakpoints: [0, 1],
+      initialBreakpoint: 1,
     });
     await modal.present();
   }
