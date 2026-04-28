@@ -48,6 +48,12 @@ export interface PoliticoConCargo {
   apellido: string;
   foto_url?: string;
   bio?: string;
+  fecha_nacimiento?: string;
+  lugar_nacimiento?: string;
+  sitio_web?: string;
+  twitter_url?: string;
+  instagram_url?: string;
+  partido_id?: string;
   partido_nombre?: string;
   partido_color?: string;
   cargo_nombre?: string;
@@ -120,7 +126,13 @@ export class DatabaseService {
         apellido,
         foto_url,
         bio,
+        fecha_nacimiento,
+        lugar_nacimiento,
+        sitio_web,
+        twitter_url,
+        instagram_url,
         activo,
+        partido_id,
         partidos!politicos_partido_id_fkey (
           nombre,
           color_hex
@@ -158,6 +170,12 @@ export class DatabaseService {
         apellido: p.apellido,
         foto_url: p.foto_url,
         bio: p.bio,
+        fecha_nacimiento: p.fecha_nacimiento,
+        lugar_nacimiento: p.lugar_nacimiento,
+        sitio_web: p.sitio_web,
+        twitter_url: p.twitter_url,
+        instagram_url: p.instagram_url,
+        partido_id: p.partido_id,
         partido_nombre: p.partidos?.nombre,
         partido_color: p.partidos?.color_hex,
         cargo_nombre: cargoActual?.cargos?.nombre,

@@ -76,6 +76,17 @@
           Sitio web
         </ion-button>
 
+        <ion-button
+          expand="block"
+          fill="solid"
+          color="primary"
+          [routerLink]="['/politicos']"
+          [queryParams]="{ partido_id: partido.id, partido_nombre: partido.nombre }"
+        >
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          Ver políticos
+        </ion-button>
+
         <ion-badge color="medium" *ngIf="!partido.activo" class="inactivo-badge">
           Inactivo
         </ion-badge>

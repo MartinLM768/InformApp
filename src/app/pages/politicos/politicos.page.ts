@@ -8,7 +8,7 @@ import {
   IonButtons, IonChip, IonSearchbar, IonMenuButton,
   ActionSheetController, ModalController,
 } from '@ionic/angular/standalone';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { DatabaseService, PoliticoConCargo, Cargo } from '../../services/database.service';
 import { DetallePoliticoComponent } from '../../components/detalle-politico/detalle-politico.component';
 import { addIcons } from 'ionicons';
@@ -34,6 +34,7 @@ export class PoliticosPage implements OnInit {
   politicosFiltrados: PoliticoConCargo[] = [];
   cargos: Cargo[] = [];
   cargoSeleccionado: Cargo | null = null;
+  partidoFiltro: { id: string; nombre: string } | null = null;
   textoBusqueda: string = '';
   loading = false;
 
@@ -41,10 +42,16 @@ export class PoliticosPage implements OnInit {
     private dbService: DatabaseService,
     private actionSheetCtrl: ActionSheetController,
     private modalController: ModalController,
+    private route: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
     await this.cargarDatos();
+    const params = this.route.snapshot.queryParams;
+    if (params['partido_id'] && params['partido_nombre']) {
+      this.partidoFiltro = { id: params['partido_id'], nombre: params['partido_nombre'] };
+      this.aplicarFiltros();
+    }
   }
 
   async cargarDatos() {
@@ -61,9 +68,13 @@ export class PoliticosPage implements OnInit {
 
   aplicarFiltros() {
     const texto = (this.textoBusqueda || '').toLowerCase().trim();
-    let base = this.cargoSeleccionado
-      ? this.politicos.filter(p => p.cargo_nombre === this.cargoSeleccionado!.nombre)
-      : [...this.politicos];
+    let base = [...this.politicos];
+    if (this.cargoSeleccionado) {
+      base = base.filter(p => p.cargo_nombre === this.cargoSeleccionado!.nombre);
+    }
+    if (this.partidoFiltro) {
+      base = base.filter(p => p.partido_id === this.partidoFiltro!.id);
+    }
     if (texto) {
       base = base.filter(p =>
         `${p.nombre} ${p.apellido}`.toLowerCase().includes(texto) ||
@@ -72,6 +83,11 @@ export class PoliticosPage implements OnInit {
       );
     }
     this.politicosFiltrados = base;
+  }
+
+  limpiarFiltroPartido() {
+    this.partidoFiltro = null;
+    this.aplicarFiltros();
   }
 
   async abrirFiltro() {

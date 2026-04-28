@@ -39,6 +39,16 @@
       {{ cargoSeleccionado.nombre }}
       <ion-icon name="close-circle-outline"></ion-icon>
     </ion-chip>
+
+    <ion-chip
+      *ngIf="partidoFiltro"
+      color="secondary"
+      class="active-filter"
+      (click)="limpiarFiltroPartido()"
+    >
+      {{ partidoFiltro.nombre }}
+      <ion-icon name="close-circle-outline"></ion-icon>
+    </ion-chip>
   </div>
 
   <!-- Contador -->
