@@ -104,7 +104,12 @@ export class DatabaseService {
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
     this.supabaseAdmin = createClient(environment.supabaseUrl, environment.supabaseServiceKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+        storageKey: 'supabase-admin-key',
+      },
       global: { headers: { Authorization: `Bearer ${environment.supabaseServiceKey}` } },
     });
   }
