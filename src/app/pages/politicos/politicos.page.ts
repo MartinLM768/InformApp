@@ -5,10 +5,10 @@ import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardHeader, IonCardContent,
   IonButton, IonIcon, IonAvatar, IonSpinner,
-  IonButtons, IonChip,
+  IonButtons, IonChip, IonSearchbar, IonMenuButton,
   ActionSheetController, ModalController,
 } from '@ionic/angular/standalone';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { DatabaseService, PoliticoConCargo, Cargo } from '../../services/database.service';
 import { DetallePoliticoComponent } from '../../components/detalle-politico/detalle-politico.component';
 import { addIcons } from 'ionicons';
@@ -24,7 +24,7 @@ addIcons({ 'settings-outline': settingsOutline, 'eye-outline': eyeOutline, 'filt
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonCard, IonCardHeader, IonCardContent,
     IonButton, IonIcon, IonAvatar, IonSpinner,
-    IonButtons, IonChip,
+    IonButtons, IonChip, IonSearchbar, IonMenuButton,
   ],
   templateUrl: './politicos.page.html',
   styleUrls: ['./politicos.page.scss'],
@@ -34,16 +34,24 @@ export class PoliticosPage implements OnInit {
   politicosFiltrados: PoliticoConCargo[] = [];
   cargos: Cargo[] = [];
   cargoSeleccionado: Cargo | null = null;
+  partidoFiltro: { id: string; nombre: string } | null = null;
+  textoBusqueda: string = '';
   loading = false;
 
   constructor(
     private dbService: DatabaseService,
     private actionSheetCtrl: ActionSheetController,
     private modalController: ModalController,
+    private route: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
     await this.cargarDatos();
+    const params = this.route.snapshot.queryParams;
+    if (params['partido_id'] && params['partido_nombre']) {
+      this.partidoFiltro = { id: params['partido_id'], nombre: params['partido_nombre'] };
+      this.aplicarFiltros();
+    }
   }
 
   async cargarDatos() {
@@ -58,20 +66,44 @@ export class PoliticosPage implements OnInit {
     this.loading = false;
   }
 
+  aplicarFiltros() {
+    const texto = (this.textoBusqueda || '').toLowerCase().trim();
+    let base = [...this.politicos];
+    if (this.cargoSeleccionado) {
+      base = base.filter(p => p.cargo_nombre === this.cargoSeleccionado!.nombre);
+    }
+    if (this.partidoFiltro) {
+      base = base.filter(p => p.partido_id === this.partidoFiltro!.id);
+    }
+    if (texto) {
+      base = base.filter(p =>
+        `${p.nombre} ${p.apellido}`.toLowerCase().includes(texto) ||
+        (p.partido_nombre || '').toLowerCase().includes(texto) ||
+        (p.entidad_nombre || '').toLowerCase().includes(texto)
+      );
+    }
+    this.politicosFiltrados = base;
+  }
+
+  limpiarFiltroPartido() {
+    this.partidoFiltro = null;
+    this.aplicarFiltros();
+  }
+
   async abrirFiltro() {
     const buttons = [
       {
         text: 'Todos los cargos',
         handler: () => {
           this.cargoSeleccionado = null;
-          this.politicosFiltrados = [...this.politicos];
+          this.aplicarFiltros();
         },
       },
       ...this.cargos.map((cargo) => ({
         text: cargo.nombre,
         handler: () => {
           this.cargoSeleccionado = cargo;
-          this.politicosFiltrados = this.politicos.filter((p) => p.cargo_nombre === cargo.nombre);
+          this.aplicarFiltros();
         },
       })),
       { text: 'Cancelar', role: 'cancel' },
@@ -86,15 +118,15 @@ export class PoliticosPage implements OnInit {
 
   limpiarFiltro() {
     this.cargoSeleccionado = null;
-    this.politicosFiltrados = [...this.politicos];
+    this.aplicarFiltros();
   }
 
   async abrirDetalle(politico: PoliticoConCargo) {
     const modal = await this.modalController.create({
       component: DetallePoliticoComponent,
       componentProps: { politico },
-      breakpoints: [0, 0.5, 1],
-      initialBreakpoint: 0.9,
+      breakpoints: [0, 1],
+      initialBreakpoint: 1,
     });
     await modal.present();
   }

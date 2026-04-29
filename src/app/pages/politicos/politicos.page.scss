@@ -9,12 +9,32 @@
   border-radius: 0 0 16px 16px;
   box-shadow: $shadow-md;
 
-  .filter-btn {
-    --border-color: rgba(255, 255, 255, 0.5);
-    --color: white;
-    --background: rgba(255, 255, 255, 0.1);
-    font-weight: 600;
-    font-size: 14px;
+  .search-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    ion-searchbar {
+      flex: 1;
+      --background: rgba(255, 255, 255, 0.15);
+      --color: white;
+      --placeholder-color: rgba(255, 255, 255, 0.65);
+      --icon-color: rgba(255, 255, 255, 0.7);
+      --clear-button-color: rgba(255, 255, 255, 0.7);
+      --border-radius: 10px;
+      padding: 0;
+      min-height: 40px;
+    }
+
+    .filter-btn-icon {
+      --border-color: rgba(255, 255, 255, 0.5);
+      --color: white;
+      --background: rgba(255, 255, 255, 0.1);
+      --border-radius: 10px;
+      flex-shrink: 0;
+      height: 40px;
+      width: 44px;
+    }
   }
 
   .active-filter {

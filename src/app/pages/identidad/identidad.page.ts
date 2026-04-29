@@ -13,9 +13,8 @@ import {
   IonLabel,
   IonList,
   IonItem,
+  IonMenuButton,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { ellipsisVerticalOutline } from 'ionicons/icons';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -37,6 +36,7 @@ import { RouterLink } from '@angular/router';
     IonLabel,
     IonList,
     IonItem,
+    IonMenuButton,
     RouterLink,
   ]
 })
@@ -44,9 +44,7 @@ export class IdentidadPage implements OnInit {
 
   activeTab = 'marca';
 
-  constructor() {
-    addIcons({ ellipsisVerticalOutline });
-  }
+  constructor() {}
 
   ngOnInit() {}
 }

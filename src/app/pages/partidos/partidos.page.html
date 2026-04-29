@@ -1,29 +1,40 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Partidos</ion-title>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/login" color="light">
-        <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
-      </ion-button>
+    <ion-buttons slot="start">
+      <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
+    <ion-title>Partidos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
+  <!-- Barra de búsqueda -->
+  <div class="search-bar ion-padding">
+    <ion-searchbar
+      [(ngModel)]="textoBusqueda"
+      (ionInput)="filtrarPartidos()"
+      placeholder="Buscar partido..."
+      debounce="200"
+    ></ion-searchbar>
+  </div>
+
+  <!-- Contador -->
+  <div class="result-count ion-padding-horizontal" *ngIf="!loading">
+    <span>{{ partidosFiltrados.length }} resultado{{ partidosFiltrados.length !== 1 ? 's' : '' }}</span>
+  </div>
+
   <!-- Lista de partidos -->
   <div class="partidos-list ion-padding" *ngIf="!loading">
     <ion-card
-      *ngFor="let partido of partidos"
+      *ngFor="let partido of partidosFiltrados"
       class="partido-card"
       [style.--partido-color]="partido.color_hex || '#0A2342'"
     >
-      <!-- Barra de color del partido -->
       <div class="partido-color-bar" [style.background]="partido.color_hex || '#0A2342'"></div>
 
       <ion-card-content>
         <div class="partido-header">
-          <!-- Logo o siglas -->
           <div class="partido-logo-wrap">
             <img
               *ngIf="partido.logo_url"
@@ -40,7 +51,6 @@
             </div>
           </div>
 
-          <!-- Info principal -->
           <div class="partido-info">
             <h2 class="partido-nombre">{{ partido.nombre }}</h2>
             <span class="partido-siglas" *ngIf="partido.siglas">{{ partido.siglas }}</span>
@@ -50,13 +60,11 @@
           </div>
         </div>
 
-        <!-- Estadísticas -->
         <div class="partido-stats" *ngIf="partido.cantidad_politicos !== undefined">
           <ion-icon name="people-outline"></ion-icon>
           <span>{{ partido.cantidad_politicos }} político{{ partido.cantidad_politicos !== 1 ? 's' : '' }} registrado{{ partido.cantidad_politicos !== 1 ? 's' : '' }}</span>
         </div>
 
-        <!-- Botón sitio web -->
         <ion-button
           *ngIf="partido.sitio_web"
           expand="block"
@@ -68,7 +76,17 @@
           Sitio web
         </ion-button>
 
-        <!-- Badge inactivo -->
+        <ion-button
+          expand="block"
+          fill="solid"
+          color="primary"
+          [routerLink]="['/politicos']"
+          [queryParams]="{ partido_id: partido.id, partido_nombre: partido.nombre }"
+        >
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          Ver políticos
+        </ion-button>
+
         <ion-badge color="medium" *ngIf="!partido.activo" class="inactivo-badge">
           Inactivo
         </ion-badge>
@@ -83,21 +101,11 @@
 
   <!-- Empty state -->
   <div
-    *ngIf="!loading && partidos.length === 0"
+    *ngIf="!loading && partidosFiltrados.length === 0"
     class="empty-state ion-text-center ion-padding"
   >
     <ion-icon name="people-outline"></ion-icon>
-    <p>No hay partidos registrados aún</p>
-  </div>
-
-  <!-- Navegación rápida -->
-  <div class="bottom-nav">
-    <ion-button fill="outline" shape="round" color="primary" routerLink="/politicos">
-      Políticos
-    </ion-button>
-    <ion-button fill="outline" shape="round" color="tertiary" routerLink="/home">
-      Nosotros
-    </ion-button>
+    <p>No hay partidos que coincidan con la búsqueda</p>
   </div>
 
 </ion-content>

@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardContent, IonIcon, IonChip, IonLabel,
-  IonButtons, IonButton, IonSpinner,
+  IonButtons, IonButton, IonSpinner, IonSearchbar, IonMenuButton,
 } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -16,10 +17,10 @@ addIcons({ 'time-outline': timeOutline, 'globe-outline': globeOutline, 'logo-twi
   selector: 'app-candidatos',
   standalone: true,
   imports: [
-    CommonModule, RouterModule,
+    CommonModule, FormsModule, RouterModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonCard, IonCardContent, IonIcon, IonChip, IonLabel,
-    IonButtons, IonButton, IonSpinner,
+    IonButtons, IonButton, IonSpinner, IonSearchbar, IonMenuButton,
   ],
   templateUrl: './candidatos.page.html',
   styleUrls: ['./candidatos.page.scss'],
@@ -33,6 +34,8 @@ export class CandidatosPage implements OnInit, OnDestroy {
   private intervalo?: ReturnType<typeof setInterval>;
 
   candidatos: Candidato[] = [];
+  candidatosFiltrados: Candidato[] = [];
+  textoBusqueda: string = '';
   loading = false;
 
   constructor(private dbService: DatabaseService) {}
@@ -50,7 +53,22 @@ export class CandidatosPage implements OnInit, OnDestroy {
   async cargarCandidatos() {
     this.loading = true;
     this.candidatos = await this.dbService.obtenerCandidatos();
+    this.candidatosFiltrados = [...this.candidatos];
     this.loading = false;
+  }
+
+  filtrarCandidatos() {
+    const texto = (this.textoBusqueda || '').toLowerCase().trim();
+    if (!texto) {
+      this.candidatosFiltrados = [...this.candidatos];
+      return;
+    }
+    this.candidatosFiltrados = this.candidatos.filter(c =>
+      `${c.nombre} ${c.apellido}`.toLowerCase().includes(texto) ||
+      `${c.vicepresidente_nombre || ''} ${c.vicepresidente_apellido || ''}`.toLowerCase().includes(texto) ||
+      (c.partido_nombre || '').toLowerCase().includes(texto) ||
+      (c.partido_siglas || '').toLowerCase().includes(texto)
+    );
   }
 
   private calcularTiempo() {

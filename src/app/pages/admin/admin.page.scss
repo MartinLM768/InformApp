@@ -1,5 +1,26 @@
 @import '../../../theme/variables.scss';
 
+.admin-searchbar {
+  --background: rgba(255, 255, 255, 0.15);
+  --color: white;
+  --placeholder-color: rgba(255, 255, 255, 0.65);
+  --icon-color: rgba(255, 255, 255, 0.7);
+  --clear-button-color: rgba(255, 255, 255, 0.7);
+  --border-radius: 10px;
+  padding-top: 4px;
+  padding-bottom: 8px;
+}
+
+.partido-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+
+
 .politico-item {
   --padding-start: $spacing-md;
   --padding-end: $spacing-md;

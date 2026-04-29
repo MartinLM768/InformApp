@@ -1,11 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Candidatos 2026</ion-title>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/login" color="light">
-        <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
-      </ion-button>
+    <ion-buttons slot="start">
+      <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
+    <ion-title>Candidatos 2026</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -42,6 +40,21 @@
     </div>
   </div>
 
+  <!-- ── BÚSQUEDA ───────────────────────────────────── -->
+  <div class="search-bar ion-padding-horizontal ion-padding-top">
+    <ion-searchbar
+      [(ngModel)]="textoBusqueda"
+      (ionInput)="filtrarCandidatos()"
+      placeholder="Buscar candidato o partido..."
+      debounce="200"
+    ></ion-searchbar>
+  </div>
+
+  <!-- Contador -->
+  <div class="result-count ion-padding-horizontal" *ngIf="!loading">
+    <span>{{ candidatosFiltrados.length }} resultado{{ candidatosFiltrados.length !== 1 ? 's' : '' }}</span>
+  </div>
+
   <!-- Loading -->
   <div *ngIf="loading" class="ion-text-center ion-padding">
     <ion-spinner color="primary"></ion-spinner>
@@ -49,15 +62,10 @@
 
   <!-- ── CANDIDATOS ─────────────────────────────────── -->
   <div class="candidatos ion-padding" *ngIf="!loading">
-    <ion-card *ngFor="let c of candidatos" class="candidato-card">
+    <ion-card *ngFor="let c of candidatosFiltrados" class="candidato-card">
 
-      <!-- Cabecera coloreada -->
       <div class="card-top" [style.background]="c.partido_color || '#0A2342'">
-
-        <!-- Fórmula: presidente + vicepresidente -->
         <div class="formula">
-
-          <!-- Candidato presidencial -->
           <div class="formula-persona">
             <div class="avatar grande">
               <img *ngIf="c.foto_url" [src]="c.foto_url" [alt]="c.nombre" />
@@ -69,12 +77,10 @@
             </div>
           </div>
 
-          <!-- Divider si hay vice -->
           <div class="formula-divider" *ngIf="c.vicepresidente_nombre">
             <span>+</span>
           </div>
 
-          <!-- Vicepresidente -->
           <div class="formula-persona" *ngIf="c.vicepresidente_nombre">
             <div class="avatar chico">
               <img *ngIf="c.foto_vicepresidente_url" [src]="c.foto_vicepresidente_url" [alt]="c.vicepresidente_nombre" />
@@ -85,17 +91,14 @@
               <span class="formula-nombre">{{ c.vicepresidente_nombre }} {{ c.vicepresidente_apellido }}</span>
             </div>
           </div>
-
         </div>
 
-        <!-- Partido -->
         <ion-chip class="partido-chip" *ngIf="c.partido_nombre">
           <ion-label>{{ c.partido_siglas }} · {{ c.partido_nombre }}</ion-label>
         </ion-chip>
         <ion-chip class="partido-chip" *ngIf="!c.partido_nombre">
           <ion-label>Independiente</ion-label>
         </ion-chip>
-
       </div>
 
       <ion-card-content>
@@ -121,9 +124,8 @@
 
     </ion-card>
 
-    <!-- Empty state -->
-    <div *ngIf="candidatos.length === 0" class="empty ion-text-center">
-      <p>No hay candidatos registrados aún.</p>
+    <div *ngIf="candidatosFiltrados.length === 0" class="empty ion-text-center">
+      <p>No hay candidatos que coincidan con la búsqueda.</p>
     </div>
   </div>
 

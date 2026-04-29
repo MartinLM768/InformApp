@@ -21,7 +21,7 @@ interface FormPolitico {
   bio: string;
   fecha_nacimiento: string;
   lugar_nacimiento: string;
-  partido_id: string;
+  partido_id: string | null;
   twitter_url: string;
   instagram_url: string;
   sitio_web: string;
@@ -54,7 +54,7 @@ export class FormPoliticoComponent implements OnInit {
     bio: '',
     fecha_nacimiento: '',
     lugar_nacimiento: '',
-    partido_id: '',
+    partido_id: null,
     twitter_url: '',
     instagram_url: '',
     sitio_web: '',
@@ -93,7 +93,7 @@ export class FormPoliticoComponent implements OnInit {
         bio: this.politico.bio || '',
         fecha_nacimiento: this.politico.fecha_nacimiento || '',
         lugar_nacimiento: this.politico.lugar_nacimiento || '',
-        partido_id: this.politico.partido_id || '',
+        partido_id: this.politico.partido_id || null,
         twitter_url: this.politico.twitter_url || '',
         instagram_url: this.politico.instagram_url || '',
         sitio_web: this.politico.sitio_web || '',
