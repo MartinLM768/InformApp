@@ -9,8 +9,10 @@ import {
 import { addIcons } from 'ionicons';
 import {
   informationCircleOutline, peopleOutline, flagOutline,
-  podiumOutline, settingsOutline,
+  podiumOutline, settingsOutline, colorPaletteOutline,
+  sunnyOutline, moonOutline, contrastOutline, checkmarkCircle,
 } from 'ionicons/icons';
+import { ThemeService, ThemeType, ThemeOption } from './services/theme.service';
 
 addIcons({
   'information-circle-outline': informationCircleOutline,
@@ -18,6 +20,11 @@ addIcons({
   'flag-outline': flagOutline,
   'podium-outline': podiumOutline,
   'settings-outline': settingsOutline,
+  'color-palette-outline': colorPaletteOutline,
+  'sunny-outline': sunnyOutline,
+  'moon-outline': moonOutline,
+  'contrast-outline': contrastOutline,
+  'checkmark-circle': checkmarkCircle,
 });
 
 @Component({
@@ -32,5 +39,18 @@ addIcons({
   ],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(public themeService: ThemeService) {}
+
+  get themes(): ThemeOption[] {
+    return this.themeService.themes;
+  }
+
+  get currentTheme(): ThemeType {
+    return this.themeService.currentTheme;
+  }
+
+  seleccionarTema(themeId: ThemeType) {
+    this.themeService.setTheme(themeId);
+  }
 }
+

@@ -1,4 +1,4 @@
-@import '../../../theme/variables.scss';
+@use '../../../theme/variables.scss' as *;
 
 .admin-searchbar {
   --background: rgba(255, 255, 255, 0.15);
@@ -24,7 +24,7 @@
 .politico-item {
   --padding-start: $spacing-md;
   --padding-end: $spacing-md;
-  border-bottom: 1px solid $border-light;
+  border-bottom: 1px solid var(--ion-item-border-color, $border-light);
 
   ion-avatar {
     width: 50px;
@@ -39,7 +39,7 @@
   ion-label {
     h2 {
       font-weight: 600;
-      color: $primary;
+      color: var(--theme-card-title-color, $primary);
       margin-bottom: $spacing-xs;
     }
 
@@ -48,12 +48,12 @@
       margin: $spacing-xs 0;
 
       &:first-of-type {
-        color: $secondary;
+        color: var(--color-rojo, $secondary);
         font-weight: 500;
       }
 
       &.text-light {
-        color: $text-light;
+        color: var(--theme-card-subtext-color, $text-light);
       }
     }
   }
@@ -68,7 +68,7 @@
   }
 
   p {
-    color: $text-light;
+    color: var(--theme-card-subtext-color, $text-light);
     margin: $spacing-sm 0;
 
     &.text-light {

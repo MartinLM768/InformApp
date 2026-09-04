@@ -10,57 +10,86 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="guardar()">
 
-  <ion-item fill="outline" class="form-item">
-    <ion-label position="stacked">Nombre *</ion-label>
-    <ion-input [(ngModel)]="form.nombre" placeholder="Ej: Partido Liberal Colombiano"></ion-input>
-  </ion-item>
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('nombre')">
+      <ion-label position="stacked">Nombre *</ion-label>
+      <ion-input formControlName="nombre" placeholder="Ej: Partido Liberal Colombiano"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('nombre')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span *ngIf="hasError('nombre', 'required')">El nombre del partido es obligatorio</span>
+      <span *ngIf="hasError('nombre', 'minlength')">Mínimo 2 caracteres</span>
+    </ion-note>
 
-  <ion-item fill="outline" class="form-item">
-    <ion-label position="stacked">Siglas</ion-label>
-    <ion-input [(ngModel)]="form.siglas" placeholder="Ej: PLC" maxlength="10"></ion-input>
-  </ion-item>
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('siglas')">
+      <ion-label position="stacked">Siglas</ion-label>
+      <ion-input formControlName="siglas" placeholder="Ej: PLC" maxlength="10"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('siglas')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Máximo 10 caracteres</span>
+    </ion-note>
 
-  <ion-item fill="outline" class="form-item color-item">
-    <ion-label position="stacked">Color del partido</ion-label>
-    <div class="color-row">
-      <div class="color-preview" [style.background]="form.color_hex"></div>
-      <ion-input [(ngModel)]="form.color_hex" placeholder="#000000" maxlength="7"></ion-input>
-      <input type="color" class="color-picker-native" [(ngModel)]="form.color_hex" title="Seleccionar color" />
+    <ion-item fill="outline" class="form-item color-item" [class.ion-invalid]="isFieldInvalid('color_hex')">
+      <ion-label position="stacked">Color del partido</ion-label>
+      <div class="color-row">
+        <div class="color-preview" [style.background]="form.get('color_hex')?.value"></div>
+        <ion-input formControlName="color_hex" placeholder="#000000" maxlength="7"></ion-input>
+        <input
+          type="color"
+          class="color-picker-native"
+          [value]="form.get('color_hex')?.value || '#0A2342'"
+          (input)="actualizarColor($event)"
+          title="Seleccionar color"
+        />
+      </div>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('color_hex')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Formato hexadecimal inválido (ej: #0A2342)</span>
+    </ion-note>
+
+    <ion-item fill="outline" class="form-item">
+      <ion-label position="stacked">Ideología</ion-label>
+      <ion-input formControlName="ideologia" placeholder="Ej: Centro-izquierda"></ion-input>
+    </ion-item>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('sitio_web')">
+      <ion-label position="stacked">Sitio web</ion-label>
+      <ion-input formControlName="sitio_web" placeholder="https://..."></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('sitio_web')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Debe ser una URL válida (iniciar con http:// o https://)</span>
+    </ion-note>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('logo_url')">
+      <ion-label position="stacked">Logo (URL)</ion-label>
+      <ion-input formControlName="logo_url" placeholder="https://..."></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('logo_url')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Debe ser una URL válida (iniciar con http:// o https://)</span>
+    </ion-note>
+
+    <ion-item class="form-item toggle-item">
+      <ion-label>Partido activo</ion-label>
+      <ion-toggle formControlName="activo" color="primary" slot="end"></ion-toggle>
+    </ion-item>
+
+    <div class="buttons-group">
+      <ion-button expand="block" color="primary" type="submit">
+        {{ partido ? 'Guardar cambios' : 'Crear partido' }}
+      </ion-button>
+      <ion-button *ngIf="partido" expand="block" color="danger" fill="outline" type="button" (click)="confirmarEliminar()">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Eliminar partido
+      </ion-button>
+      <ion-button expand="block" fill="clear" color="medium" type="button" (click)="cerrar()">
+        Cancelar
+      </ion-button>
     </div>
-  </ion-item>
 
-  <ion-item fill="outline" class="form-item">
-    <ion-label position="stacked">Ideología</ion-label>
-    <ion-input [(ngModel)]="form.ideologia" placeholder="Ej: Centro-izquierda"></ion-input>
-  </ion-item>
-
-  <ion-item fill="outline" class="form-item">
-    <ion-label position="stacked">Sitio web</ion-label>
-    <ion-input [(ngModel)]="form.sitio_web" placeholder="https://..."></ion-input>
-  </ion-item>
-
-  <ion-item fill="outline" class="form-item">
-    <ion-label position="stacked">Logo (URL)</ion-label>
-    <ion-input [(ngModel)]="form.logo_url" placeholder="https://..."></ion-input>
-  </ion-item>
-
-  <ion-item class="form-item toggle-item">
-    <ion-label>Partido activo</ion-label>
-    <ion-toggle [(ngModel)]="form.activo" color="primary" slot="end"></ion-toggle>
-  </ion-item>
-
-  <div class="buttons-group">
-    <ion-button expand="block" color="primary" (click)="guardar()">
-      {{ partido ? 'Guardar cambios' : 'Crear partido' }}
-    </ion-button>
-    <ion-button *ngIf="partido" expand="block" color="danger" fill="outline" (click)="confirmarEliminar()">
-      <ion-icon name="trash-outline" slot="start"></ion-icon>
-      Eliminar partido
-    </ion-button>
-    <ion-button expand="block" fill="clear" color="medium" (click)="cerrar()">
-      Cancelar
-    </ion-button>
-  </div>
-
+  </form>
 </ion-content>

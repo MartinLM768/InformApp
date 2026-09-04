@@ -56,8 +56,8 @@
     <span>{{ politicosFiltrados.length }} resultado{{ politicosFiltrados.length !== 1 ? 's' : '' }}</span>
   </div>
 
-  <!-- Grid de Políticos -->
-  <div class="politicos-grid ion-padding">
+  <!-- Grid de Políticos (Cargados) -->
+  <div class="politicos-grid ion-padding" *ngIf="!loading">
     <ion-card
       *ngFor="let politico of politicosFiltrados"
       (click)="abrirDetalle(politico)"
@@ -66,8 +66,9 @@
       <ion-card-header>
         <ion-avatar>
           <img
-            [src]="politico.foto_url || 'assets/placeholder.png'"
+            [src]="politico.foto_url || 'assets/avatar-placeholder.svg'"
             [alt]="politico.nombre"
+            (error)="onImageError($event)"
           />
         </ion-avatar>
       </ion-card-header>
@@ -90,9 +91,34 @@
     </ion-card>
   </div>
 
-  <!-- Loading -->
-  <div *ngIf="loading" class="ion-text-center ion-padding">
-    <ion-spinner color="primary"></ion-spinner>
+  <!-- Skeleton Screen durante carga -->
+  <div class="politicos-grid ion-padding" *ngIf="loading">
+    <ion-card *ngFor="let item of [1, 2, 3, 4, 5, 6]" class="politico-card skeleton-card">
+      <ion-card-header>
+        <ion-avatar>
+          <ion-skeleton-text [animated]="true" style="width: 100%; height: 100%; border-radius: 50%;"></ion-skeleton-text>
+        </ion-avatar>
+      </ion-card-header>
+
+      <ion-card-content>
+        <h3>
+          <ion-skeleton-text [animated]="true" style="width: 75%; height: 16px; margin: 0 auto;"></ion-skeleton-text>
+        </h3>
+        <p class="cargo">
+          <ion-skeleton-text [animated]="true" style="width: 50%; height: 12px; margin: 6px auto;"></ion-skeleton-text>
+        </p>
+        <p class="partido">
+          <ion-skeleton-text [animated]="true" style="width: 65%; height: 10px; margin: 4px auto;"></ion-skeleton-text>
+        </p>
+        <p class="entidad">
+          <ion-skeleton-text [animated]="true" style="width: 40%; height: 10px; margin: 4px auto;"></ion-skeleton-text>
+        </p>
+
+        <div style="margin-top: 14px;">
+          <ion-skeleton-text [animated]="true" style="width: 100%; height: 32px; border-radius: 6px;"></ion-skeleton-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
   </div>
 
   <!-- Empty State -->

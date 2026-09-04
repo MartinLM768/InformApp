@@ -75,9 +75,28 @@ $breakpoint-xl: 1200px;
 
 
 // ========================================
-// IONIC THEME MAPPING
+// IONIC THEME MAPPING & BRAND PALETTES
 // ========================================
 :root {
+  // ── BRAND CONSTANTS ───────────────────
+  --color-azul:         #0A2342;
+  --color-rojo:         #C8102E;
+  --color-oro:          #F4C542;
+  --color-blanco:       #F8F5EE;
+  --color-gris:         #D1CCC0;
+  --color-carbon:       #1A1A1A;
+  --color-acento:       #00B4D8;
+  --color-medio:        #1C3A5E;
+
+  --shadow-sm:  #{$shadow-sm};
+  --shadow-md:  #{$shadow-md};
+  --shadow-lg:  #{$shadow-lg};
+  --shadow-xl:  #{$shadow-xl};
+
+  --radius-sm:  #{$radius-sm};
+  --radius-md:  #{$radius-md};
+  --radius-lg:  #{$radius-lg};
+  --radius-xl:  #{$radius-xl};
 
   // ── PRIMARY (Azul Patria) ─────────────
   --ion-color-primary:              #0A2342;
@@ -111,7 +130,7 @@ $breakpoint-xl: 1200px;
   --ion-color-success-shade:        #28ba62;
   --ion-color-success-tint:         #42d77d;
 
-  // ── WARNING (usa el oro de marca) ─────
+  // ── WARNING ───────────────────────────
   --ion-color-warning:              #F4C542;
   --ion-color-warning-rgb:          244, 197, 66;
   --ion-color-warning-contrast:     #0A2342;
@@ -119,7 +138,7 @@ $breakpoint-xl: 1200px;
   --ion-color-warning-shade:        #d7ad3a;
   --ion-color-warning-tint:         #f5cb5a;
 
-  // ── DANGER (usa el rojo de marca) ─────
+  // ── DANGER ────────────────────────────
   --ion-color-danger:              #C8102E;
   --ion-color-danger-rgb:          200, 16, 46;
   --ion-color-danger-contrast:     #ffffff;
@@ -151,81 +170,131 @@ $breakpoint-xl: 1200px;
   --ion-color-dark-shade:        #111111;
   --ion-color-dark-tint:         #313131;
 
-  // ── BACKGROUNDS & TEXTO ───────────────
-  --ion-background-color:         #F8F5EE;
-  --ion-background-color-rgb:     248, 245, 238;
-  --ion-text-color:               #0A2342;
-  --ion-text-color-rgb:           10, 35, 66;
-
-  // ── TOOLBAR ───────────────────────────
-  --ion-toolbar-background:       #0A2342;
-  --ion-toolbar-color:            #ffffff;
-  --ion-toolbar-border-color:     #C8102E;
-
-  // ── TAB BAR ───────────────────────────
-  --ion-tab-bar-background:       #0A2342;
-  --ion-tab-bar-border-color:     #C8102E;
-  --ion-tab-bar-color:            #D1CCC0;
-  --ion-tab-bar-color-selected:   #F4C542;
-
-  // ── CARD ──────────────────────────────
-  --ion-card-background:          #ffffff;
-
-  // ── ITEM ──────────────────────────────
-  --ion-item-background:          #ffffff;
-  --ion-item-border-color:        #e0e0e0;
-
-  // ── ACENTO DIGITAL (custom) ───────────
+  // ── ACENTO DIGITAL ────────────────────
   --ion-color-info:              #00B4D8;
   --ion-color-info-rgb:          0, 180, 216;
   --ion-color-info-contrast:     #ffffff;
   --ion-color-info-contrast-rgb: 255, 255, 255;
   --ion-color-info-shade:        #009ab8;
   --ion-color-info-tint:         #1abcdc;
-
-  // ── CUSTOM CSS VARS (para usar en componentes) ──
-  --color-azul:         #0A2342;
-  --color-rojo:         #C8102E;
-  --color-oro:          #F4C542;
-  --color-blanco:       #F8F5EE;
-  --color-gris:         #D1CCC0;
-  --color-carbon:       #1A1A1A;
-  --color-acento:       #00B4D8;
-  --color-medio:        #1C3A5E;
-
-  --shadow-sm:  #{$shadow-sm};
-  --shadow-md:  #{$shadow-md};
-  --shadow-lg:  #{$shadow-lg};
-  --shadow-xl:  #{$shadow-xl};
-
-  --radius-sm:  #{$radius-sm};
-  --radius-md:  #{$radius-md};
-  --radius-lg:  #{$radius-lg};
-  --radius-xl:  #{$radius-xl};
 }
 
+// ════════════════════════════════════════
+// 1. TEMA CLARO (FONDO CLARO / PERGAMINO)
+// ════════════════════════════════════════
+:root,
+body.theme-claro {
+  --ion-background-color:         #F8F5EE;
+  --ion-background-color-rgb:     248, 245, 238;
+  --ion-text-color:               #0A2342;
+  --ion-text-color-rgb:           10, 35, 66;
 
-// ========================================
-// DARK MODE
-// ========================================
-@media (prefers-color-scheme: dark) {
-  body {
-    --ion-background-color:     #0A2342;
-    --ion-background-color-rgb: 10, 35, 66;
-    --ion-text-color:           #F8F5EE;
-    --ion-text-color-rgb:       248, 245, 238;
+  --ion-toolbar-background:       #0A2342;
+  --ion-toolbar-color:            #ffffff;
+  --ion-toolbar-border-color:     #C8102E;
 
-    --ion-toolbar-background:   #081d2e;
-    --ion-toolbar-color:        #F8F5EE;
+  --ion-tab-bar-background:       #0A2342;
+  --ion-tab-bar-border-color:     #C8102E;
+  --ion-tab-bar-color:            #D1CCC0;
+  --ion-tab-bar-color-selected:   #F4C542;
 
-    --ion-tab-bar-background:   #081d2e;
-    --ion-tab-bar-color:        #D1CCC0;
-    --ion-tab-bar-color-selected: #F4C542;
+  --ion-card-background:          #ffffff;
+  --ion-item-background:          #ffffff;
+  --ion-item-border-color:        #e0e0e0;
 
-    --ion-card-background:      #1C3A5E;
-    --ion-item-background:      #1C3A5E;
-    --ion-item-border-color:    #234a5a;
-  }
+  --menu-bg:                      #F8F5EE;
+  --menu-text:                    #0A2342;
+  --menu-subtext:                 #666666;
+  --menu-item-hover:              rgba(10, 35, 66, 0.08);
+  --menu-item-active-bg:          rgba(10, 35, 66, 0.1);
+  --menu-item-active-text:        #0A2342;
+  --menu-item-active-icon:        #C8102E;
+  --menu-divider-color:           #e0ddd6;
+
+  --theme-card-title-color:       #0A2342;
+  --theme-card-subtext-color:     #666666;
+  --theme-filter-bar-bg:          linear-gradient(135deg, #1C3A5E, #0A2342);
+  --theme-clock-bg:               linear-gradient(160deg, #081d2e, #1C3A5E);
+  --theme-propuesta-bg:           rgba(10, 35, 66, 0.04);
+  --theme-hero-bg:                #0A2342;
+}
+
+// ════════════════════════════════════════
+// 2. TEMA OSCURO (FONDO AZUL PATRIA)
+// ════════════════════════════════════════
+body.theme-azul {
+  --ion-background-color:         #0A2342;
+  --ion-background-color-rgb:     10, 35, 66;
+  --ion-text-color:               #F8F5EE;
+  --ion-text-color-rgb:           248, 245, 238;
+
+  --ion-toolbar-background:       #081d2e;
+  --ion-toolbar-color:            #F8F5EE;
+  --ion-toolbar-border-color:     #C8102E;
+
+  --ion-tab-bar-background:       #081d2e;
+  --ion-tab-bar-border-color:     #C8102E;
+  --ion-tab-bar-color:            #D1CCC0;
+  --ion-tab-bar-color-selected:   #F4C542;
+
+  --ion-card-background:          #1C3A5E;
+  --ion-item-background:          #1C3A5E;
+  --ion-item-border-color:        #234a5a;
+
+  --menu-bg:                      #081d2e;
+  --menu-text:                    #F8F5EE;
+  --menu-subtext:                 #D1CCC0;
+  --menu-item-hover:              rgba(255, 255, 255, 0.08);
+  --menu-item-active-bg:          rgba(244, 197, 66, 0.18);
+  --menu-item-active-text:        #F4C542;
+  --menu-item-active-icon:        #F4C542;
+  --menu-divider-color:           #1C3A5E;
+
+  --theme-card-title-color:       #FFFFFF;
+  --theme-card-subtext-color:     #D1CCC0;
+  --theme-filter-bar-bg:          linear-gradient(135deg, #081d2e, #1C3A5E);
+  --theme-clock-bg:               linear-gradient(160deg, #061522, #112842);
+  --theme-propuesta-bg:           rgba(255, 255, 255, 0.07);
+  --theme-hero-bg:                linear-gradient(135deg, #081d2e, #1C3A5E);
+}
+
+// ════════════════════════════════════════
+// 3. TEMA NEGRO (FONDO CARBÓN NOCHE)
+// ════════════════════════════════════════
+body.theme-carbon {
+  --ion-background-color:         #1A1A1A;
+  --ion-background-color-rgb:     26, 26, 26;
+  --ion-text-color:               #F8F5EE;
+  --ion-text-color-rgb:           248, 245, 238;
+
+  --ion-toolbar-background:       #111111;
+  --ion-toolbar-color:            #F8F5EE;
+  --ion-toolbar-border-color:     #C8102E;
+
+  --ion-tab-bar-background:       #111111;
+  --ion-tab-bar-border-color:     #C8102E;
+  --ion-tab-bar-color:            #D1CCC0;
+  --ion-tab-bar-color-selected:   #F4C542;
+
+  --ion-card-background:          #242424;
+  --ion-item-background:          #242424;
+  --ion-item-border-color:        #333333;
+
+  --menu-bg:                      #121212;
+  --menu-text:                    #F8F5EE;
+  --menu-subtext:                 #D1CCC0;
+  --menu-item-hover:              rgba(255, 255, 255, 0.08);
+  --menu-item-active-bg:          rgba(200, 16, 46, 0.25);
+  --menu-item-active-text:        #FFFFFF;
+  --menu-item-active-icon:        #C8102E;
+  --menu-divider-color:           #2e2e2e;
+
+  --theme-card-title-color:       #FFFFFF;
+  --theme-card-subtext-color:     #D1CCC0;
+  --theme-filter-bar-bg:          linear-gradient(135deg, #111111, #242424);
+  --theme-clock-bg:               linear-gradient(160deg, #0d0d0d, #1f1f1f);
+  --theme-propuesta-bg:           rgba(255, 255, 255, 0.07);
+  --theme-hero-bg:                linear-gradient(135deg, #111111, #242424);
 }
 
 

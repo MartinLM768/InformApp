@@ -6,16 +6,9 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
-  IonButton,
   IonButtons,
-  IonIcon,
-  IonBadge,
-  IonLabel,
-  IonList,
-  IonItem,
   IonMenuButton,
 } from '@ionic/angular/standalone';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-identidad',
@@ -29,15 +22,8 @@ import { RouterLink } from '@angular/router';
     IonHeader,
     IonTitle,
     IonToolbar,
-    IonButton,
     IonButtons,
-    IonIcon,
-    IonBadge,
-    IonLabel,
-    IonList,
-    IonItem,
     IonMenuButton,
-    RouterLink,
   ]
 })
 export class IdentidadPage implements OnInit {

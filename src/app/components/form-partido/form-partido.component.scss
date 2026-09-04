@@ -1,8 +1,28 @@
 @use '../../../theme/variables.scss' as *;
 
 .form-item {
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-xs;
   --border-radius: #{$radius-md};
+
+  &.ion-invalid {
+    --border-color: var(--ion-color-danger) !important;
+  }
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+  margin-bottom: $spacing-md;
+  padding-left: $spacing-xs;
+
+  ion-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
 }
 
 .color-item {

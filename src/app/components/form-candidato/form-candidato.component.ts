@@ -1,42 +1,26 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonButton, IonButtons, IonItem, IonLabel,
-  IonInput, IonTextarea, IonToggle, IonIcon, IonSelect, IonSelectOption,
-  ModalController, AlertController,
+  IonInput, IonTextarea, IonToggle, IonIcon, IonSelect, IonSelectOption, IonNote,
+  ModalController, AlertController, ToastController,
 } from '@ionic/angular/standalone';
 import { DatabaseService, Candidato } from '../../services/database.service';
 import { addIcons } from 'ionicons';
-import { closeOutline, trashOutline } from 'ionicons/icons';
+import { closeOutline, trashOutline, alertCircleOutline } from 'ionicons/icons';
 
-addIcons({ 'close-outline': closeOutline, 'trash-outline': trashOutline });
-
-interface FormCandidato {
-  nombre: string;
-  apellido: string;
-  foto_url: string;
-  vicepresidente_nombre: string;
-  vicepresidente_apellido: string;
-  foto_vicepresidente_url: string;
-  partido_id: string;
-  bio: string;
-  propuesta_clave: string;
-  sitio_web: string;
-  twitter_url: string;
-  instagram_url: string;
-  activo: boolean;
-}
+addIcons({ 'close-outline': closeOutline, 'trash-outline': trashOutline, 'alert-circle-outline': alertCircleOutline });
 
 @Component({
   selector: 'app-form-candidato',
   standalone: true,
   imports: [
-    CommonModule, FormsModule,
+    CommonModule, ReactiveFormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonButton, IonButtons, IonItem, IonLabel,
-    IonInput, IonTextarea, IonToggle, IonIcon, IonSelect, IonSelectOption,
+    IonInput, IonTextarea, IonToggle, IonIcon, IonSelect, IonSelectOption, IonNote,
   ],
   templateUrl: './form-candidato.component.html',
   styleUrls: ['./form-candidato.component.scss'],
@@ -44,27 +28,40 @@ interface FormCandidato {
 export class FormCandidatoComponent implements OnInit {
   @Input() candidato: Candidato | null = null;
 
-  form: FormCandidato = {
-    nombre: '', apellido: '', foto_url: '',
-    vicepresidente_nombre: '', vicepresidente_apellido: '', foto_vicepresidente_url: '',
-    partido_id: '', bio: '', propuesta_clave: '',
-    sitio_web: '', twitter_url: '', instagram_url: '',
-    activo: true,
-  };
-
+  form: FormGroup;
   partidos: { id: string; nombre: string }[] = [];
 
   constructor(
+    private fb: FormBuilder,
     private dbService: DatabaseService,
     private modalController: ModalController,
     private alertController: AlertController,
-  ) {}
+    private toastController: ToastController,
+  ) {
+    addIcons({ closeOutline, trashOutline, alertCircleOutline });
+
+    this.form = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(2)]],
+      apellido: ['', [Validators.required, Validators.minLength(2)]],
+      foto_url: ['', [Validators.pattern(/^https?:\/\/.+/i)]],
+      partido_id: [''],
+      vicepresidente_nombre: [''],
+      vicepresidente_apellido: [''],
+      foto_vicepresidente_url: ['', [Validators.pattern(/^https?:\/\/.+/i)]],
+      propuesta_clave: [''],
+      bio: [''],
+      sitio_web: ['', [Validators.pattern(/^https?:\/\/.+/i)]],
+      twitter_url: ['', [Validators.pattern(/^https?:\/\/.+/i)]],
+      instagram_url: ['', [Validators.pattern(/^https?:\/\/.+/i)]],
+      activo: [true],
+    });
+  }
 
   async ngOnInit() {
     this.partidos = await this.dbService.obtenerPartidosSimple();
 
     if (this.candidato) {
-      this.form = {
+      this.form.patchValue({
         nombre: this.candidato.nombre,
         apellido: this.candidato.apellido,
         foto_url: this.candidato.foto_url || '',
@@ -78,16 +75,27 @@ export class FormCandidatoComponent implements OnInit {
         twitter_url: this.candidato.twitter_url || '',
         instagram_url: this.candidato.instagram_url || '',
         activo: this.candidato.activo,
-      };
+      });
     }
   }
 
+  isFieldInvalid(field: string): boolean {
+    const control = this.form.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  hasError(field: string, error: string): boolean {
+    const control = this.form.get(field);
+    return !!(control && control.hasError(error) && (control.dirty || control.touched));
+  }
+
   async guardar() {
-    if (!this.form.nombre.trim() || !this.form.apellido.trim()) {
-      alert('Nombre y apellido son obligatorios');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      await this.mostrarToast('Por favor completa los campos requeridos correctamente', 'warning');
       return;
     }
-    await this.modalController.dismiss({ action: 'guardar', data: this.form });
+    await this.modalController.dismiss({ action: 'guardar', data: this.form.value });
   }
 
   async cerrar() {
@@ -97,7 +105,7 @@ export class FormCandidatoComponent implements OnInit {
   async confirmarEliminar() {
     const alert = await this.alertController.create({
       header: 'Eliminar candidato',
-      message: `¿Seguro que deseas eliminar a ${this.form.nombre} ${this.form.apellido}?`,
+      message: `¿Seguro que deseas eliminar a ${this.form.get('nombre')?.value} ${this.form.get('apellido')?.value}?`,
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         { text: 'Eliminar', role: 'destructive',
@@ -105,5 +113,15 @@ export class FormCandidatoComponent implements OnInit {
       ],
     });
     await alert.present();
+  }
+
+  private async mostrarToast(mensaje: string, color: 'success' | 'warning' | 'danger' = 'warning') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2500,
+      position: 'bottom',
+      color,
+    });
+    await toast.present();
   }
 }

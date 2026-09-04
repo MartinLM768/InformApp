@@ -45,6 +45,38 @@
       </ion-list>
 
       <div class="menu-divider"></div>
+      <div class="menu-section-label">Estilos & Apariencia</div>
+
+      <div class="theme-selector-container">
+        <div
+          *ngFor="let t of themes"
+          class="theme-card-option"
+          [class.selected]="currentTheme === t.id"
+          (click)="seleccionarTema(t.id)"
+          [style.--theme-preview-bg]="t.bgHex"
+          [style.--theme-preview-color]="t.textColor"
+        >
+          <div class="theme-swatch" [style.background]="t.bgHex">
+            <span class="theme-swatch-text" [style.color]="t.textColor">
+              Inform<span [style.color]="t.accentColor">App</span>
+            </span>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name-row">
+              <ion-icon [name]="t.icono" class="theme-icon"></ion-icon>
+              <span class="theme-name">{{ t.nombre }}</span>
+            </div>
+            <span class="theme-subname">{{ t.subtitulo }}</span>
+          </div>
+          <ion-icon
+            *ngIf="currentTheme === t.id"
+            name="checkmark-circle"
+            class="theme-check-icon"
+          ></ion-icon>
+        </div>
+      </div>
+
+      <div class="menu-divider"></div>
       <div class="menu-section-label">Cuenta</div>
 
       <ion-list lines="none">

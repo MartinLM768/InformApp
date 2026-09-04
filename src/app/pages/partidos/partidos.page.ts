@@ -7,17 +7,15 @@ import {
   IonTitle,
   IonContent,
   IonCard,
-  IonCardHeader,
   IonCardContent,
   IonButton,
   IonIcon,
-  IonAvatar,
-  IonSpinner,
   IonButtons,
   IonBadge,
   IonChip,
   IonSearchbar,
   IonMenuButton,
+  IonSkeletonText,
 } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { DatabaseService } from '../../services/database.service';
@@ -58,17 +56,15 @@ export interface Partido {
     IonTitle,
     IonContent,
     IonCard,
-    IonCardHeader,
     IonCardContent,
     IonButton,
     IonIcon,
-    IonAvatar,
-    IonSpinner,
     IonButtons,
     IonBadge,
     IonChip,
     IonSearchbar,
     IonMenuButton,
+    IonSkeletonText,
   ],
   templateUrl: './partidos.page.html',
   styleUrls: ['./partidos.page.scss'],
@@ -111,5 +107,12 @@ export class PartidosPage implements OnInit {
 
   abrirSitioWeb(url: string | undefined) {
     if (url) window.open(url, '_blank');
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    if (img && !img.src.includes('avatar-placeholder.svg')) {
+      img.src = 'assets/avatar-placeholder.svg';
+    }
   }
 }

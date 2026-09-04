@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonButton, IonButtons, IonIcon, IonCard,
-  IonCardHeader, IonCardTitle, IonCardContent,
+  IonCardContent,
   IonChip, IonLabel, ModalController,
 } from '@ionic/angular/standalone';
 import { PoliticoConCargo } from '../../services/database.service';
@@ -27,7 +27,7 @@ addIcons({
     CommonModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonButton, IonButtons, IonIcon, IonCard,
-    IonCardHeader, IonCardTitle, IonCardContent,
+    IonCardContent,
     IonChip, IonLabel,
   ],
   templateUrl: './detalle-politico.component.html',
@@ -40,5 +40,12 @@ export class DetallePoliticoComponent {
 
   cerrar() {
     this.modalController.dismiss();
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    if (img && !img.src.includes('avatar-placeholder.svg')) {
+      img.src = 'assets/avatar-placeholder.svg';
+    }
   }
 }

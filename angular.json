@@ -53,12 +53,16 @@
                   "maximumError": "16kb"
                 }
               ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": {
+                  "inline": false
                 }
-              ],
+              },
               "outputHashing": "all"
             },
             "development": {

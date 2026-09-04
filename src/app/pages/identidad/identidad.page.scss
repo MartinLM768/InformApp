@@ -2,9 +2,6 @@
 // IDENTIDAD CORPORATIVA — InformApp
 // ═══════════════════════════════════════════
 
-// ── Imports
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap');
-
 // ── Variables locales (usa las del theme global)
 $azul:   var(--color-azul);
 $rojo:   var(--color-rojo);
@@ -69,7 +66,7 @@ $gris:   var(--color-gris);
 // CONTENT BASE
 // ══════════════════════════════════════════
 .identidad-content {
-  --background: var(--color-blanco);
+  --background: var(--ion-background-color, #F8F5EE);
 }
 
 .tab-panel {
@@ -106,7 +103,7 @@ $gris:   var(--color-gris);
   font-size: 2.4rem;
   line-height: 1;
   letter-spacing: 0.06em;
-  color: var(--color-azul);
+  color: var(--theme-card-title-color, var(--color-azul));
   margin: 0 0 16px;
 
   &.light { color: #fff; }
@@ -118,7 +115,7 @@ $gris:   var(--color-gris);
 // ══════════════════════════════════════════
 .hero-section {
   position: relative;
-  background: var(--color-azul);
+  background: var(--theme-hero-bg, var(--color-azul));
   min-height: 300px;
   padding: 32px 20px 24px;
   overflow: hidden;
@@ -222,9 +219,18 @@ $gris:   var(--color-gris);
   gap: 6px;
   box-shadow: var(--shadow-sm);
 
-  &.bg-light { background: var(--color-blanco); border: 1px solid var(--border-color, #e0e0e0); }
-  &.bg-dark   { background: var(--color-azul); }
-  &.bg-carbon { background: var(--color-carbon); }
+  &.bg-light {
+    background: #F8F5EE;
+    border: 1px solid rgba(10, 35, 66, 0.15);
+  }
+  &.bg-dark {
+    background: #0A2342;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  &.bg-carbon {
+    background: #1A1A1A;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
 
 .wm-light {
@@ -277,7 +283,7 @@ $gris:   var(--color-gris);
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  background: var(--color-azul);
+  background: var(--theme-hero-bg, var(--color-azul));
   border-radius: var(--radius-md);
   padding: 20px;
   margin-top: 8px;
@@ -312,7 +318,7 @@ $gris:   var(--color-gris);
 // TAB 2 — MISIÓN / VISIÓN / PROPÓSITO
 // ══════════════════════════════════════════
 .mvv-hero {
-  background: var(--color-azul);
+  background: var(--theme-hero-bg, var(--color-azul));
   padding: 32px 20px 24px;
   position: relative;
 
@@ -333,10 +339,11 @@ $gris:   var(--color-gris);
 }
 
 .mvv-card {
-  background: #fff;
+  background: var(--ion-card-background, #fff);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
+  border: 1px solid var(--ion-item-border-color, transparent);
   position: relative;
 }
 
@@ -359,7 +366,7 @@ $gris:   var(--color-gris);
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1.5rem;
   letter-spacing: 0.05em;
-  color: var(--color-azul);
+  color: var(--theme-card-title-color, var(--color-azul));
   margin: 0;
   padding: 0 16px 8px;
 }
@@ -368,7 +375,7 @@ $gris:   var(--color-gris);
   font-family: Georgia, serif;
   font-size: 0.88rem;
   line-height: 1.7;
-  color: #555;
+  color: var(--theme-card-subtext-color, #555);
   padding: 0 16px 20px;
   margin: 0;
 }
@@ -381,16 +388,17 @@ $gris:   var(--color-gris);
   padding: 0 16px 8px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 8px;
 }
 
 .color-card {
   display: flex;
   align-items: stretch;
-  background: #fff;
+  background: var(--ion-card-background, #fff);
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  border: 1px solid var(--ion-item-border-color, transparent);
 }
 
 .color-swatch {
@@ -411,13 +419,13 @@ $gris:   var(--color-gris);
   font-family: Georgia, serif;
   font-weight: bold;
   font-size: 0.9rem;
-  color: var(--color-azul);
+  color: var(--theme-card-title-color, var(--color-azul));
   margin: 0 0 2px;
 }
 
 .color-role {
   font-size: 0.72rem;
-  color: #888;
+  color: var(--theme-card-subtext-color, #888);
   margin: 0 0 6px;
   line-height: 1.4;
 }
@@ -425,7 +433,7 @@ $gris:   var(--color-gris);
 .color-hex {
   font-family: 'DM Mono', monospace;
   font-size: 0.78rem;
-  color: var(--color-carbon);
+  color: var(--theme-card-title-color, var(--color-carbon));
   margin: 0;
   font-weight: 500;
 }
@@ -472,10 +480,11 @@ $gris:   var(--color-gris);
 // ══════════════════════════════════════════
 .tipo-card {
   margin: 0 16px 16px;
-  background: #fff;
+  background: var(--ion-card-background, #fff);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
+  border: 1px solid var(--ion-item-border-color, transparent);
   padding: 20px;
 }
 
@@ -498,7 +507,7 @@ $gris:   var(--color-gris);
 
 .tipo-font-name {
   font-size: 0.8rem;
-  color: #888;
+  color: var(--theme-card-subtext-color, #888);
   font-family: Georgia, serif;
   font-style: italic;
 }
@@ -512,14 +521,14 @@ $gris:   var(--color-gris);
   font-family: 'Bebas Neue', sans-serif;
   font-size: 2.8rem;
   letter-spacing: 0.1em;
-  color: var(--color-azul);
+  color: var(--theme-card-title-color, var(--color-azul));
 }
 
 .tipo-body {
   font-family: Georgia, serif;
   font-style: italic;
   font-size: 1.2rem;
-  color: var(--color-gris);
+  color: var(--theme-card-subtext-color, var(--color-gris));
 }
 
 .tipo-mono {
@@ -532,10 +541,10 @@ $gris:   var(--color-gris);
 
 .tipo-meta {
   font-size: 0.75rem;
-  color: #999;
+  color: var(--theme-card-subtext-color, #999);
   margin-bottom: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-light, #f0f0f0);
+  border-bottom: 1px solid var(--ion-item-border-color, #f0f0f0);
 }
 
 .tipo-usage {
@@ -547,14 +556,14 @@ $gris:   var(--color-gris);
 .usage-item {
   font-family: 'DM Mono', monospace;
   font-size: 0.68rem;
-  color: var(--color-azul);
+  color: var(--theme-card-title-color, var(--color-azul));
   margin: 0;
   letter-spacing: 0.05em;
 }
 
 // Jerarquía demo
 .hierarchy-demo {
-  background: var(--color-azul);
+  background: var(--theme-hero-bg, var(--color-azul));
   border-radius: var(--radius-lg);
   padding: 24px 20px;
   margin-top: 8px;
@@ -628,7 +637,7 @@ $gris:   var(--color-gris);
   font-family: 'Bebas Neue', sans-serif;
   font-size: 2.8rem;
   color: var(--color-rojo);
-  opacity: 0.3;
+  opacity: 0.5;
   line-height: 1;
   flex-shrink: 0;
   width: 48px;
@@ -644,7 +653,7 @@ $gris:   var(--color-gris);
   font-family: Georgia, serif;
   font-weight: bold;
   font-size: 1rem;
-  color: var(--color-azul);
+  color: var(--theme-card-title-color, var(--color-azul));
   margin: 0 0 6px;
 }
 
@@ -652,13 +661,13 @@ $gris:   var(--color-gris);
   font-family: Georgia, serif;
   font-size: 0.84rem;
   line-height: 1.65;
-  color: #666;
+  color: var(--theme-card-subtext-color, #666);
   margin: 0;
 }
 
 .pilar-divider {
   height: 1px;
-  background: var(--border-light, #f0f0f0);
+  background: var(--ion-item-border-color, #f0f0f0);
   margin: 16px 0 16px 64px;
 }
 
@@ -670,7 +679,7 @@ $gris:   var(--color-gris);
   gap: 10px;
   margin: 32px 20px 8px;
   padding: 16px;
-  background: var(--color-azul);
+  background: var(--theme-hero-bg, var(--color-azul));
   border-radius: var(--radius-md);
   font-family: Georgia, serif;
   font-style: italic;

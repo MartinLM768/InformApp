@@ -24,7 +24,7 @@
 .name {
   font-size: 24px;
   font-weight: 700;
-  color: $primary;
+  color: var(--theme-card-title-color, $primary);
   margin: 0;
   line-height: 1.2;
 }
@@ -32,7 +32,7 @@
 .cargo {
   font-size: 14px;
   font-weight: 700;
-  color: $secondary;
+  color: var(--color-rojo, $secondary);
   margin: $spacing-sm 0 0 0;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -40,7 +40,7 @@
 
 .partido {
   font-size: 14px;
-  color: $text-secondary;
+  color: var(--theme-card-subtext-color, $text-secondary);
   margin: $spacing-xs 0 0 0;
 }
 
@@ -66,13 +66,13 @@ ion-card {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: $primary;
+    color: var(--theme-card-title-color, $primary);
     font-weight: 600;
     font-size: 16px;
 
     ion-icon {
       font-size: 20px;
-      color: $secondary;
+      color: var(--color-rojo, $secondary);
     }
   }
 }
@@ -84,7 +84,7 @@ ion-card {
   align-items: flex-start;
   gap: $spacing-md;
   padding: $spacing-sm 0;
-  border-bottom: 1px solid $border-light;
+  border-bottom: 1px solid var(--ion-item-border-color, $border-light);
 
   &:last-child {
     border-bottom: none;
@@ -93,7 +93,7 @@ ion-card {
 
   ion-icon {
     font-size: 22px;
-    color: $secondary;
+    color: var(--color-rojo, $secondary);
     margin-top: 2px;
     flex-shrink: 0;
   }
@@ -103,13 +103,13 @@ ion-card {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: $text-light;
+    color: var(--theme-card-subtext-color, $text-light);
     margin: 0 0 2px 0;
   }
 
   .dato-valor {
     font-size: 14px;
-    color: $text-primary;
+    color: var(--theme-card-title-color, $text-primary);
     margin: 0;
     font-weight: 500;
   }
@@ -120,7 +120,7 @@ ion-card {
 .bio-text {
   font-size: 14px;
   line-height: 1.7;
-  color: $text-secondary;
+  color: var(--theme-card-subtext-color, $text-secondary);
   margin: 0;
 }
 
@@ -188,48 +188,7 @@ ion-card {
 
   .red-arrow {
     font-size: 18px;
-    color: $text-light;
+    color: var(--theme-card-subtext-color, $text-light);
     flex-shrink: 0;
-  }
-}
-
-.extra-info {
-  margin-top: 12px;
-  p { margin: 4px 0; font-size: 0.9rem; color: var(--ion-color-medium); }
-}
-
-.bio-label {
-  font-weight: 600;
-  margin-top: 14px;
-  margin-bottom: 4px;
-  font-size: 0.95rem;
-}
-
-.bio-text {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: var(--ion-color-dark);
-}
-
-.redes-section {
-  margin-top: 12px;
-}
-
-.redes-links {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: var(--ion-color-primary);
-    text-decoration: none;
-
-    ion-icon {
-      font-size: 1.2rem;
-    }
   }
 }

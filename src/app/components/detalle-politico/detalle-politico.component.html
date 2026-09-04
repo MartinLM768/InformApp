@@ -13,8 +13,9 @@
   <!-- Foto -->
   <div class="header-image">
     <img
-      [src]="politico.foto_url || 'assets/placeholder.png'"
+      [src]="politico.foto_url || 'assets/avatar-placeholder.svg'"
       [alt]="politico.nombre"
+      (error)="onImageError($event)"
     />
   </div>
 

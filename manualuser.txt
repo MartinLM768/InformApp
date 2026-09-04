@@ -1,0 +1,57 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{geometry}
+
+\geometry{left=2cm, right=2cm, top=2.5cm, bottom=2.5cm}
+
+% Colores personalizados para el diseño
+\definecolor{maincolor}{RGB}{0, 102, 204}
+\definecolor{boxcolor}{RGB}{240, 248, 255}
+
+\title{\Huge \textbf{Manual de Usuario - InformApp} \\ \large \textit{Tu guía rápida para conocer a tus representantes}}
+\author{Equipo InformApp}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=boxcolor, colframe=maincolor, title=\textbf{Bienvenido a InformApp}]
+InformApp es tu plataforma centralizada para el control político. Aquí podrás encontrar información verificada, propuestas, antecedentes y redes sociales de los candidatos y políticos de tu país, todo en un solo lugar.
+\end{tcolorbox}
+
+\section*{\textcolor{maincolor}{1. ¿Cómo empezar?}}
+Al abrir la aplicación, te encontrarás con una interfaz intuitiva diseñada para que accedas a la información en pocos clics:
+
+\begin{itemize}[label=\textcolor{maincolor}{$\bullet$}]
+    \item \textbf{Explora:} Navega por la pestaña de \textit{Políticos} para conocer quiénes son y qué hacen.
+    \item \textbf{Filtra:} Usa nuestra búsqueda inteligente para encontrar a alguien por nombre, partido o cargo actual.
+    \item \textbf{Compara:} Accede al detalle de cada candidato para ver sus propuestas clave y antecedentes.
+\end{itemize}
+
+\section*{\textcolor{maincolor}{2. Navegación Principal}}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.5cm]
+    \item \textbf{Inicio:} Conoce nuestra identidad corporativa y propósitos.
+    \item \textbf{Políticos:} Lista completa con perfiles detallados.
+    \item \textbf{Partidos:} Información sobre las colectividades y cuántos políticos tienen activos.
+    \item \textbf{Candidatos:} Acceso directo a propuestas y fórmulas presidenciales/vicepresidenciales.
+\end{enumerate}
+
+\section*{\textcolor{maincolor}{3. ¿Qué puedes hacer en un perfil?}}
+Cada ficha de político o candidato ha sido diseñada para brindarte máxima transparencia:
+\begin{itemize}
+    \item \textbf{Bio y Antecedentes:} Trayectoria profesional y política.
+    \item \textbf{Redes Sociales:} Enlaces directos a Twitter, Instagram y sitio web.
+    \item \textbf{Propuestas:} Lo que promete y cómo planea ejecutarlo.
+\end{itemize}
+
+\begin{tcolorbox}[colback=white, colframe=maincolor, title=\textbf{Consejo Pro}]
+Usa los filtros de búsqueda en la sección de políticos para comparar rápidamente entre diferentes candidatos de un mismo partido o cargo. ¡La información es poder!
+\end{tcolorbox}
+
+\end{document}

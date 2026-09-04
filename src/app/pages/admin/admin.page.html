@@ -53,9 +53,32 @@
     </ion-fab-button>
   </ion-fab>
 
-  <!-- Loading -->
-  <div *ngIf="loading" class="ion-text-center ion-padding">
-    <ion-spinner color="primary"></ion-spinner>
+  <!-- Skeleton Screen durante carga -->
+  <div *ngIf="loading">
+    <ion-list class="ion-no-padding">
+      <ion-item *ngFor="let item of [1, 2, 3, 4, 5, 6]" class="politico-item">
+        <ion-avatar slot="start" *ngIf="seccion === 'politicos'">
+          <ion-skeleton-text [animated]="true" style="width: 50px; height: 50px; border-radius: 50%;"></ion-skeleton-text>
+        </ion-avatar>
+        <div class="partido-dot" slot="start" *ngIf="seccion !== 'politicos'" style="background: rgba(10, 35, 66, 0.15);"></div>
+
+        <ion-label>
+          <h2>
+            <ion-skeleton-text [animated]="true" style="width: 55%; height: 16px;"></ion-skeleton-text>
+          </h2>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 40%; height: 12px; margin: 4px 0;"></ion-skeleton-text>
+          </p>
+          <p class="text-light">
+            <ion-skeleton-text [animated]="true" style="width: 30%; height: 10px;"></ion-skeleton-text>
+          </p>
+        </ion-label>
+
+        <ion-button slot="end" fill="clear" disabled>
+          <ion-skeleton-text [animated]="true" style="width: 24px; height: 24px; border-radius: 4px;"></ion-skeleton-text>
+        </ion-button>
+      </ion-item>
+    </ion-list>
   </div>
 
   <!-- ── POLÍTICOS ──────────────────────────────────── -->
@@ -75,9 +98,13 @@
           <ion-icon name="close-circle-outline"></ion-icon>
         </ion-chip>
       </div>
-      <ion-item *ngFor="let p of politicosFiltrados">
+      <ion-item *ngFor="let p of politicosFiltrados" class="politico-item">
         <ion-avatar slot="start">
-          <img [src]="p.foto_url || 'assets/placeholder.png'" [alt]="p.nombre" />
+          <img
+            [src]="p.foto_url || 'assets/avatar-placeholder.svg'"
+            [alt]="p.nombre"
+            (error)="onImageError($event)"
+          />
         </ion-avatar>
         <ion-label>
           <h2>{{ p.nombre }} {{ p.apellido }}</h2>

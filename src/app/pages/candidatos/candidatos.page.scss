@@ -2,7 +2,7 @@
 
 // ── RELOJ ─────────────────────────────────────────────
 .countdown-wrapper {
-  background: linear-gradient(160deg, $primary-dark, $primary-mid);
+  background: var(--theme-clock-bg, linear-gradient(160deg, $primary-dark, $primary-mid));
   padding: $spacing-xl $spacing-md;
   text-align: center;
   border-radius: 0 0 32px 32px;
@@ -162,13 +162,13 @@ ion-card-content {
 
 .bio {
   font-size: 14px;
-  color: $text-secondary;
+  color: var(--theme-card-subtext-color, $text-secondary);
   line-height: 1.6;
   margin: 0 0 $spacing-md;
 }
 
 .propuesta {
-  background: rgba(10, 35, 66, 0.04);
+  background: var(--theme-propuesta-bg, rgba(10, 35, 66, 0.04));
   border-left: 4px solid $tertiary;
   border-radius: 0 $radius-sm $radius-sm 0;
   padding: $spacing-sm $spacing-md;
@@ -178,7 +178,7 @@ ion-card-content {
     display: block;
     font-size: 10px;
     font-weight: 700;
-    color: $text-light;
+    color: var(--theme-card-subtext-color, $text-light);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 4px;
@@ -186,7 +186,7 @@ ion-card-content {
 
   .propuesta-texto {
     font-size: 13px;
-    color: $text-primary;
+    color: var(--theme-card-title-color, $text-primary);
     margin: 0;
     line-height: 1.4;
     font-style: italic;
@@ -197,13 +197,13 @@ ion-card-content {
   display: flex;
   gap: 4px;
   margin-top: $spacing-sm;
-  ion-button { --color: #{$primary}; }
+  ion-button { --color: var(--theme-card-title-color, #{$primary}); }
 }
 
 // ── NOTA ──────────────────────────────────────────────
 .nota {
   font-size: 11px;
-  color: $text-light;
+  color: var(--theme-card-subtext-color, $text-light);
   font-style: italic;
   text-align: center;
   padding-bottom: $spacing-xl;

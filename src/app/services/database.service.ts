@@ -1,3 +1,4 @@
+// Servicio de base de datos: gestiona la conexión con Supabase y las operaciones CRUD para políticos, partidos, cargos y candidatos
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
@@ -102,7 +103,9 @@ export class DatabaseService {
   private supabaseAdmin: SupabaseClient;
 
   constructor() {
+    // Inicialización del cliente Supabase estándar para consultas públicas
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+    // Inicialización del cliente admin para operaciones de escritura restringidas
     this.supabaseAdmin = createClient(environment.supabaseUrl, environment.supabaseServiceKey, {
       auth: {
         persistSession: false,
@@ -123,6 +126,7 @@ export class DatabaseService {
   // ─────────────────────────────────────────────
 
   async obtenerPoliticosConDetalle(): Promise<PoliticoConCargo[]> {
+    // Consulta los políticos activos incluyendo datos de partidos y cargos actuales
     const { data, error } = await this.supabase
       .from('politicos')
       .select(`
@@ -164,6 +168,7 @@ export class DatabaseService {
       return [];
     }
 
+    // Mapeo y procesamiento de los datos recibidos (cálculo de cargo actual)
     const politicos = (data || []).map((p: any) => {
       const cargoActual = (p.politicos_cargos || [])
         .filter((pc: any) => pc.es_actual)
@@ -190,7 +195,7 @@ export class DatabaseService {
       };
     });
 
-    // Ordenar: primero por orden del cargo, luego alfabéticamente por apellido
+    // Ordenamiento final de los políticos procesados
     return politicos.sort((a: any, b: any) => {
       if (a.cargo_orden !== b.cargo_orden) return a.cargo_orden - b.cargo_orden;
       return a.apellido.localeCompare(b.apellido, 'es');
@@ -257,7 +262,6 @@ export class DatabaseService {
   // ─────────────────────────────────────────────
 
   async crearPolitico(politico: Omit<Politico, 'id' | 'created_at' | 'updated_at'>): Promise<string | null> {
-    // Convertir strings vacíos a null (igual que actualizarPolitico)
     const camposLimpios: any = {};
     for (const [key, value] of Object.entries(politico)) {
       if (value === '' || value === undefined) {
@@ -283,10 +287,8 @@ export class DatabaseService {
   }
 
   async actualizarPolitico(id: string, politico: Partial<Politico>): Promise<boolean> {
-    // Eliminar campos de sistema
     const { id: _id, created_at, updated_at, ...campos } = politico as any;
 
-    // Convertir strings vacíos a null (Supabase no acepta "" en campos date o uuid)
     const camposLimpios: any = {};
     for (const [key, value] of Object.entries(campos)) {
       if (value === '' || value === undefined) {
@@ -362,7 +364,6 @@ export class DatabaseService {
   // AUTH
   // ─────────────────────────────────────────────
 
-
   async obtenerPartidosSimple(): Promise<{ id: string; nombre: string }[]> {
     const { data, error } = await this.supabase
       .from('partidos')
@@ -395,6 +396,7 @@ export class DatabaseService {
   }
 
   async validarUsuario(username: string, password: string): Promise<boolean> {
+    // Validación local simple, recomendable migrar a autenticación en Supabase
     const usuarios = [
       { username: 'Martinlm768', password: 'NTRisBAD29' },
       { username: 'Santiago', password: 'squiñones' },

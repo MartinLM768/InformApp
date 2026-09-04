@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardContent, IonIcon, IonChip, IonLabel,
-  IonButtons, IonButton, IonSpinner, IonSearchbar, IonMenuButton,
+  IonButtons, IonButton, IonSearchbar, IonMenuButton,
+  IonSkeletonText,
 } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -20,7 +21,8 @@ addIcons({ 'time-outline': timeOutline, 'globe-outline': globeOutline, 'logo-twi
     CommonModule, FormsModule, RouterModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonCard, IonCardContent, IonIcon, IonChip, IonLabel,
-    IonButtons, IonButton, IonSpinner, IonSearchbar, IonMenuButton,
+    IonButtons, IonButton, IonSearchbar, IonMenuButton,
+    IonSkeletonText,
   ],
   templateUrl: './candidatos.page.html',
   styleUrls: ['./candidatos.page.scss'],
@@ -91,5 +93,12 @@ export class CandidatosPage implements OnInit, OnDestroy {
 
   iniciales(nombre?: string, apellido?: string): string {
     return `${(nombre || '?').charAt(0)}${(apellido || '').charAt(0)}`;
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    if (img && !img.src.includes('avatar-placeholder.svg')) {
+      img.src = 'assets/avatar-placeholder.svg';
+    }
   }
 }

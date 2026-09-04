@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardHeader, IonCardContent,
-  IonButton, IonIcon, IonAvatar, IonSpinner,
+  IonButton, IonIcon, IonAvatar,
   IonButtons, IonChip, IonSearchbar, IonMenuButton,
+  IonSkeletonText,
   ActionSheetController, ModalController,
 } from '@ionic/angular/standalone';
 import { RouterModule, ActivatedRoute } from '@angular/router';
@@ -23,8 +24,9 @@ addIcons({ 'settings-outline': settingsOutline, 'eye-outline': eyeOutline, 'filt
     CommonModule, FormsModule, RouterModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonCard, IonCardHeader, IonCardContent,
-    IonButton, IonIcon, IonAvatar, IonSpinner,
+    IonButton, IonIcon, IonAvatar,
     IonButtons, IonChip, IonSearchbar, IonMenuButton,
+    IonSkeletonText,
   ],
   templateUrl: './politicos.page.html',
   styleUrls: ['./politicos.page.scss'],
@@ -129,5 +131,12 @@ export class PoliticosPage implements OnInit {
       initialBreakpoint: 1,
     });
     await modal.present();
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    if (img && !img.src.includes('avatar-placeholder.svg')) {
+      img.src = 'assets/avatar-placeholder.svg';
+    }
   }
 }

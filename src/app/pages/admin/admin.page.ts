@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonButton, IonIcon, IonList, IonListHeader,
-  IonLabel, IonItem, IonSpinner, IonAvatar,
+  IonLabel, IonItem, IonAvatar,
   IonFab, IonFabButton, IonButtons, IonSegment,
   IonSegmentButton, IonBadge, IonSearchbar, IonChip,
+  IonSkeletonText,
   ModalController, ToastController, AlertController, ActionSheetController,
   IonMenuButton,
 } from '@ionic/angular/standalone';
@@ -36,9 +37,10 @@ addIcons({
     CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonButton, IonIcon, IonList, IonListHeader,
-    IonLabel, IonItem, IonSpinner, IonAvatar,
+    IonLabel, IonItem, IonAvatar,
     IonFab, IonFabButton, IonButtons, IonSegment,
     IonSegmentButton, IonBadge, IonSearchbar, IonChip, IonMenuButton,
+    IonSkeletonText,
   ],
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
@@ -277,5 +279,12 @@ export class AdminPage implements OnInit {
       message: mensaje, duration: 2000, position: 'bottom', color,
     });
     await toast.present();
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    if (img && !img.src.includes('avatar-placeholder.svg')) {
+      img.src = 'assets/avatar-placeholder.svg';
+    }
   }
 }
