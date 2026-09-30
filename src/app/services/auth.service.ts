@@ -1,58 +1,60 @@
 // Servicio de autenticación: gestiona el inicio y cierre de sesión
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Session } from '@supabase/supabase-js';
 import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Estados reactivos para controlar si el usuario está autenticado y quién es
   private isAuthenticated = new BehaviorSubject<boolean>(false);
   private currentUser = new BehaviorSubject<string | null>(null);
+  private authInitialization: Promise<void>;
 
-  // Exposición de estados como observables para que los componentes se suscriban
   isAuthenticated$ = this.isAuthenticated.asObservable();
   currentUser$ = this.currentUser.asObservable();
 
   constructor(private dbService: DatabaseService) {
-    // Verifica si ya hay una sesión activa al iniciar el servicio
-    this.checkAuthStatus();
+    this.authInitialization = this.initializeAuthState();
+    this.dbService.onAuthStateChange((_event, session) => {
+      this.updateStateFromSession(session);
+    });
   }
 
-  // Verifica en el almacenamiento local si existe un token de administrador
-  private checkAuthStatus() {
-    const token = localStorage.getItem('adminToken');
-    if (token) {
-      this.isAuthenticated.next(true);
-      this.currentUser.next(localStorage.getItem('username'));
+  private async initializeAuthState(): Promise<void> {
+    const { data, error } = await this.dbService.getSession();
+    if (error) {
+      console.error('Error restaurando sesión de Supabase:', error);
+      this.isAuthenticated.next(false);
+      this.currentUser.next(null);
+      return;
     }
+    this.updateStateFromSession(data.session);
   }
 
-  // Realiza el login validando credenciales a través del servicio de base de datos
-  async login(username: string, password: string): Promise<boolean> {
-    const isValid = await this.dbService.validarUsuario(username, password);
-    if (isValid) {
-      // Guarda la sesión en el almacenamiento local
-      localStorage.setItem('adminToken', 'true');
-      localStorage.setItem('username', username);
+  private updateStateFromSession(session: Session | null): void {
+    if (session?.user) {
       this.isAuthenticated.next(true);
-      this.currentUser.next(username);
-      return true;
+      this.currentUser.next(session.user.email ?? null);
+      return;
     }
-    return false;
-  }
-
-  // Cierra la sesión, eliminando datos del almacenamiento local y actualizando estados
-  logout() {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('username');
     this.isAuthenticated.next(false);
     this.currentUser.next(null);
   }
 
-  // Comprobación síncrona simple del estado de autenticación
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('adminToken');
+  async login(email: string, password: string): Promise<boolean> {
+    return this.dbService.signInWithPassword(email, password);
+  }
+
+  async logout(): Promise<void> {
+    await this.dbService.signOut();
+    this.isAuthenticated.next(false);
+    this.currentUser.next(null);
+  }
+
+  async isLoggedIn(): Promise<boolean> {
+    await this.authInitialization;
+    return this.isAuthenticated.value;
   }
 }

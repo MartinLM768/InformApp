@@ -268,7 +268,7 @@ export class AdminPage implements OnInit {
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         { text: 'Salir', role: 'destructive',
-          handler: () => { this.authService.logout(); this.router.navigate(['/home']); } },
+          handler: async () => { await this.authService.logout(); await this.router.navigate(['/home']); } },
       ],
     });
     await alert.present();
