@@ -13,19 +13,19 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="login()">
 
-      <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('username')">
-        <ion-label position="stacked">Usuario</ion-label>
+      <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('email')">
+        <ion-label position="stacked">Correo electrónico</ion-label>
         <ion-input
-          formControlName="username"
-          placeholder="Ingresa tu usuario"
-          type="text"
-          autocomplete="username"
+          formControlName="email"
+          placeholder="Ingresa tu correo"
+          type="email"
+          autocomplete="email"
         ></ion-input>
       </ion-item>
-      <ion-note *ngIf="isFieldInvalid('username')" color="danger" class="error-msg">
+      <ion-note *ngIf="isFieldInvalid('email')" color="danger" class="error-msg">
         <ion-icon name="alert-circle-outline"></ion-icon>
-        <span *ngIf="hasError('username', 'required')">El usuario es obligatorio</span>
-        <span *ngIf="hasError('username', 'minlength')">Mínimo 3 caracteres</span>
+        <span *ngIf="hasError('email', 'required')">El correo es obligatorio</span>
+        <span *ngIf="hasError('email', 'email')">Ingresa un correo válido</span>
       </ion-note>
 
       <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('password')">

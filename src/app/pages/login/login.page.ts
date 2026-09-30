@@ -19,7 +19,6 @@ import {
   IonIcon,
   ToastController,
 } from '@ionic/angular/standalone';
-import { DatabaseService } from '../../services/database.service';
 import { AuthService } from '../../services/auth.service';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, alertCircleOutline } from 'ionicons/icons';
@@ -60,14 +59,13 @@ export class LoginPage {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private dbService: DatabaseService,
     private router: Router,
     private toastController: ToastController
   ) {
     addIcons({ arrowBackOutline, alertCircleOutline });
 
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
@@ -90,12 +88,12 @@ export class LoginPage {
       return;
     }
 
-    const { username, password } = this.loginForm.value;
+    const { email, password } = this.loginForm.value;
     this.loading = true; // Activa el spinner de carga
     try {
       // Intenta autenticar usando el servicio de Auth
       const success = await this.authService.login(
-        username,
+        email,
         password
       );
 
@@ -103,7 +101,7 @@ export class LoginPage {
         await this.mostrarToast('Bienvenido, administrador', 'success');
         this.router.navigate(['/admin']); // Navega al panel administrativo
       } else {
-        await this.mostrarToast('Usuario o contraseña incorrectos', 'danger');
+        await this.mostrarToast('Correo o contraseña incorrectos', 'danger');
       }
     } catch (error) {
       await this.mostrarToast('Error en el login', 'danger');

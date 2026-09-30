@@ -1,6 +1,6 @@
 // Servicio de base de datos: gestiona la conexión con Supabase y las operaciones CRUD para políticos, partidos, cargos y candidatos
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { AuthChangeEvent, createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 
 // ─────────────────────────────────────────────
@@ -100,21 +100,10 @@ export interface Candidato {
 })
 export class DatabaseService {
   private supabase: SupabaseClient;
-  private supabaseAdmin: SupabaseClient;
 
   constructor() {
-    // Inicialización del cliente Supabase estándar para consultas públicas
+    // Cliente público de Supabase (usa sesión del usuario autenticado).
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-    // Inicialización del cliente admin para operaciones de escritura restringidas
-    this.supabaseAdmin = createClient(environment.supabaseUrl, environment.supabaseServiceKey, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-        detectSessionInUrl: false,
-        storageKey: 'supabase-admin-key',
-      },
-      global: { headers: { Authorization: `Bearer ${environment.supabaseServiceKey}` } },
-    });
   }
 
   async initialize(): Promise<void> {
@@ -260,6 +249,8 @@ export class DatabaseService {
   // ─────────────────────────────────────────────
   // ADMIN — crear / editar / eliminar
   // ─────────────────────────────────────────────
+  // Nota: estas escrituras dependen de sesión autenticada y políticas RLS
+  // configuradas en Supabase para permitir operaciones administrativas.
 
   async crearPolitico(politico: Omit<Politico, 'id' | 'created_at' | 'updated_at'>): Promise<string | null> {
     const camposLimpios: any = {};
@@ -273,7 +264,7 @@ export class DatabaseService {
 
     console.log('[DB] Creando político', camposLimpios);
 
-    const { data, error } = await this.supabaseAdmin
+    const { data, error } = await this.supabase
       .from('politicos')
       .insert(camposLimpios)
       .select('id')
@@ -300,7 +291,7 @@ export class DatabaseService {
 
     console.log('[DB] Actualizando político', id, camposLimpios);
 
-    const { data, error } = await this.supabaseAdmin
+    const { data, error } = await this.supabase
       .from('politicos')
       .update(camposLimpios)
       .eq('id', id)
@@ -316,7 +307,7 @@ export class DatabaseService {
   }
 
   async eliminarPolitico(id: string): Promise<boolean> {
-    const { error } = await this.supabaseAdmin
+    const { error } = await this.supabase
       .from('politicos')
       .delete()
       .eq('id', id);
@@ -329,7 +320,7 @@ export class DatabaseService {
   }
 
   async asignarCargo(politicoCargo: Omit<PoliticoCargo, 'id'>): Promise<boolean> {
-    const { error } = await this.supabaseAdmin
+    const { error } = await this.supabase
       .from('politicos_cargos')
       .insert(politicoCargo);
 
@@ -342,14 +333,14 @@ export class DatabaseService {
 
   async actualizarOAsignarCargo(politicoCargo: Omit<PoliticoCargo, 'id'>): Promise<boolean> {
     // Marcar cargos anteriores como no actuales
-    await this.supabaseAdmin
+    await this.supabase
       .from('politicos_cargos')
       .update({ es_actual: false })
       .eq('politico_id', politicoCargo.politico_id)
       .eq('es_actual', true);
 
     // Insertar el nuevo cargo actual
-    const { error } = await this.supabaseAdmin
+    const { error } = await this.supabase
       .from('politicos_cargos')
       .insert({ ...politicoCargo, es_actual: true });
 
@@ -364,6 +355,32 @@ export class DatabaseService {
   // AUTH
   // ─────────────────────────────────────────────
 
+  async signInWithPassword(email: string, password: string): Promise<boolean> {
+    const { error } = await this.supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      console.error('Error autenticando en Supabase Auth:', error);
+      return false;
+    }
+    return true;
+  }
+
+  async signOut(): Promise<boolean> {
+    const { error } = await this.supabase.auth.signOut();
+    if (error) {
+      console.error('Error cerrando sesión en Supabase Auth:', error);
+      return false;
+    }
+    return true;
+  }
+
+  getSession() {
+    return this.supabase.auth.getSession();
+  }
+
+  onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void) {
+    return this.supabase.auth.onAuthStateChange(callback);
+  }
+
   async obtenerPartidosSimple(): Promise<{ id: string; nombre: string }[]> {
     const { data, error } = await this.supabase
       .from('partidos')
@@ -375,33 +392,24 @@ export class DatabaseService {
   }
 
   async crearPartido(partido: Omit<Partido, 'id' | 'cantidad_politicos'>): Promise<string | null> {
-    const { data, error } = await this.supabaseAdmin
+    const { data, error } = await this.supabase
       .from('partidos').insert(partido).select('id').single();
     if (error) { console.error('Error creando partido:', error); return null; }
     return data?.id || null;
   }
 
   async actualizarPartido(id: string, partido: Partial<Omit<Partido, 'id' | 'cantidad_politicos'>>): Promise<boolean> {
-    const { error } = await this.supabaseAdmin
+    const { error } = await this.supabase
       .from('partidos').update(partido).eq('id', id);
     if (error) { console.error('Error actualizando partido:', JSON.stringify(error)); return false; }
     return true;
   }
 
   async eliminarPartido(id: string): Promise<boolean> {
-    const { error } = await this.supabaseAdmin
+    const { error } = await this.supabase
       .from('partidos').delete().eq('id', id);
     if (error) { console.error('Error eliminando partido:', error); return false; }
     return true;
-  }
-
-  async validarUsuario(username: string, password: string): Promise<boolean> {
-    // Validación local simple, recomendable migrar a autenticación en Supabase
-    const usuarios = [
-      { username: 'Martinlm768', password: 'NTRisBAD29' },
-      { username: 'Santiago', password: 'squiñones' },
-    ];
-    return usuarios.some((u) => u.username === username && u.password === password);
   }
 
   // ─────────────────────────────────────────────
@@ -447,7 +455,7 @@ export class DatabaseService {
   }
 
   async crearCandidato(candidato: Omit<Candidato, 'id' | 'partido_nombre' | 'partido_siglas' | 'partido_color'>): Promise<string | null> {
-    const { data, error } = await this.supabaseAdmin
+    const { data, error } = await this.supabase
       .from('candidatos').insert(candidato).select('id').single();
     if (error) { console.error('Error creando candidato:', error); return null; }
     return data?.id || null;
@@ -459,14 +467,14 @@ export class DatabaseService {
     for (const [k, v] of Object.entries(campos)) {
       camposLimpios[k] = (v === '' || v === undefined) ? null : v;
     }
-    const { error } = await this.supabaseAdmin
+    const { error } = await this.supabase
       .from('candidatos').update(camposLimpios).eq('id', id);
     if (error) { console.error('Error actualizando candidato:', JSON.stringify(error)); return false; }
     return true;
   }
 
   async eliminarCandidato(id: string): Promise<boolean> {
-    const { error } = await this.supabaseAdmin.from('candidatos').delete().eq('id', id);
+    const { error } = await this.supabase.from('candidatos').delete().eq('id', id);
     if (error) { console.error('Error eliminando candidato:', error); return false; }
     return true;
   }
