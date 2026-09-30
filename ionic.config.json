@@ -1,0 +1,7 @@
+{
+  "name": "InformApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

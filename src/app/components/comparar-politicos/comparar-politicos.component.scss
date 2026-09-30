@@ -1,0 +1,142 @@
+@use '../../../theme/variables.scss' as *;
+
+// Estructura visual del modal de comparación.
+ion-content {
+  --background: #f4f7fa;
+}
+
+.selector-intro,
+.comparacion-intro {
+  padding: 24px 20px 12px;
+  text-align: center;
+}
+
+.selector-intro ion-icon {
+  color: $secondary;
+  font-size: 30px;
+}
+
+.selector-intro h2,
+.comparacion-intro h2 {
+  margin: 8px 0 6px;
+  color: $primary;
+  font-size: 21px;
+}
+
+.selector-intro p {
+  max-width: 420px;
+  margin: 0 auto;
+  color: $text-secondary;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.comparacion-intro span {
+  color: $secondary;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.opciones {
+  display: grid;
+  gap: 10px;
+  padding: 12px 16px 28px;
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid rgba(10, 35, 66, .1);
+  border-radius: 12px;
+  background: #fff;
+  color: $primary;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: $shadow-sm;
+}
+
+.opcion:active { transform: scale(.99); }
+
+.opcion-avatar,
+.perfil-foto {
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary, $info);
+}
+
+.opcion-avatar {
+  width: 58px;
+  height: 58px;
+}
+
+.opcion-avatar img,
+.perfil-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.opcion-datos {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.opcion-datos strong,
+.opcion-datos span,
+.opcion-datos small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opcion-datos strong { color: $primary; font-size: 14px; }
+.opcion-datos span { color: $secondary; font-size: 11px; text-transform: uppercase; }
+.opcion-datos small { color: $text-secondary; font-size: 12px; }
+.opcion-flecha { margin-left: auto; color: $secondary; font-size: 28px; line-height: 1; }
+.sin-opciones { padding: 20px; text-align: center; color: $text-light; }
+
+.perfiles {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+  padding: 12px 16px 28px;
+}
+
+.perfil {
+  min-width: 0;
+  padding: 16px 12px;
+  border: 1px solid rgba(10, 35, 66, .12);
+  border-radius: 14px;
+  background: #fff;
+  text-align: center;
+  box-shadow: $shadow-sm;
+}
+
+.perfil-seleccionado { border: 2px solid $secondary; }
+.perfil-foto { width: 94px; height: 94px; margin: 0 auto 12px; }
+.perfil-foto span { display: grid; width: 100%; height: 100%; place-items: center; color: #fff; font-size: 24px; font-weight: 800; }
+.perfil h3 { margin: 0 0 8px; color: $primary; font-size: 16px; line-height: 1.25; }
+.perfil ion-chip { margin: 0 auto 12px; max-width: 100%; font-size: 10px; }
+.versus { align-self: center; color: $secondary; font-size: 11px; font-weight: 800; text-align: center; }
+
+dl { margin: 4px 0 0; text-align: left; }
+dl div { padding: 9px 0; border-top: 1px solid rgba(10, 35, 66, .1); }
+dt { color: #8a8175; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+dd { margin: 3px 0 0; color: $primary; font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; }
+
+@media (max-width: 600px) {
+  .perfiles { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+  .versus { position: absolute; left: 50%; transform: translateX(-50%); margin-top: 46px; z-index: 1; padding: 4px; background: var(--ion-background-color, #f4f7fa); }
+  .perfil-foto { width: 76px; height: 76px; }
+  .perfil h3 { font-size: 14px; }
+}

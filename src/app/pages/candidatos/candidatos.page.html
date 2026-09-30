@@ -1,0 +1,282 @@
+<!-- Lista pública de candidatos y sus controles de búsqueda. -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button color="light"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Candidatos 2026</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- ── RELOJ ──────────────────────────────────────── -->
+  <div class="countdown-wrapper">
+    <p class="countdown-label">
+      <ion-icon name="time-outline"></ion-icon>
+      {{ eleccionesIniciadas ? '¡Las elecciones han comenzado!' : 'Tiempo restante para las elecciones' }}
+    </p>
+    <p class="countdown-fecha">31 de mayo de 2026 · 8:00 AM</p>
+
+    <div class="clock" *ngIf="!eleccionesIniciadas">
+      <div class="clock-cell">
+        <span class="clock-num">{{ pad(dias) }}</span>
+        <span class="clock-tag">días</span>
+      </div>
+      <span class="clock-sep">:</span>
+      <div class="clock-cell">
+        <span class="clock-num">{{ pad(horas) }}</span>
+        <span class="clock-tag">horas</span>
+      </div>
+      <span class="clock-sep">:</span>
+      <div class="clock-cell">
+        <span class="clock-num">{{ pad(minutos) }}</span>
+        <span class="clock-tag">min</span>
+      </div>
+      <span class="clock-sep">:</span>
+      <div class="clock-cell">
+        <span class="clock-num seg">{{ pad(segundos) }}</span>
+        <span class="clock-tag">seg</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BÚSQUEDA ───────────────────────────────────── -->
+  <div class="search-bar ion-padding-horizontal ion-padding-top">
+    <ion-searchbar
+      [(ngModel)]="textoBusqueda"
+      (ionInput)="filtrarCandidatos()"
+      placeholder="Buscar candidato o partido..."
+      debounce="200"
+    ></ion-searchbar>
+  </div>
+
+  <!-- Contador -->
+  <div class="result-count ion-padding-horizontal" *ngIf="!loading">
+    <span>{{ candidatosFiltrados.length }} resultado{{ candidatosFiltrados.length !== 1 ? 's' : '' }}</span>
+  </div>
+
+  <!-- ── CANDIDATOS (Cargados) ────────────────────────── -->
+  <div class="candidatos ion-padding" *ngIf="!loading">
+    <ion-card *ngFor="let c of candidatosFiltrados" class="candidato-card">
+
+      <div class="card-top" [style.background]="c.partido_color || '#0A2342'">
+        <div class="comparar-control">
+          <ion-button class="comparar-button" fill="outline" size="small" (click)="alternarSelector(c); $event.stopPropagation()">
+            {{ candidatoSelectorId === c.id ? 'Cerrar' : 'Comparar' }}
+          </ion-button>
+
+          <div class="comparar-selector" *ngIf="candidatoSelectorId === c.id">
+            <span class="selector-title">Comparar con</span>
+            <button
+              type="button"
+              class="candidato-option"
+              *ngFor="let otro of candidatosDisponibles(c)"
+              (click)="seleccionarComparado(c, otro)">
+              <span>{{ otro.nombre }} {{ otro.apellido }}</span>
+              <small>{{ otro.partido_siglas || 'Independiente' }}</small>
+            </button>
+            <span class="selector-empty" *ngIf="candidatosDisponibles(c).length === 0">No hay otro candidato disponible.</span>
+          </div>
+        </div>
+
+        <div class="formula">
+          <div class="formula-persona">
+            <div class="avatar grande">
+              <img
+                *ngIf="c.foto_url"
+                [src]="c.foto_url"
+                [alt]="c.nombre"
+                (error)="onImageError($event)"
+              />
+              <span *ngIf="!c.foto_url">{{ iniciales(c.nombre, c.apellido) }}</span>
+            </div>
+            <div class="formula-info">
+              <span class="formula-rol">Presidente</span>
+              <span class="formula-nombre">{{ c.nombre }} {{ c.apellido }}</span>
+            </div>
+          </div>
+
+          <div class="formula-divider" *ngIf="c.vicepresidente_nombre">
+            <span>+</span>
+          </div>
+
+          <div class="formula-persona" *ngIf="c.vicepresidente_nombre">
+            <div class="avatar chico">
+              <img
+                *ngIf="c.foto_vicepresidente_url"
+                [src]="c.foto_vicepresidente_url"
+                [alt]="c.vicepresidente_nombre"
+                (error)="onImageError($event)"
+              />
+              <span *ngIf="!c.foto_vicepresidente_url">{{ iniciales(c.vicepresidente_nombre, c.vicepresidente_apellido) }}</span>
+            </div>
+            <div class="formula-info">
+              <span class="formula-rol">Vicepresidente/a</span>
+              <span class="formula-nombre">{{ c.vicepresidente_nombre }} {{ c.vicepresidente_apellido }}</span>
+            </div>
+          </div>
+        </div>
+
+        <ion-chip class="partido-chip" *ngIf="c.partido_nombre">
+          <ion-label>{{ c.partido_siglas }} · {{ c.partido_nombre }}</ion-label>
+        </ion-chip>
+        <ion-chip class="partido-chip" *ngIf="!c.partido_nombre">
+          <ion-label>Independiente</ion-label>
+        </ion-chip>
+      </div>
+
+      <ion-card-content>
+        <p class="bio" *ngIf="c.bio">{{ c.bio }}</p>
+
+        <div class="propuesta" *ngIf="c.propuesta_clave">
+          <span class="propuesta-label">Propuesta clave</span>
+          <p class="propuesta-texto">{{ c.propuesta_clave }}</p>
+        </div>
+
+        <div class="links" *ngIf="c.sitio_web || c.twitter_url || c.instagram_url">
+          <ion-button fill="clear" size="small" *ngIf="c.sitio_web" (click)="abrirUrl(c.sitio_web)">
+            <ion-icon name="globe-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" *ngIf="c.twitter_url" (click)="abrirUrl(c.twitter_url)">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" *ngIf="c.instagram_url" (click)="abrirUrl(c.instagram_url)">
+            <ion-icon name="logo-instagram"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+
+    <div *ngIf="candidatosFiltrados.length === 0" class="empty ion-text-center">
+      <p>No hay candidatos que coincidan con la búsqueda.</p>
+    </div>
+  </div>
+
+  <section class="comparacion ion-padding" *ngIf="candidatoComparado as comparado">
+    <div class="comparacion-heading">
+      <div>
+        <span class="comparacion-kicker">Comparación de perfiles</span>
+        <h2>Dos propuestas, una mirada más clara</h2>
+      </div>
+      <ion-button fill="clear" size="small" (click)="cerrarComparacion()">Cerrar</ion-button>
+    </div>
+
+    <div class="comparacion-grid">
+      <article class="comparacion-perfil">
+        <div class="comparacion-identidad">
+          <div class="avatar comparacion-avatar">
+            <img *ngIf="candidatoSeleccionado?.foto_url" [src]="candidatoSeleccionado?.foto_url" [alt]="candidatoSeleccionado?.nombre || ''" (error)="onImageError($event)" />
+            <span *ngIf="!candidatoSeleccionado?.foto_url">{{ iniciales(candidatoSeleccionado?.nombre, candidatoSeleccionado?.apellido) }}</span>
+          </div>
+          <div>
+            <span class="comparacion-rol">Candidato presidencial</span>
+            <h3>{{ candidatoSeleccionado?.nombre }} {{ candidatoSeleccionado?.apellido }}</h3>
+          </div>
+        </div>
+        <div class="comparacion-dato">
+          <span>Partido</span>
+          <strong>{{ candidatoSeleccionado?.partido_nombre || 'Independiente' }}</strong>
+        </div>
+        <div class="comparacion-propuesta">
+          <span>Propuesta clave</span>
+          <p>{{ candidatoSeleccionado?.propuesta_clave || 'Sin propuesta registrada.' }}</p>
+        </div>
+        <p class="comparacion-bio">{{ candidatoSeleccionado?.bio || 'Sin biografía registrada.' }}</p>
+      </article>
+
+      <article class="comparacion-perfil perfil-destacado">
+        <div class="comparacion-identidad">
+          <div class="avatar comparacion-avatar">
+            <img *ngIf="comparado.foto_url" [src]="comparado.foto_url" [alt]="comparado.nombre" (error)="onImageError($event)" />
+            <span *ngIf="!comparado.foto_url">{{ iniciales(comparado.nombre, comparado.apellido) }}</span>
+          </div>
+          <div>
+            <span class="comparacion-rol">Candidato presidencial</span>
+            <h3>{{ comparado.nombre }} {{ comparado.apellido }}</h3>
+          </div>
+        </div>
+        <div class="comparacion-dato">
+          <span>Partido</span>
+          <strong>{{ comparado.partido_nombre || 'Independiente' }}</strong>
+        </div>
+        <div class="comparacion-propuesta">
+          <span>Propuesta clave</span>
+          <p>{{ comparado.propuesta_clave || 'Sin propuesta registrada.' }}</p>
+        </div>
+        <p class="comparacion-bio">{{ comparado.bio || 'Sin biografía registrada.' }}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── Skeleton Screen durante carga ───────────────────── -->
+  <div class="candidatos ion-padding" *ngIf="loading">
+    <ion-card *ngFor="let item of [1, 2, 3]" class="candidato-card">
+      <div class="card-top" style="background: #0A2342;">
+        <div class="formula">
+          <div class="formula-persona">
+            <div class="avatar grande" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);">
+              <ion-skeleton-text [animated]="true" style="width: 100%; height: 100%; border-radius: 50%;"></ion-skeleton-text>
+            </div>
+            <div class="formula-info">
+              <span class="formula-rol">
+                <ion-skeleton-text [animated]="true" style="width: 50px; height: 10px;"></ion-skeleton-text>
+              </span>
+              <span class="formula-nombre">
+                <ion-skeleton-text [animated]="true" style="width: 110px; height: 14px; margin-top: 4px;"></ion-skeleton-text>
+              </span>
+            </div>
+          </div>
+
+          <div class="formula-divider">
+            <span>+</span>
+          </div>
+
+          <div class="formula-persona">
+            <div class="avatar chico" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);">
+              <ion-skeleton-text [animated]="true" style="width: 100%; height: 100%; border-radius: 50%;"></ion-skeleton-text>
+            </div>
+            <div class="formula-info">
+              <span class="formula-rol">
+                <ion-skeleton-text [animated]="true" style="width: 60px; height: 10px;"></ion-skeleton-text>
+              </span>
+              <span class="formula-nombre">
+                <ion-skeleton-text [animated]="true" style="width: 110px; height: 14px; margin-top: 4px;"></ion-skeleton-text>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 8px;">
+          <ion-skeleton-text [animated]="true" style="width: 130px; height: 24px; border-radius: 12px;"></ion-skeleton-text>
+        </div>
+      </div>
+
+      <ion-card-content>
+        <p class="bio">
+          <ion-skeleton-text [animated]="true" style="width: 90%; height: 14px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 75%; height: 14px; margin-top: 6px;"></ion-skeleton-text>
+        </p>
+
+        <div class="propuesta">
+          <span class="propuesta-label">
+            <ion-skeleton-text [animated]="true" style="width: 80px; height: 10px;"></ion-skeleton-text>
+          </span>
+          <p class="propuesta-texto">
+            <ion-skeleton-text [animated]="true" style="width: 95%; height: 14px; margin-top: 4px;"></ion-skeleton-text>
+          </p>
+        </div>
+
+        <div class="links" style="margin-top: 10px; display: flex; gap: 8px;">
+          <ion-skeleton-text [animated]="true" style="width: 32px; height: 32px; border-radius: 50%;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 32px; height: 32px; border-radius: 50%;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 32px; height: 32px; border-radius: 50%;"></ion-skeleton-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <p class="nota ion-padding">* Lista sujeta a actualización conforme se oficialicen inscripciones ante el CNE.</p>
+
+</ion-content>

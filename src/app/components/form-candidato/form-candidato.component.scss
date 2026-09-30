@@ -1,0 +1,51 @@
+@use '../../../theme/variables.scss' as *;
+
+// Agrupa visualmente los datos del candidato y sus acciones.
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: $text-light;
+  margin: $spacing-lg 0 $spacing-sm;
+  padding-left: 4px;
+}
+
+.form-item {
+  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-xs;
+  --border-radius: #{$radius-md};
+
+  &.ion-invalid {
+    --border-color: var(--ion-color-danger) !important;
+  }
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+  margin-bottom: $spacing-md;
+  padding-left: $spacing-xs;
+
+  ion-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+}
+
+.toggle-item {
+  --padding-start: 0;
+  margin-bottom: $spacing-md;
+}
+
+.buttons-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  margin-top: $spacing-lg;
+  padding-bottom: $spacing-xl;
+}

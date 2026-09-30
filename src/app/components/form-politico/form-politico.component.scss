@@ -1,0 +1,73 @@
+@use '../../../theme/variables.scss' as *;
+
+// Apariencia base de todos los controles del formulario.
+ion-item {
+  --border-color: var(--ion-item-border-color);
+  --border-radius: #{$radius-lg};
+  --background: var(--ion-item-background);
+  --color: var(--ion-text-color);
+
+  &:focus-within {
+    --border-color: var(--ion-color-primary);
+  }
+}
+
+/* Labels: se diferencian visualmente del valor introducido. */
+ion-label {
+  font-weight: 600;
+  color: var(--ion-text-color);
+  margin-bottom: $spacing-sm;
+}
+
+/* Inputs, textareas y selects comparten colores y espaciado. */
+ion-input,
+ion-textarea,
+ion-select {
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-color-medium);
+  --padding-top: $spacing-sm;
+  --padding-bottom: $spacing-sm;
+}
+
+/* Mantiene visible el borde outline en temas claro y oscuro. */
+ion-item[fill="outline"] {
+  --border-color: var(--ion-color-medium);
+}
+
+.form-item {
+  // Separa cada control sin alterar la estructura del formulario.
+  margin-bottom: $spacing-xs;
+
+  &.ion-invalid {
+    --border-color: var(--ion-color-danger) !important;
+  }
+}
+
+.error-msg {
+  // Mensaje compacto alineado con el icono de advertencia.
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+  margin-bottom: $spacing-md;
+  padding-left: $spacing-xs;
+
+  ion-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+}
+
+/* Botones: separación vertical y peso tipográfico consistente. */
+ion-button {
+  margin-top: $spacing-md;
+  font-weight: 600;
+}
+
+/* El botón secundario conserva contraste en ambos temas. */
+ion-button[fill="outline"] {
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-color-medium);
+}

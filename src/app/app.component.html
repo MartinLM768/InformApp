@@ -1,0 +1,102 @@
+<!-- Contenedor raíz de Ionic y menú compartido por todas las páginas. -->
+<ion-app>
+
+  <ion-menu contentId="main-content" menuId="main-menu" type="overlay">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title class="menu-title">
+          Inform<span class="menu-title-app">App</span>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="menu-content">
+
+      <div class="menu-section-label">Explorar</div>
+
+      <ion-list lines="none">
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerLink="/home" routerLinkActive="active-link" detail="false" button>
+            <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+            <ion-label>Nosotros</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerLink="/politicos" routerLinkActive="active-link" detail="false" button>
+            <ion-icon name="people-outline" slot="start"></ion-icon>
+            <ion-label>Políticos</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerLink="/partidos" routerLinkActive="active-link" detail="false" button>
+            <ion-icon name="flag-outline" slot="start"></ion-icon>
+            <ion-label>Partidos</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerLink="/candidatos" routerLinkActive="active-link" detail="false" button>
+            <ion-icon name="podium-outline" slot="start"></ion-icon>
+            <ion-label>Candidatos 2026</ion-label>
+            <ion-badge color="secondary" slot="end">2026</ion-badge>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+      <div class="menu-divider"></div>
+      <div class="menu-section-label">Estilos & Apariencia</div>
+
+      <div class="theme-selector-container">
+        <div
+          *ngFor="let t of themes"
+          class="theme-card-option"
+          [class.selected]="currentTheme === t.id"
+          (click)="seleccionarTema(t.id)"
+          [style.--theme-preview-bg]="t.bgHex"
+          [style.--theme-preview-color]="t.textColor"
+        >
+          <div class="theme-swatch" [style.background]="t.bgHex">
+            <span class="theme-swatch-text" [style.color]="t.textColor">
+              Inform<span [style.color]="t.accentColor">App</span>
+            </span>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name-row">
+              <ion-icon [name]="t.icono" class="theme-icon"></ion-icon>
+              <span class="theme-name">{{ t.nombre }}</span>
+            </div>
+            <span class="theme-subname">{{ t.subtitulo }}</span>
+          </div>
+          <ion-icon
+            *ngIf="currentTheme === t.id"
+            name="checkmark-circle"
+            class="theme-check-icon"
+          ></ion-icon>
+        </div>
+      </div>
+
+      <div class="menu-divider"></div>
+      <div class="menu-section-label">Cuenta</div>
+
+      <ion-list lines="none">
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerLink="/login" routerLinkActive="active-link" detail="false" button>
+            <ion-icon name="settings-outline" slot="start"></ion-icon>
+            <ion-label>Administración</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+    </ion-content>
+
+    <ion-footer class="menu-footer">
+      <p>InformApp · Colombia 🇨🇴</p>
+      <p class="menu-footer-sub">Centralizatio</p>
+    </ion-footer>
+  </ion-menu>
+
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+
+</ion-app>

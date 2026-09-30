@@ -1,0 +1,79 @@
+@use '../../../theme/variables.scss' as *;
+
+// Estilos de tablas, filtros, tarjetas y acciones del panel administrativo.
+.admin-searchbar {
+  --background: rgba(255, 255, 255, 0.15);
+  --color: white;
+  --placeholder-color: rgba(255, 255, 255, 0.65);
+  --icon-color: rgba(255, 255, 255, 0.7);
+  --clear-button-color: rgba(255, 255, 255, 0.7);
+  --border-radius: 10px;
+  padding-top: 4px;
+  padding-bottom: 8px;
+}
+
+.partido-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+
+
+.politico-item {
+  --padding-start: $spacing-md;
+  --padding-end: $spacing-md;
+  border-bottom: 1px solid var(--ion-item-border-color, $border-light);
+
+  ion-avatar {
+    width: 50px;
+    height: 50px;
+    margin-right: $spacing-md;
+
+    img {
+      object-fit: cover;
+    }
+  }
+
+  ion-label {
+    h2 {
+      font-weight: 600;
+      color: var(--theme-card-title-color, $primary);
+      margin-bottom: $spacing-xs;
+    }
+
+    p {
+      font-size: 13px;
+      margin: $spacing-xs 0;
+
+      &:first-of-type {
+        color: var(--color-rojo, $secondary);
+        font-weight: 500;
+      }
+
+      &.text-light {
+        color: var(--theme-card-subtext-color, $text-light);
+      }
+    }
+  }
+}
+
+.empty-state {
+  margin-top: 60px;
+
+  ion-icon {
+    font-size: 64px;
+    color: #ccc;
+  }
+
+  p {
+    color: var(--theme-card-subtext-color, $text-light);
+    margin: $spacing-sm 0;
+
+    &.text-light {
+      font-size: 13px;
+    }
+  }
+}

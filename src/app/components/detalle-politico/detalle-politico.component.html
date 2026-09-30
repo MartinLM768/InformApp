@@ -1,0 +1,65 @@
+<!-- Perfil detallado mostrado dentro de un modal Ionic. -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()" color="light">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Foto -->
+  <div class="header-image">
+    <img
+      [src]="politico.foto_url || 'assets/avatar-placeholder.svg'"
+      [alt]="politico.nombre"
+      (error)="onImageError($event)"
+    />
+  </div>
+
+  <div class="ion-padding">
+    <!-- Info básica -->
+    <ion-card>
+      <ion-card-content>
+        <h1 class="name">{{ politico.nombre }} {{ politico.apellido }}</h1>
+        <p class="cargo" *ngIf="politico.cargo_nombre">{{ politico.cargo_nombre }}</p>
+        <p class="partido" *ngIf="politico.partido_nombre">{{ politico.partido_nombre }}</p>
+
+        <div class="chips-container">
+          <ion-chip *ngIf="politico.entidad_nombre">
+            <ion-icon name="location-outline"></ion-icon>
+            <ion-label>{{ politico.entidad_nombre }}</ion-label>
+          </ion-chip>
+        </div>
+
+        <div class="extra-info" *ngIf="politico.fecha_nacimiento || politico.lugar_nacimiento">
+          <p *ngIf="politico.lugar_nacimiento">📍 {{ politico.lugar_nacimiento }}</p>
+          <p *ngIf="politico.fecha_nacimiento">🎂 {{ politico.fecha_nacimiento | date:'dd/MM/yyyy' }}</p>
+        </div>
+
+        <div class="bio-section" *ngIf="politico.bio">
+          <p class="bio-label">Biografía</p>
+          <p class="bio-text">{{ politico.bio }}</p>
+        </div>
+
+        <div class="redes-section" *ngIf="politico.twitter_url || politico.instagram_url || politico.sitio_web">
+          <p class="bio-label">Redes y contacto</p>
+          <div class="redes-links">
+            <a *ngIf="politico.twitter_url" [href]="politico.twitter_url" target="_blank">
+              <ion-icon name="logo-twitter"></ion-icon> Twitter / X
+            </a>
+            <a *ngIf="politico.instagram_url" [href]="politico.instagram_url" target="_blank">
+              <ion-icon name="logo-instagram"></ion-icon> Instagram
+            </a>
+            <a *ngIf="politico.sitio_web" [href]="politico.sitio_web" target="_blank">
+              <ion-icon name="globe-outline"></ion-icon> Sitio web
+            </a>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

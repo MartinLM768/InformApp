@@ -1,0 +1,98 @@
+<!-- Comparativa lado a lado de los políticos seleccionados. -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button *ngIf="seleccionado" (click)="volverASeleccion()" color="light">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ seleccionado ? 'Comparación' : 'Comparar político' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()" color="light">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="!seleccionado; else comparacion">
+    <section class="selector-intro">
+      <ion-icon name="git-compare-outline"></ion-icon>
+      <h2>Elige un perfil para comparar</h2>
+      <p>Selecciona otro político para ver sus datos junto a {{ politico.nombre }}.</p>
+    </section>
+
+    <div class="opciones">
+      <button class="opcion" type="button" *ngFor="let otro of opciones" (click)="seleccionar(otro)">
+        <div class="opcion-avatar">
+          <img
+            [src]="otro.foto_url || 'assets/avatar-placeholder.svg'"
+            [alt]="otro.nombre + ' ' + otro.apellido"
+            (error)="onImageError($event)"
+          />
+        </div>
+        <div class="opcion-datos">
+          <strong>{{ otro.nombre }} {{ otro.apellido }}</strong>
+          <span>{{ otro.cargo_nombre || 'Cargo no registrado' }}</span>
+          <small>{{ otro.partido_nombre || 'Independiente' }}</small>
+        </div>
+        <span class="opcion-flecha">›</span>
+      </button>
+      <p class="sin-opciones" *ngIf="opciones.length === 0">No hay otros perfiles disponibles.</p>
+    </div>
+  </ng-container>
+
+  <ng-template #comparacion>
+    <ng-container *ngIf="seleccionado as comparado">
+    <section class="comparacion-intro">
+      <span>Comparación de perfiles</span>
+      <h2>Dos perfiles, una mirada clara</h2>
+    </section>
+
+    <div class="perfiles">
+      <article class="perfil">
+        <div class="perfil-foto">
+          <img
+            [src]="politico.foto_url || 'assets/avatar-placeholder.svg'"
+            [alt]="politico.nombre + ' ' + politico.apellido"
+            (error)="onImageError($event)"
+          />
+          <span *ngIf="!politico.foto_url">{{ iniciales(politico) }}</span>
+        </div>
+        <h3>{{ politico.nombre }} {{ politico.apellido }}</h3>
+        <ion-chip color="primary" *ngIf="politico.cargo_nombre">
+          <ion-label>{{ politico.cargo_nombre }}</ion-label>
+        </ion-chip>
+        <dl>
+          <div><dt>Partido</dt><dd>{{ politico.partido_nombre || 'Independiente' }}</dd></div>
+          <div><dt>Entidad</dt><dd>{{ politico.entidad_nombre || 'No registrada' }}</dd></div>
+          <div><dt>Biografía</dt><dd>{{ politico.bio || 'Sin biografía registrada.' }}</dd></div>
+        </dl>
+      </article>
+
+      <div class="versus" aria-hidden="true">VS</div>
+
+      <article class="perfil perfil-seleccionado">
+        <div class="perfil-foto">
+          <img
+            [src]="comparado.foto_url || 'assets/avatar-placeholder.svg'"
+            [alt]="comparado.nombre + ' ' + comparado.apellido"
+            (error)="onImageError($event)"
+          />
+          <span *ngIf="!comparado.foto_url">{{ iniciales(comparado) }}</span>
+        </div>
+        <h3>{{ comparado.nombre }} {{ comparado.apellido }}</h3>
+        <ion-chip color="secondary" *ngIf="comparado.cargo_nombre">
+          <ion-label>{{ comparado.cargo_nombre }}</ion-label>
+        </ion-chip>
+        <dl>
+          <div><dt>Partido</dt><dd>{{ comparado.partido_nombre || 'Independiente' }}</dd></div>
+          <div><dt>Entidad</dt><dd>{{ comparado.entidad_nombre || 'No registrada' }}</dd></div>
+          <div><dt>Biografía</dt><dd>{{ comparado.bio || 'Sin biografía registrada.' }}</dd></div>
+        </dl>
+      </article>
+    </div>
+    </ng-container>
+  </ng-template>
+</ion-content>

@@ -1,0 +1,202 @@
+// Estilos del menú global y de sus estados de navegación.
+.menu-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 1px;
+
+  .menu-title-app {
+    color: var(--color-rojo, #C8102E);
+  }
+}
+
+ion-menu {
+  --width: 290px;
+}
+
+.menu-content {
+  --background: var(--menu-bg, #F8F5EE);
+  transition: --background 0.25s ease;
+}
+
+.menu-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--menu-subtext, #9e9e9e);
+  padding: 16px 16px 6px;
+  opacity: 0.85;
+}
+
+.menu-divider {
+  height: 1px;
+  background: var(--menu-divider-color, #e0ddd6);
+  margin: 10px 16px;
+  opacity: 0.6;
+}
+
+ion-list {
+  background: transparent;
+  padding: 0 8px;
+}
+
+ion-item {
+  --background: transparent;
+  --background-activated: var(--menu-item-hover, rgba(10, 35, 66, 0.08));
+  --border-radius: 10px;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+  margin-bottom: 2px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+
+  ion-icon {
+    font-size: 20px;
+    color: var(--menu-text, #0A2342);
+    margin-right: 6px;
+    transition: color 0.2s ease;
+  }
+
+  ion-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--menu-text, #0A2342);
+    transition: color 0.2s ease;
+  }
+
+  &:hover {
+    --background: var(--menu-item-hover, rgba(10, 35, 66, 0.08));
+  }
+
+  &.active-link {
+    --background: var(--menu-item-active-bg, rgba(10, 35, 66, 0.1));
+
+    ion-icon {
+      color: var(--menu-item-active-icon, #C8102E);
+    }
+
+    ion-label {
+      font-weight: 700;
+      color: var(--menu-item-active-text, #0A2342);
+    }
+  }
+}
+
+// ── SELECTOR DE ESTILOS ──────────────────────────────────
+.theme-selector-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 12px;
+}
+
+.theme-card-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(125, 125, 125, 0.06);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  user-select: none;
+
+  &:hover {
+    background: rgba(125, 125, 125, 0.12);
+    transform: translateX(2px);
+  }
+
+  &.selected {
+    border-color: var(--color-oro, #F4C542);
+    background: rgba(244, 197, 66, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    .theme-name {
+      font-weight: 700;
+    }
+  }
+
+  .theme-swatch {
+    width: 68px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+
+    .theme-swatch-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+  }
+
+  .theme-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    .theme-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .theme-icon {
+        font-size: 14px;
+        color: var(--color-oro, #F4C542);
+      }
+
+      .theme-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--menu-text, #0A2342);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .theme-subname {
+      font-size: 11px;
+      color: var(--menu-subtext, #9e9e9e);
+      margin-top: 2px;
+      font-family: 'DM Mono', monospace;
+    }
+  }
+
+  .theme-check-icon {
+    font-size: 18px;
+    color: var(--color-oro, #F4C542);
+    flex-shrink: 0;
+  }
+}
+
+.menu-footer {
+  padding: 16px;
+  text-align: center;
+  background: var(--menu-bg, #F8F5EE);
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--menu-text, #0A2342);
+  }
+
+  .menu-footer-sub {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--menu-subtext, #9e9e9e);
+    margin-top: 2px;
+  }
+}
+

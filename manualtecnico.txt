@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{geometry}
+\usepackage{enumitem}
+
+\geometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+
+\definecolor{techcolor}{RGB}{40, 167, 69}
+\definecolor{boxback}{RGB}{248, 255, 248}
+
+\title{\Huge \textbf{Manual Técnico - InformApp} \\ \large \textit{Arquitectura y Desarrollo}}
+\author{Equipo de Ingeniería}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{\textcolor{techcolor}{1. Descripción General}}
+InformApp es una plataforma web híbrida (Ionic/Angular) que se comunica con una base de datos \textbf{Supabase}. Su diseño prioriza la reactividad y el desacoplamiento entre la capa de datos y la interfaz de usuario.
+
+\begin{tcolorbox}[colback=boxback, colframe=techcolor, title=\textbf{Arquitectura}]
+La app utiliza un patrón de servicios para centralizar la lógica de negocio, asegurando que los componentes sean ligeros y enfocados únicamente en la vista.
+\end{tcolorbox}
+
+\section*{\textcolor{techcolor}{2. Componentes del Backend (Servicios)}}
+\begin{itemize}
+    \item \textbf{DatabaseService:} Gestiona la conexión con Supabase. Utiliza dos clientes:
+    \begin{itemize}
+        \item \textit{Cliente Público:} Consultas de lectura.
+        \item \textit{Cliente Admin:} Operaciones de escritura (protegido por \textit{serviceKey}).
+    \end{itemize}
+    \item \textbf{AuthService:} Control de acceso basado en \texttt{localStorage} y \texttt{BehaviorSubject}.
+    \item \textbf{PoliticosService:} Actúa como el \textit{Store} principal de la app, manteniendo la lista de políticos cargada y reactiva en toda la navegación.
+\end{itemize}
+
+\section*{\textcolor{techcolor}{3. Flujo de Datos}}
+\begin{enumerate}
+    \item El \textbf{Componente} solicita datos al servicio.
+    \item El \textbf{PoliticosService} verifica si tiene datos locales o hace la petición a \textbf{DatabaseService}.
+    \item \textbf{DatabaseService} consulta la API de Supabase y retorna las interfaces tipificadas (\textit{Politico, Candidato, etc.}).
+    \item La interfaz se actualiza automáticamente gracias a los \textbf{Observables} de RxJS.
+\end{enumerate}
+
+\begin{tcolorbox}[colback=white, colframe=techcolor, title=\textbf{Nota de Seguridad}]
+Las credenciales de acceso a la base de datos se manejan mediante variables de entorno (\textit{environment.ts}). Asegúrese de nunca publicar estas claves en repositorios públicos.
+\end{tcolorbox}
+
+\end{document}

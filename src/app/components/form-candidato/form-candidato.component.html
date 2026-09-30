@@ -1,0 +1,135 @@
+<!-- Formulario modal de alta y edición de candidatos. -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ candidato ? 'Editar Candidato' : 'Nuevo Candidato' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="cerrar()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <p class="section-label">Candidato presidencial</p>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('nombre')">
+      <ion-label position="stacked">Nombre *</ion-label>
+      <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('nombre')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span *ngIf="hasError('nombre', 'required')">El nombre es obligatorio</span>
+      <span *ngIf="hasError('nombre', 'minlength')">Mínimo 2 caracteres</span>
+    </ion-note>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('apellido')">
+      <ion-label position="stacked">Apellido *</ion-label>
+      <ion-input formControlName="apellido" placeholder="Apellido"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('apellido')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span *ngIf="hasError('apellido', 'required')">El apellido es obligatorio</span>
+      <span *ngIf="hasError('apellido', 'minlength')">Mínimo 2 caracteres</span>
+    </ion-note>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('foto_url')">
+      <ion-label position="stacked">Foto (URL)</ion-label>
+      <ion-input formControlName="foto_url" placeholder="https://..."></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('foto_url')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Debe ser una URL válida (iniciar con http:// o https://)</span>
+    </ion-note>
+
+    <ion-item fill="outline" class="form-item">
+      <ion-label position="stacked">Partido</ion-label>
+      <ion-select formControlName="partido_id" placeholder="Selecciona un partido">
+        <ion-select-option value="">Independiente</ion-select-option>
+        <ion-select-option *ngFor="let p of partidos" [value]="p.id">{{ p.nombre }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <p class="section-label">Fórmula vicepresidencial</p>
+
+    <ion-item fill="outline" class="form-item">
+      <ion-label position="stacked">Nombre vicepresidente/a</ion-label>
+      <ion-input formControlName="vicepresidente_nombre" placeholder="Nombre"></ion-input>
+    </ion-item>
+
+    <ion-item fill="outline" class="form-item">
+      <ion-label position="stacked">Apellido vicepresidente/a</ion-label>
+      <ion-input formControlName="vicepresidente_apellido" placeholder="Apellido"></ion-input>
+    </ion-item>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('foto_vicepresidente_url')">
+      <ion-label position="stacked">Foto vicepresidente/a (URL)</ion-label>
+      <ion-input formControlName="foto_vicepresidente_url" placeholder="https://..."></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('foto_vicepresidente_url')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Debe ser una URL válida (iniciar con http:// o https://)</span>
+    </ion-note>
+
+    <p class="section-label">Información pública</p>
+
+    <ion-item fill="outline" class="form-item">
+      <ion-label position="stacked">Propuesta clave</ion-label>
+      <ion-textarea formControlName="propuesta_clave" rows="2" placeholder="Propuesta principal del candidato"></ion-textarea>
+    </ion-item>
+
+    <ion-item fill="outline" class="form-item">
+      <ion-label position="stacked">Biografía</ion-label>
+      <ion-textarea formControlName="bio" rows="4" placeholder="Breve descripción del candidato"></ion-textarea>
+    </ion-item>
+
+    <p class="section-label">Redes y contacto</p>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('sitio_web')">
+      <ion-label position="stacked">Sitio web</ion-label>
+      <ion-input formControlName="sitio_web" placeholder="https://..."></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('sitio_web')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Debe ser una URL válida (iniciar con http:// o https://)</span>
+    </ion-note>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('twitter_url')">
+      <ion-label position="stacked">Twitter / X</ion-label>
+      <ion-input formControlName="twitter_url" placeholder="https://twitter.com/..."></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('twitter_url')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Debe ser una URL válida (iniciar con http:// o https://)</span>
+    </ion-note>
+
+    <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('instagram_url')">
+      <ion-label position="stacked">Instagram</ion-label>
+      <ion-input formControlName="instagram_url" placeholder="https://instagram.com/..."></ion-input>
+    </ion-item>
+    <ion-note *ngIf="isFieldInvalid('instagram_url')" color="danger" class="error-msg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>Debe ser una URL válida (iniciar con http:// o https://)</span>
+    </ion-note>
+
+    <ion-item class="form-item toggle-item">
+      <ion-label>Candidato activo</ion-label>
+      <ion-toggle formControlName="activo" color="primary" slot="end"></ion-toggle>
+    </ion-item>
+
+    <div class="buttons-group">
+      <ion-button expand="block" color="primary" type="submit">
+        {{ candidato ? 'Guardar cambios' : 'Crear candidato' }}
+      </ion-button>
+      <ion-button *ngIf="candidato" expand="block" color="danger" fill="outline" type="button" (click)="confirmarEliminar()">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Eliminar candidato
+      </ion-button>
+      <ion-button expand="block" fill="clear" color="medium" type="button" (click)="cerrar()">
+        Cancelar
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
+

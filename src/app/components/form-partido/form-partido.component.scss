@@ -1,0 +1,71 @@
+@use '../../../theme/variables.scss' as *;
+
+// Espaciado, validación y botones del formulario de partido.
+.form-item {
+  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-xs;
+  --border-radius: #{$radius-md};
+
+  &.ion-invalid {
+    --border-color: var(--ion-color-danger) !important;
+  }
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+  margin-bottom: $spacing-md;
+  padding-left: $spacing-xs;
+
+  ion-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+}
+
+.color-item {
+  .color-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    width: 100%;
+    padding: 8px 0;
+  }
+
+  .color-preview {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-sm;
+    border: 2px solid $border-color;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .color-picker-native {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+    flex-shrink: 0;
+  }
+}
+
+.toggle-item {
+  --padding-start: 0;
+  margin-bottom: $spacing-md;
+}
+
+.buttons-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  margin-top: $spacing-lg;
+  padding-bottom: $spacing-xl;
+}

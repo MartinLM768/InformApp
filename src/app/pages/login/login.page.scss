@@ -1,0 +1,81 @@
+@use '../../../theme/variables.scss' as *;
+
+// Presentación del formulario de acceso y sus mensajes de estado.
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+
+  h1 {
+    text-align: center;
+    margin-bottom: $spacing-xl;
+    color: var(--theme-card-title-color, $primary);
+    font-size: 28px;
+  }
+
+  ion-item {
+    --border-color: var(--ion-item-border-color, $border-color);
+    --padding-start: $spacing-md;
+    --padding-end: $spacing-md;
+    border-radius: $radius-lg;
+    margin-bottom: $spacing-xs;
+
+    &.ion-invalid {
+      --border-color: var(--ion-color-danger) !important;
+    }
+
+    &:focus-within {
+      --border-color: $info;
+    }
+
+    ion-label {
+      font-weight: 600;
+      color: var(--theme-card-title-color, $text-primary);
+      margin-bottom: $spacing-sm;
+    }
+
+    ion-input {
+      --placeholder-color: var(--theme-card-subtext-color, $text-light);
+      --padding-top: $spacing-sm;
+      --padding-bottom: $spacing-sm;
+    }
+  }
+
+  .error-msg {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 2px;
+    margin-bottom: $spacing-md;
+    padding-left: $spacing-sm;
+
+    ion-icon {
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+  }
+
+  ion-button {
+    margin-top: $spacing-lg;
+    height: 48px;
+    font-weight: 600;
+  }
+
+  ion-text {
+    margin-top: $spacing-lg;
+
+    p {
+      color: var(--theme-card-subtext-color, $text-light);
+
+      small {
+        strong {
+          color: var(--theme-card-title-color, $primary);
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+<!-- Formulario de autenticación del usuario administrativo. -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Panel Administrador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <h1>Acceso Administrador</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('username')">
+        <ion-label position="stacked">Usuario</ion-label>
+        <ion-input
+          formControlName="username"
+          placeholder="Ingresa tu usuario"
+          type="text"
+          autocomplete="username"
+        ></ion-input>
+      </ion-item>
+      <ion-note *ngIf="isFieldInvalid('username')" color="danger" class="error-msg">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <span *ngIf="hasError('username', 'required')">El usuario es obligatorio</span>
+        <span *ngIf="hasError('username', 'minlength')">Mínimo 3 caracteres</span>
+      </ion-note>
+
+      <ion-item fill="outline" class="form-item" [class.ion-invalid]="isFieldInvalid('password')">
+        <ion-label position="stacked">Contraseña</ion-label>
+        <ion-input
+          formControlName="password"
+          placeholder="Ingresa tu contraseña"
+          type="password"
+          autocomplete="current-password"
+        ></ion-input>
+      </ion-item>
+      <ion-note *ngIf="isFieldInvalid('password')" color="danger" class="error-msg">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <span *ngIf="hasError('password', 'required')">La contraseña es obligatoria</span>
+        <span *ngIf="hasError('password', 'minlength')">Mínimo 4 caracteres</span>
+      </ion-note>
+
+      <ion-button expand="block" color="primary" type="submit" [disabled]="loading">
+        <ion-spinner *ngIf="loading" name="crescent" color="light"></ion-spinner>
+        <span *ngIf="!loading">Entrar</span>
+      </ion-button>
+    </form>
+  </div>
+</ion-content>
