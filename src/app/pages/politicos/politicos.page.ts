@@ -14,10 +14,11 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { DatabaseService, PoliticoConCargo, Cargo } from '../../services/database.service';
 import { DetallePoliticoComponent } from '../../components/detalle-politico/detalle-politico.component';
 import { CompararPoliticosComponent } from '../../components/comparar-politicos/comparar-politicos.component';
+import { ChatbotComponent } from '../../components/chatbot/chatbot.component';
 import { addIcons } from 'ionicons';
-import { eyeOutline, settingsOutline, filterOutline, closeCircleOutline, personOutline, gitCompareOutline } from 'ionicons/icons';
+import { eyeOutline, settingsOutline, filterOutline, closeCircleOutline, personOutline, gitCompareOutline, chatbubblesOutline } from 'ionicons/icons';
 
-addIcons({ 'settings-outline': settingsOutline, 'eye-outline': eyeOutline, 'filter-outline': filterOutline, 'close-circle-outline': closeCircleOutline, 'person-outline': personOutline, 'git-compare-outline': gitCompareOutline });
+addIcons({ 'settings-outline': settingsOutline, 'eye-outline': eyeOutline, 'filter-outline': filterOutline, 'close-circle-outline': closeCircleOutline, 'person-outline': personOutline, 'git-compare-outline': gitCompareOutline, 'chatbubbles-outline': chatbubblesOutline });
 
 @Component({
   selector: 'app-politicos',
@@ -145,6 +146,16 @@ export class PoliticosPage implements OnInit {
       breakpoints: [0, 0.95, 1],
       initialBreakpoint: 0.95,
       cssClass: 'comparar-politicos-modal',
+    });
+    await modal.present();
+  }
+
+  async abrirChatbot() {
+    const modal = await this.modalController.create({
+      component: ChatbotComponent,
+      breakpoints: [0, 0.9, 1],
+      initialBreakpoint: 0.9,
+      cssClass: 'chatbot-modal',
     });
     await modal.present();
   }

@@ -9,10 +9,11 @@ import {
 } from '@ionic/angular/standalone';
 import { PoliticoConCargo } from '../../services/database.service';
 import { addIcons } from 'ionicons';
-import { closeOutline, call, mail, location, globeOutline, logoTwitter, logoInstagram } from 'ionicons/icons';
+import { closeOutline, call, mail, location, globeOutline, logoTwitter, logoInstagram, searchOutline } from 'ionicons/icons';
 
 addIcons({
   'close-outline': closeOutline,
+  'search-outline': searchOutline,
   'call-outline': call,
   'mail-outline': mail,
   'location-outline': location,
@@ -36,11 +37,20 @@ addIcons({
 })
 export class DetallePoliticoComponent {
   @Input() politico!: PoliticoConCargo;
+  fotoAmpliada = false;
 
   constructor(private modalController: ModalController) {}
 
   cerrar() {
     this.modalController.dismiss();
+  }
+
+  abrirFotoAmpliada() {
+    this.fotoAmpliada = true;
+  }
+
+  cerrarFotoAmpliada() {
+    this.fotoAmpliada = false;
   }
 
   onImageError(event: Event) {

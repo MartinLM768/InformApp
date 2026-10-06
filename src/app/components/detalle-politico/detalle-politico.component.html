@@ -17,6 +17,29 @@
       [src]="politico.foto_url || 'assets/avatar-placeholder.svg'"
       [alt]="politico.nombre"
       (error)="onImageError($event)"
+      (click)="abrirFotoAmpliada()"
+    />
+    <button type="button" class="foto-expandir" (click)="abrirFotoAmpliada()" aria-label="Ampliar foto">
+      <ion-icon name="search-outline"></ion-icon>
+    </button>
+  </div>
+
+  <div
+    class="foto-lightbox"
+    *ngIf="fotoAmpliada"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Foto ampliada"
+    (click)="cerrarFotoAmpliada()"
+  >
+    <button type="button" class="foto-lightbox-cerrar" (click)="cerrarFotoAmpliada(); $event.stopPropagation()" aria-label="Cerrar foto ampliada">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+    <img
+      [src]="politico.foto_url || 'assets/avatar-placeholder.svg'"
+      [alt]="politico.nombre"
+      (click)="$event.stopPropagation()"
+      (error)="onImageError($event)"
     />
   </div>
 
